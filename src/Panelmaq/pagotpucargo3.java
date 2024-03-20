@@ -834,6 +834,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                 f.setFoliofiscalorig(folios);
 //                int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
+                daoAbonos da = new daoAbonos();
                 if (!flagmetodo) {
                     JOptionPane.showMessageDialog(null, "Error!,- No puedes seleccionar una factura PUE y PPD en un mismo pago");
                 } else {
@@ -843,7 +844,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                         if (verifica != 0) {
                             JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                         } else {
-                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                            int id = da.insertabonostpu(cpt ,f , ACobranza);
                             if (id != 0) {
                                 setcomisiones(f);
                                 JOptionPane.showMessageDialog(null, "Pago realizado con exito");
@@ -857,8 +858,8 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                             JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                         } else {
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                            daoAbonos da = new daoAbonos();
-                            int id=da.insertabonostpu(cpt, f, ACobranza);
+
+                            int id = da.insertabonostpu(cpt, f, ACobranza);
                             //int id = dfac.insertpagotpu(cpt, ACobranza, f);
                             if (id != 0) {
 //                                System.out.println("Exito");

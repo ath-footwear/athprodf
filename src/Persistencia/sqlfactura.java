@@ -2620,7 +2620,6 @@ public class sqlfactura {
 //                System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
-
             }
             // Fin detallado de documento
 

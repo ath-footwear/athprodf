@@ -18,4 +18,5 @@ public interface Int_abonos {
     public boolean new_Refacturacion(Connection cobranza, cargo c);
     
     public int insertabonostpu(Connection con, factura f, Connection cob);
+    
 }
