@@ -164,7 +164,7 @@ public class sqlabonos {
 
 //            st = con.prepareStatement("select top(1)max(id) as id from doctospagotpu group by fecha order by id desc");
 //          Obtiene el ultimo registro insertado
-            st = con.prepareStatement("SELECT max(id_doctopago) as id from doctospagotpuespecial");
+            st = con.prepareStatement("SELECT max(id_doctopago) as id from doctospagotpu_especial");
             rs = st.executeQuery();
             while (rs.next()) {
                 resp = rs.getInt("id");
