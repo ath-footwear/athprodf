@@ -154,7 +154,7 @@ public class sqlabonos {
             double tipoc = f.getTipocambio();
             String Lugar = f.getLugarexpedicion();
             String uso = f.getUsocfdi();
-            sql = "insert into Doctospagotpu(id_cliente,id_agente,usuario,folio,serie,fecha,fechapago,condicion,"
+            sql = "insert into Doctospagotpu_especial(id_cliente,id_agente,usuario,folio,serie,fecha,fechapago,condicion,"
                     + "tipodoc,descuento,subtotal,impuestos,total,nombre,rfc,cp,regimen,metodopago,formapago,lugarexp,observaciones,moneda,tipocambio,usocfdi,estatus) "
                     + "values(" + idcliente + "," + ag + ",'" + usuario + "'," + fol + ",'" + serie + "','" + fecha + "','" + fechap + "','contado','PAGOS',0,0,0," + Total + ",'"
                     + nombre + "','" + rfc + "','" + cp + "','" + regimen + "','" + metodo + "','" + formap + "','" + Lugar + "','" + obs + "','" + mon + "'," + tipoc + ",'" + uso + "','1')";
@@ -164,7 +164,7 @@ public class sqlabonos {
 
 //            st = con.prepareStatement("select top(1)max(id) as id from doctospagotpu group by fecha order by id desc");
 //          Obtiene el ultimo registro insertado
-            st = con.prepareStatement("SELECT max(id_doctopago) as id from doctospagotpu");
+            st = con.prepareStatement("SELECT max(id_doctopago) as id from doctospagotpuespecial");
             rs = st.executeQuery();
             while (rs.next()) {
                 resp = rs.getInt("id");
@@ -196,7 +196,7 @@ public class sqlabonos {
                 double salpag = getcant(arr.getImportepagado());
                 double salin = getcant(arr.getImpsaldoinsoluto());
                 int idcargo = arr.getIdcargo();
-                sql = "insert into Ddoctospagotpu(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
+                sql = "insert into Ddoctospagotpu_especial(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
                         + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
                         + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
                         + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
@@ -206,10 +206,10 @@ public class sqlabonos {
                 st.executeUpdate();
                 String saldo;
                 if (mon.equals("MXN")) {
-                    sql = "update cargo set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
+                    sql = "update cargoespecial set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
                     saldo = "saldo";
                 } else {
-                    sql = "update cargo set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
+                    sql = "update cargoespecial set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
                     saldo = "saldomx";
                 }
 //                System.out.println("cargos " + sql);
@@ -218,13 +218,13 @@ public class sqlabonos {
 
 //                if (salant == mo) {
                 if (sald == 0) {
-                    sql = "update cargo set saldo=0, saldomx=0  where id_cargo=" + idcargo;
+                    sql = "update cargoespecial set saldo=0, saldomx=0  where id_cargo=" + idcargo;
 //                    System.out.println("cargos0 " + sql);
                     st = cob.prepareStatement(sql);
                     st.executeUpdate();
                 }
 
-                sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
+                sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
 //                System.out.println("abonos  " + sql);

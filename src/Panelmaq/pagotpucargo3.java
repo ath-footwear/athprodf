@@ -5,6 +5,7 @@
  */
 package Panelmaq;
 
+import DAO.daoAbonos;
 import DAO.daoCargos;
 import DAO.dao_comisiones;
 import DAO.daoempresa;
@@ -700,8 +701,6 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 //                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
                 totalrev += fd.formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
-//            System.out.println(total + " " + totalrev);
-//            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {
 //            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
             if (fd.formatdecimal(total) != fd.formatdecimal(totalrev)) {
@@ -858,7 +857,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                             JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                         } else {
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                            daoAbonos da = new daoAbonos();
+                            int id=da.insertabonostpu(cpt, f, ACobranza);
+                            //int id = dfac.insertpagotpu(cpt, ACobranza, f);
                             if (id != 0) {
 //                                System.out.println("Exito");
                                 daoxmlpagostpu dx = new daoxmlpagostpu();
