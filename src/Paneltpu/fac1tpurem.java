@@ -278,7 +278,8 @@ public class fac1tpurem extends javax.swing.JPanel {
             Cancelamiento.setVisible(false);
         }
         //Maquinaria
-        if (u.getTurno().equals("6") && arrfactura.get(row).getSerie().equals("B")) {
+        if ((u.getTurno().equals("6") || u.getTurno().equals("7")) &&
+                arrfactura.get(row).getSerie().equals("B")) {
             JmAddprecios.setVisible(true);
         } else {
             JmAddprecios.setVisible(false);
