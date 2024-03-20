@@ -30,7 +30,7 @@ public class sqlpedidos {
                     + "from Dpedido dp\n"
                     + "join pedido p on dp.id_pedido=p.id_pedido\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "join " + bd + "RACobranzaMaq.dbo.cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+                    + "join " + bd + ".dbo.cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
                     + "where p.id_pedido=?";
             s = c.prepareStatement(sql);
             s.setInt(1, f.getId_pedido());
@@ -70,7 +70,7 @@ public class sqlpedidos {
 //                Importe multiplicando la cantidad por el precio
                 double imp = arr1.getImporta();
                 double precio = arr1.getPrecio();
-                sql = "update dpedido set precio=?, costoo=?, importe=? where id_dpedido=?";
+                sql = "update dpedido set precio=?, costo=?, importe=? where id_dpedido=?";
                 st = c.prepareStatement(sql);
                 st.setDouble(1, precio);
                 st.setDouble(2, precio);

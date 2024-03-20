@@ -7,6 +7,7 @@ package Panelmaq;
 
 import DAO.daoPedidos;
 import Modelo.Dfactura;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.factura;
@@ -229,7 +230,9 @@ public class Modificaprecio_pedido extends javax.swing.JDialog {
      */
     public void llenatabla() {
 // Verifica que sea un usuario o si esta en modo de pruebas y asigna la ruta adecuada
-        String tipo = (u.getTipo_usuario().equals("2")) ? "" : "[192.168.90.1\\DATOS620].";
+// Es necesario especificar el turno ya que puede haber mas de 1 empresa
+        Formateodedatos fd = new Formateodedatos();
+        String tipo = fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B");
         DefaultTableModel model = new DefaultTableModel();
         daoPedidos dp = new daoPedidos();
         arr = dp.getdetpedidos(cpt, f, tipo);
@@ -289,7 +292,7 @@ public class Modificaprecio_pedido extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Proceso Completo");
             vaciarcampos();
             dispose();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Error al modificar precios, llama a sistemas");
         }
 
@@ -316,10 +319,10 @@ public class Modificaprecio_pedido extends javax.swing.JDialog {
         return resp;
     }
 
-    private void vaciarcampos(){
+    private void vaciarcampos() {
         arr.clear();
     }
-    
+
     /**
      * @param args the command line arguments
      */
