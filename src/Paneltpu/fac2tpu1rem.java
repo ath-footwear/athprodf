@@ -562,7 +562,8 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 impuestos = 0;
                 descuentos = 0;
 //                Detallado de productos selecionados
-                String tipoconcepto = arrcuentas.get(JcConceptos.getSelectedIndex()).getTipo();
+                String cuenta=arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta();
+                String sb=arrcuentas.get(JcConceptos.getSelectedIndex()).getSubcuenta();
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
@@ -584,7 +585,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                         df.setTipofactor("Tasa");
                         String as1;
                         df.setTasaocuota("0");
-                        if (tipoconcepto.equals("3")) {
+                        if (cuenta.equals("60") && sb.equals("25")) {
                             as1 = "0";
                             df.setDescuento(0);
                             df.setPrecio(0);
@@ -797,7 +798,10 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     }//GEN-LAST:event_JcConceptosMousePressed
 
     private void JcConceptosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcConceptosItemStateChanged
-        if (arrcuentas.get(JcConceptos.getSelectedIndex()).getTipo().equals("3")) {
+        int row=JcConceptos.getSelectedIndex();
+        String cuenta=arrcuentas.get(row).getCuenta();
+        String sc=arrcuentas.get(row).getSubcuenta();
+        if (cuenta.equals("60") && sc.equals("25")) {
             JOptionPane.showMessageDialog(null, "Seleccionaste consignacion, recuerda que el cargo e importe será de cero");
         }
     }//GEN-LAST:event_JcConceptosItemStateChanged
