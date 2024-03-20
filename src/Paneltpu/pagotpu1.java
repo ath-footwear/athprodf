@@ -514,6 +514,8 @@ public class pagotpu1 extends javax.swing.JPanel {
         model.addColumn("Metodo de pago");
         model.addColumn("Estado");
         model.addColumn("Estado sat");
+        model.addColumn("Fecha");
+        model.addColumn("Fecha pago");
         int tamaño = arrfactura.size();
         model.setRowCount(tamaño);
         for (int i = 0; i < arrfactura.size(); i++) {
@@ -526,6 +528,8 @@ public class pagotpu1 extends javax.swing.JPanel {
             model.setValueAt(arrfactura.get(i).getMetodopago(), i, 4);
             model.setValueAt(a, i, 5);
             model.setValueAt(a1, i, 6);
+            model.setValueAt(arrfactura.get(i).getFecha(), i, 7);
+            model.setValueAt(arrfactura.get(i).getFechapago(), i, 8);
         }
         JtDetalle.setModel(model);
     }
