@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1dcf74f-a28f-4605-8927-6de67ac891f2">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="40"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="serie" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalletra" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ncliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select id_pedido,pedido,p.fecha,total,subtotal,impuestos,serie,p.nombre,observaciones,a.nombre as agente
+from pedido p
+join [192.168.90.1\DATOS620].RACobranzamaq.dbo.cargo c on c.referencia=p.pedido collate SQL_Latin1_General_CP1_CI_AS
+join [192.168.90.1\DATOS620].RACobranzamaq.dbo.agente a on c.id_agente=a.id_agente
+where serie= $P{serie} and id_pedido=$P{id}
+
+/*Cambiar de acuerdo si es prueba o produccion
+
+join [192.168.90.1\DATOS620].RACobranzamaq.dbo.cargo c on c.referencia=p.pedido collate SQL_Latin1_General_CP1_CI_AS
+join [192.168.90.1\DATOS620].RACobranzamaq.dbo.agente a on c.id_agente=a.id_agente
+
+join RACobranzamaq.dbo.cargo c on c.referencia=p.pedido collate SQL_Latin1_General_CP1_CI_AS
+join RACobranzamaq.dbo.agente a on c.id_agente=a.id_agente
+*/]]>
+	</queryString>
+	<field name="id_pedido" class="java.lang.Integer"/>
+	<field name="pedido" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="subtotal" class="java.lang.Double"/>
+	<field name="impuestos" class="java.lang.Double"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<field name="agente" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117" splitType="Stretch">
+			<textField>
+				<reportElement x="101" y="65" width="166" height="27" uuid="17b62e1a-43bc-409e-8613-31e504b972cd"/>
+				<textElement>
+					<font fontName="Calibri" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="65" width="101" height="27" uuid="4a8d3486-e309-4545-a478-b81d5e31da50"/>
+				<textElement>
+					<font fontName="Calibri" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="549" y="0" width="23" height="14" uuid="6cc3667a-60a5-431b-9c65-a701890ede63"/>
+				<textElement textAlignment="Center">
+					<font fontName="Cambria"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
+				<reportElement x="440" y="25" width="132" height="20" uuid="e931e8d8-e7ae-44c1-aeb6-66b043ba6362"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="314" height="35" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="99" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="37" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="37" width="60" height="20" uuid="540a4d50-ee3c-48c1-a5bb-8afd8cdd8706"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="44" y="6" width="528" height="20" uuid="2c33aba5-ce1e-4425-8fce-d0d466fb767e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="6" width="44" height="20" uuid="8fe793b4-c4b1-4aea-b651-5fc7e91006de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="73" width="95" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="73" width="64" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="73" width="100" height="16" uuid="4738bb3d-26c9-42e7-86f6-0211b681fa5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="424" y="73" width="69" height="16" uuid="abcefaa5-c088-4b9e-b350-517146a7a2eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="72" width="572" height="1" uuid="389771ce-13cc-45bb-9f08-f72568e0ca08"/>
+			</line>
+			<staticText>
+				<reportElement x="491" y="73" width="69" height="16" uuid="524d2376-24ca-4346-ae60-8d7d99ec15ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Iva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="73" width="100" height="16" uuid="a21da569-a0bf-4269-847a-bd4ef5687bc4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="73" width="65" height="16" uuid="4ee5e5bf-5868-4b84-ad29-01df0f8a637d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[N° Serie]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="9" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="572" height="3" uuid="6054473b-07af-42f2-b16c-fe84e8954266"/>
+				<subreportParameter name="id">
+					<subreportParameterExpression><![CDATA[$F{id_pedido}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Dpedido.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="230" splitType="Stretch">
+			<textField>
+				<reportElement x="452" y="217" width="80" height="13" uuid="f9ea323d-c4f4-4788-b6e9-cb5de6b379f7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="217" width="40" height="13" uuid="b9087be2-0c3a-4f0e-8924-2ec1a7cfcbe4"/>
+				<textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="190" y="28" width="184" height="1" uuid="b69f627e-5d07-4667-9f5f-d1c06e537fa5"/>
+			</line>
+			<staticText>
+				<reportElement x="190" y="39" width="184" height="20" uuid="9f7cea15-a2d8-4332-b1bf-e2a605788caa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[ING. TOMAS TURRUBIATES]]></text>
+			</staticText>
+			<line>
+				<reportElement x="388" y="123" width="184" height="1" uuid="ed375263-b821-453d-9f47-0e414018734a"/>
+			</line>
+			<textField>
+				<reportElement x="388" y="134" width="184" height="20" uuid="c2e4c7d8-3c22-416d-ae2b-847bb7ab66fa"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ncliente}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="123" width="184" height="1" uuid="79f89e40-6ead-4379-aa0a-9d396a7a4014"/>
+			</line>
+			<textField>
+				<reportElement x="1" y="134" width="183" height="20" uuid="8e6d643c-b458-4987-ac02-859ba0b2e020"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{agente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="69" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="13" width="100" height="20" uuid="c4f74ac6-aabd-425a-9a3d-21fd67bf0db7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="13" width="60" height="20" uuid="208ba248-ef8a-4696-a67a-c09e39c6c756"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="33" width="572" height="20" uuid="f725dda3-39fb-48ff-86fd-3dc28b1e089a"/>
+				<textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalletra}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1dcf74f-a28f-4605-8927-6de67ac891f2">
+	<property name="ireport.zoom" value="1.6105100000000012"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from pedimentos p]]>
+	</queryString>
+	<field name="id_pedimento" class="java.lang.Integer"/>
+	<field name="id_proveedor" class="java.lang.Integer"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="impuestos" class="java.lang.Double"/>
+	<field name="subtotal" class="java.lang.Double"/>
+	<field name="totalcant" class="java.lang.Double"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="estatus" class="java.lang.String"/>
+	<field name="fechapedimento" class="java.sql.Timestamp"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="133" height="42" uuid="051dea46-5a85-4d5c-8cc0-359b196fbbc2"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="472" y="67" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="412" y="67" width="60" height="20" uuid="540a4d50-ee3c-48c1-a5bb-8afd8cdd8706"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="449" y="0" width="123" height="13" uuid="e291a423-96f0-46ae-8e03-c9768bac4d0f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="144" y="32" width="286" height="24" uuid="6fc5d2b4-41bc-43ae-b3b9-e1338168b5e0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<text><![CDATA[Reporte para captura de inventario]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="3" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement x="1" y="0" width="571" height="20" backcolor="#1451F5" uuid="e0156d76-d4cb-4fdc-9674-b8e364bf57dc"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<subreport>
+				<reportElement x="163" y="43" width="251" height="10" uuid="30ab1e8c-26fd-4f07-a299-57178522e715"/>
+				<subreportParameter name="id">
+					<subreportParameterExpression><![CDATA[$F{id_pedimento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\Dpedimento_inventario.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="106" y="0" width="466" height="19" forecolor="#FFFFFF" uuid="17b62e1a-43bc-409e-8613-31e504b972cd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="0" width="101" height="19" forecolor="#FFFFFF" uuid="4a8d3486-e309-4545-a478-b81d5e31da50"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="15"/>
+				</textElement>
+				<text><![CDATA[Pedimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="24" width="151" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Material]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="24" width="100" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="21" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch"/>
+	</summary>
+</jasperReport>

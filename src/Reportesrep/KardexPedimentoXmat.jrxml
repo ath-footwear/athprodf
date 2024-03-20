@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5703b302-15e9-4ee1-9490-4b36c0362c5a">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select p.referencia,k.id_pedimento
+from kardex k
+join Pedimentos p on k.id_pedimento=p.id_pedimento
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.estatus !='0' and p.estatus='1'
+group by k.id_pedimento,p.referencia]]>
+	</queryString>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="id_pedimento" class="java.lang.Integer"/>
+	<variable name="tcant" class="java.lang.Double"/>
+	<variable name="total" class="java.lang.Double" calculation="Sum"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102">
+			<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
+				<reportElement x="440" y="0" width="132" height="20" uuid="0aa282eb-dff5-4985-917d-b339816da1d2"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="131" y="50" width="339" height="20" uuid="c028a0e4-a374-4daf-b6fb-8a6b2008e83b"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte kardex x pedimento y Material]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="190" y="70" width="100" height="20" uuid="6decc0a3-803e-46cc-a86f-b6d5c26ef43c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="70" width="17" height="18" uuid="9ffb3ced-f7c1-467e-8cb7-70fbd6e54a39"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="307" y="70" width="100" height="20" uuid="0e32ea98-8f0d-4370-aa5a-0a786024e6ec"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="b9bf0579-9ec1-4ee7-b895-90c3f15d330f"/>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22">
+			<staticText>
+				<reportElement x="41" y="0" width="106" height="15" uuid="7c826ffc-711c-407d-aa58-256bf4ed3605"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="28" height="15" uuid="9a7c80c0-7694-4c66-aaa6-a4f78f4bd97f"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="0" width="60" height="15" uuid="0ff79ca1-9140-49b0-8ae9-a3373ab85407"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="46" height="15" uuid="4766ea69-009b-4697-bfc5-a86695846414"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="0" width="100" height="15" uuid="88d1fd57-f08d-4e08-bf54-2e87d9acc62a"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="0" width="28" height="15" uuid="46834c32-8959-4947-bbf2-25ad91f100ca"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="0" width="20" height="15" uuid="570d21ae-0f15-4441-bf5f-a61f6080062e"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="0" width="63" height="15" uuid="111cc4df-9ac4-45be-94e5-d8cb4ce45e32"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="20" height="15" uuid="3558ffcd-2c9c-42bb-a910-a330253541ba"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="41" height="15" uuid="fffad54e-27d6-44f5-950a-3f105e258622"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kardex]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="63" y="0" width="135" height="14" uuid="8794d827-4acb-4f37-b277-7f3912b11dca"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="16" width="555" height="2" uuid="4ef320a2-108f-4254-bec3-a41e7f1895bb"/>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idpedimento">
+					<subreportParameterExpression><![CDATA[$F{id_pedimento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\Reportesrep\\KardexPedimentoXmat_det.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="0" width="63" height="14" uuid="811676d2-6e8a-4f61-a54c-9440bd4ea1db"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedimento:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34">
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="17" width="40" height="14" uuid="411e3b81-fc2d-4228-9973-9e3410b38e88"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="17" width="80" height="14" uuid="a197504a-e3a4-4fe4-af72-a459ee7bd895"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

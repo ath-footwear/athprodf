@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1dcf74f-a28f-4605-8927-6de67ac891f2">
+	<property name="ireport.zoom" value="1.8150000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="serie" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct id_cliente, ncliente, sum(importe) as importe, sum(saldo) as saldo
+from cargoespecial
+where convert(date,fechacargo) between $P{f1} and $P{f2} and serie like '%$P!{serie}%' and estatus='1'
+group by id_cliente,ncliente
+order by ncliente]]>
+	</queryString>
+	<field name="id_cliente" class="java.lang.Integer"/>
+	<field name="ncliente" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="saldo" class="java.lang.Double"/>
+	<variable name="tcant" class="java.lang.Double"/>
+	<variable name="importes" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="saldos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
+				<reportElement x="440" y="0" width="132" height="20" uuid="e931e8d8-e7ae-44c1-aeb6-66b043ba6362"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="50" width="572" height="20" uuid="78f66f86-defa-4eaf-baa5-6d4c975838ee"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de cargos y abonos especiales]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="190" y="70" width="100" height="20" uuid="4ec37f68-55c0-4d14-8082-21f649b54772"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="307" y="70" width="100" height="20" uuid="225f78ad-afd3-4479-854c-f24e48402d3a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="70" width="17" height="18" uuid="61968827-05b9-4c1b-9a00-2a378934ae5e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="532" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ncliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="157" y="25" width="100" height="15" uuid="bafeeb58-a8f6-40a7-9fb4-147f4632f23a"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="25" width="75" height="15" uuid="0a4d20b0-8fbe-46bc-8040-6f351cac4ac8"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="84" height="15" uuid="2076faaf-6b85-443c-803d-84ae8981daf7"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="25" width="25" height="15" uuid="c436e010-fbf2-4a56-82b5-09bab1e7f26c"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="25" width="73" height="15" uuid="1c456b14-737c-4228-bc4f-420f343f7200"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="40" width="572" height="5" uuid="548c6ee6-697f-44f3-953d-4d32b8cabdc5"/>
+				<subreportParameter name="cliente">
+					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="serie">
+					<subreportParameterExpression><![CDATA[$P{serie}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Det_CargoAbonoEspecial.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="282" y="25" width="100" height="15" uuid="b5cf1c72-ebe2-49d9-92eb-60ba41776af8"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="25" width="75" height="15" uuid="8549543d-61aa-408b-8c31-ff45e565fb0b"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abono]]></text>
+			</staticText>
+		</band>
+		<band height="2"/>
+	</detail>
+	<columnFooter>
+		<band height="24" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="452" y="22" width="80" height="14" uuid="b4cd6f6c-4bad-4001-aa9a-d4aa603a3068"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="22" width="40" height="14" uuid="39c06060-d6d5-47ae-908d-1e8631b40e3e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="36" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="157" y="0" width="100" height="12" uuid="62c30534-6c97-40b8-98fd-73d0d14b7808"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{importes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="457" y="0" width="75" height="12" uuid="6c885495-ab55-4c67-ad94-04cbb398695f"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="0" width="100" height="12" uuid="cb7d384c-6a56-4eb5-a203-8f9044ecb242"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

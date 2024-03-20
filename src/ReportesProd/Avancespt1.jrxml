@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4d44954e-7cea-42d2-8698-7c0147e9b948">
+	<property name="ireport.zoom" value="2.143588810000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select lote, pedido, cliente, parinicial, parcap
+from Avancespt
+where fecha between $P{f1} and $P{f2}
+group by lote,pedido,cliente,parinicial,parcap
+order by lote]]>
+	</queryString>
+	<field name="lote" class="java.lang.Object"/>
+	<field name="pedido" class="java.lang.Object"/>
+	<field name="cliente" class="java.lang.Object"/>
+	<field name="parinicial" class="java.lang.Object"/>
+	<field name="parcap" class="java.lang.Object"/>
+	<variable name="Par" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{parinicial}]]></variableExpression>
+	</variable>
+	<variable name="cap" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{parcap}]]></variableExpression>
+	</variable>
+	<variable name="restante" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{cap}.valueOf( $V{cap} ) - $V{Par}.valueOf( $V{Par} )]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="215" y="0" width="164" height="20" uuid="67104087-5008-4c2e-b644-e279b6f13a7d"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Reporte de avances de Pt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="20" width="27" height="20" uuid="9c273b11-8024-43a7-8567-882d87284dd3"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Al]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="191" y="20" width="93" height="20" uuid="80769fe7-b73b-4c62-b447-7787b02bfbbe"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="311" y="20" width="83" height="20" uuid="f1854a10-2afe-4e1e-bede-4027913c0ad1"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="118" height="27" uuid="6f346074-eef5-4fc5-ad87-1fab112f67c3"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement x="0" y="13" width="516" height="12" forecolor="#CCCCCC" backcolor="#E4E2E2" uuid="a80dfcd5-af13-47aa-a98d-b40fdc6d9f43"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="13" width="23" height="13" uuid="f7e0a3da-9662-48de-b0c1-a79ced91b6e8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[lote:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="23" y="13" width="58" height="13" uuid="c08e863a-8795-428f-9f9e-1537c0a33274"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{lote}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="81" y="13" width="37" height="13" uuid="74808e94-6f5b-4f18-ae94-9a5dc023b707"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="118" y="13" width="73" height="13" uuid="f0cb29f0-2475-4a26-ba49-516cb5d986d5"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{pedido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="191" y="13" width="48" height="13" uuid="e728805a-9238-4a07-a00f-c2776d9cd061"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="239" y="13" width="140" height="13" uuid="f4f3c85c-ca4e-4936-81af-583be93813d6"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="13" width="55" height="13" uuid="badc1de3-6fc5-4ffa-840a-b60e91388dc3"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{parinicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="12" width="40" height="13" uuid="42a58005-5394-47c1-aed9-ae578424ac91"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{parcap}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="13" width="42" height="13" uuid="9f383670-071a-4819-847a-acca1810401c"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{restante}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="39" y="29" width="260" height="5" uuid="32e62360-b6e1-486f-be80-fcc45202c787"/>
+				<subreportParameter name="lote">
+					<subreportParameterExpression><![CDATA[$F{lote}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\Users\\GATEWAY1-\\Documents\\NetBeansProjects\\Athprod\\src\\ReportesProd\\Avancespt2.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="474" y="0" width="42" height="13" uuid="dcb86c28-1b41-46c5-8256-d824e8786489"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Restante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="0" width="40" height="13" uuid="88440d9b-22b8-439a-8d56-e262ce21459d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pares]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="0" width="55" height="13" uuid="51c04fa8-78f5-4916-bf66-a1c3c77552ba"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Capturado]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="452" y="0" width="80" height="12" uuid="a6481147-5937-44f3-8a1f-7a5fd4e9e77f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="0" width="40" height="12" uuid="12efddf7-0c19-4377-b2d6-b0e3edfbbaa5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

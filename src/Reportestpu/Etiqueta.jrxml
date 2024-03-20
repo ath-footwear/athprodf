@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="212" pageHeight="141" columnWidth="212" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1124f8e4-5963-456b-a963-6b78d4181361">
+	<property name="ireport.zoom" value="1.331000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select matpedimento, convert(date,fechapedimento) as fecha, referencia
+from DPedimentos dp
+join Pedimentos p on dp.id_pedimento=p.id_pedimento
+where id_dpedimento=$P{id}]]>
+	</queryString>
+	<field name="matpedimento" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="referencia" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="122" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="212" height="27" uuid="09c8404a-757a-4770-8bc7-b83c4a7dc2e9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="96" width="212" height="26" uuid="e5de0cde-a6a5-4e28-9849-622ba7096772"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="35" width="212" height="50" uuid="061e09c4-6ebe-4590-bc45-d64601ac78b2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matpedimento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

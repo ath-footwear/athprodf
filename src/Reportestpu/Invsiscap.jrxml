@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4fb95303-4b3c-41a8-86bb-be8b0eb14401">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from inventariado]]>
+	</queryString>
+	<field name="id" class="java.lang.Object"/>
+	<field name="id_pedimento" class="java.lang.Object"/>
+	<field name="id_dpedimento" class="java.lang.Object"/>
+	<field name="id_material" class="java.lang.Object"/>
+	<field name="dureza" class="java.lang.Object"/>
+	<field name="nombremat" class="java.lang.Object"/>
+	<field name="cantidadrestante" class="java.lang.Object"/>
+	<field name="cantidadsistema" class="java.lang.Object"/>
+	<field name="referencia" class="java.lang.Object"/>
+	<field name="diferencia" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="52" width="555" height="27" uuid="2ac44fae-a4c9-4766-9264-9996efdd27b5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="17" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencias de Captura de inventario vs Stock de sistema]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="0" width="100" height="20" uuid="8078b0d9-b3d7-4f42-aca1-46adf9418c59"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="ff04cdc9-9e20-4e26-a128-4fbbc679527d"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="4" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" uuid="938735dc-b739-4fdc-ae35-15fdd5f3e402"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="178" height="20" uuid="6a24fdb2-df8e-4dda-9992-3eabc535f722"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Material]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="0" width="100" height="20" uuid="cb8abe8c-f9aa-4468-af1e-375a48b6e8ee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Captura inv.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="0" width="88" height="20" uuid="b3666064-8ba1-430a-a38d-483a3d9b3462"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock de sistema]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="0" width="59" height="20" uuid="6e14b3e3-eae5-416b-8baa-3552ebdc8a14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="12" uuid="7df90e25-4bed-49c7-8ed0-32035ef66e54"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="178" height="12" uuid="a32fa502-b6fc-49bb-b545-094bf635eb38"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{nombremat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="0" width="100" height="12" uuid="845bd04b-bca5-4b57-8619-cf68c3b15a5c"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{cantidadrestante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="0" width="88" height="12" uuid="bacf9dd4-e433-48b3-8796-9f8b0b648650"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{cantidadsistema}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="496" y="0" width="59" height="12" uuid="4860bd0d-9093-4ef8-9776-f99fea227640"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{diferencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="25" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

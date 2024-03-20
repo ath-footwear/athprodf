@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9f519e6-c309-4f03-9288-d58f51e86b6e">
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechah" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct c.id_agente,a.nombre
+from cargo c 
+join agente a on c.id_agente=a.id_agente
+where id_cliente like '%$P!{cliente}%' and fechavencimiento<=$P{fechah}  and (saldo!=0 and saldomx!=0)]]>
+	</queryString>
+	<field name="id_agente" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="78" width="120" height="20" uuid="8333b7ca-bc84-4ca6-a10e-0f6b7e2cc988"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="78" width="120" height="20" uuid="643a9ab7-d12c-4045-a0c3-8495b4ff15e6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="45" width="240" height="33" uuid="bcf40b75-3d9f-438a-b48e-1d6236b5f008"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Saldos Vencidos x vencer]]></text>
+			</staticText>
+			<image>
+				<reportElement x="-1" y="0" width="160" height="34" uuid="06c59eda-fd40-47c8-9a2e-f5b06d4b3f22"/>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="0" width="30" height="13" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="0" width="30" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="0" width="100" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Saldo Usd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="0" width="65" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="0" width="60" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="0" width="57" height="13" uuid="20ca3352-09e1-414c-acab-401f27cec549"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha V]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="501" y="0" width="65" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Saldo Mxn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="0" width="32" height="13" uuid="18491be0-f3cd-4fb2-9b97-75faa105411f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Dias]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="29" height="14" uuid="7364588e-e3f2-4c56-97a5-040b45b6dc38"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_agente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="29" y="0" width="177" height="14" uuid="640f8724-3469-4079-93b4-eae6ed06b4c1"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="14" width="572" height="5" uuid="730b3924-5022-46f5-9a14-c5f8a06b08b5"/>
+				<subreportParameter name="cliente">
+					<subreportParameterExpression><![CDATA[$F{id_agente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechah">
+					<subreportParameterExpression><![CDATA[$P{fechah}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepSaldosV.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="11" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="9" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

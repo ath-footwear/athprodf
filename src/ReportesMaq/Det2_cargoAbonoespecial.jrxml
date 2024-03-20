@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5085a538-1fa6-4b64-b5e1-6072be0e9e7a">
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cargo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select id_abono,referencia,importe,pago,fecha,fechapago
+from abonoespecial
+where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
+	</queryString>
+	<field name="id_abono" class="java.lang.Integer"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="pago" class="java.lang.Double"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="fechapago" class="java.sql.Timestamp"/>
+	<variable name="tpago" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="157" y="1" width="100" height="12" uuid="6bd9627d-5c93-4565-aa1d-c8cc61d6df3a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="1" width="73" height="12" uuid="25f92dc6-7ef7-41ea-82d6-da12936abfec"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechapago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="84" height="12" uuid="58e8bcb9-f0ec-4404-bb3c-d027fdd21309"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="382" y="1" width="75" height="12" uuid="40697b91-81d7-4e62-9efd-a182d3717b28"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="17">
+			<textField pattern="#,##0.00">
+				<reportElement x="157" y="2" width="100" height="13" uuid="4f0b3aab-474d-44b6-ac0c-db3bc555065d"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tpago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="93" y="2" width="64" height="13" uuid="b10c1087-09d6-4017-a0df-fb57454885b6"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total pagos]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

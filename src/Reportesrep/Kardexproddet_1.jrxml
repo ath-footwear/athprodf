@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5703b302-15e9-4ee1-9490-4b36c0362c5a">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idmat" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dureza" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select p.referencia,k.id_pedimento
+from kardex k
+join materiales m on k.id_material=m.id_material
+join Pedimentos p on k.id_pedimento=p.id_pedimento
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.estatus='1' and k.id_material=$P{idmat} and dureza=$P{dureza} and p.estatus!='0'
+group by k.id_pedimento,p.referencia]]>
+	</queryString>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="id_pedimento" class="java.lang.Integer"/>
+	<variable name="tcant" class="java.lang.Double"/>
+	<variable name="total" class="java.lang.Double" calculation="Sum"/>
+	<variable name="variable1" class="java.lang.Double"/>
+	<variable name="invi" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="135" height="12" uuid="8794d827-4acb-4f37-b277-7f3912b11dca"/>
+				<textElement>
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="14" width="555" height="2" uuid="4ef320a2-108f-4254-bec3-a41e7f1895bb"/>
+				<subreportParameter name="dureza">
+					<subreportParameterExpression><![CDATA[$P{dureza}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idmat">
+					<subreportParameterExpression><![CDATA[$P{idmat}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idpedimento">
+					<subreportParameterExpression><![CDATA[$F{id_pedimento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="tcant" toVariable="tcant"/>
+				<returnValue subreportVariable="tcant" toVariable="total" calculation="Sum"/>
+				<returnValue subreportVariable="variable1" toVariable="variable1"/>
+				<returnValue subreportVariable="invi" toVariable="invi"/>
+				<subreportExpression><![CDATA["C:\\af\\prod\\Reportesrep\\Kardexproddet.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="15">
+			<textField pattern="#,##0.00">
+				<reportElement x="403" y="0" width="43" height="12" uuid="ba7db9a5-29bd-4730-b892-013518ecea71"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9f519e6-c309-4f03-9288-d58f51e86b6e">
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select c.id_cliente,cli.nombre
+from cargo c
+join cliente cli on c.id_cliente=cli.id_cliente
+where (saldo!=0 or saldomx !=0) and c.estatus='1' and c.fecha<$P{f2} and c.id_cliente like '%$P!{cliente}%'
+group by c.id_cliente,cli.nombre
+order by cli.nombre]]>
+	</queryString>
+	<field name="id_cliente" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="103" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="77" width="120" height="20" uuid="8333b7ca-bc84-4ca6-a10e-0f6b7e2cc988"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="77" width="120" height="20" uuid="643a9ab7-d12c-4045-a0c3-8495b4ff15e6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="44" width="240" height="33" uuid="bcf40b75-3d9f-438a-b48e-1d6236b5f008"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Estado de cuenta por cliente]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="98e27ae3-fd10-4aad-b6d0-f7041675af31"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="432" y="0" width="140" height="12" uuid="fba12d5e-048f-4c21-8b48-c5a552ba13a9"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="60" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="30" height="13" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="30" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="119" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="0" width="100" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Saldo Usd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="0" width="92" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Saldo Mxn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="0" width="58" height="13" uuid="eaf5bc3b-0da3-468a-bda7-d08a90c2ee4f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement x="46" y="0" width="509" height="20" uuid="cbb35c46-7edf-43fe-bf77-1793065a85be"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="46" height="20" uuid="909cb69a-0bae-49ae-9afe-e81f9544f0b2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_cliente}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="25" width="572" height="13" uuid="e72f927f-a99b-4c44-bc3f-61f93a34dcc5"/>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cliente">
+					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepclientes.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="11" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="9" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

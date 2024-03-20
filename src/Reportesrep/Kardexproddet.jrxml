@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5703b302-15e9-4ee1-9490-4b36c0362c5a">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idmat" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dureza" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idpedimento" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select k.id_kardex,c.descripcion,k.cantidad,cuenta,subcuenta,convert(date,k.fecha) as fecha,p.referencia,isnull(ped.pedido,'') as pedido,
+isnull(k.referencia,'') as ref,k.id_material,k.dureza,p.id_pedimento,(select cantinv from DPedimentos where id_material=$P{idmat} and dureza=$P{dureza} and id_pedimento=$P{idpedimento}) as inv
+from kardex k
+join Conceptos c on k.id_concepto=c.id_concepto
+join materiales mat on k.id_material=mat.id_material
+join Pedimentos p on k.id_pedimento=p.id_pedimento
+left join Pedido ped on k.id_kardex=ped.id_kardex
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.id_material=$P{idmat} and dureza=$P{dureza} and k.estatus!='0' and k.id_pedimento=$P{idpedimento}
+order by k.id_pedimento,k.fecha]]>
+	</queryString>
+	<field name="id_kardex" class="java.lang.Integer"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Double"/>
+	<field name="cuenta" class="java.lang.Integer"/>
+	<field name="subcuenta" class="java.lang.Integer"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="pedido" class="java.lang.String"/>
+	<field name="ref" class="java.lang.String"/>
+	<field name="id_material" class="java.lang.Integer"/>
+	<field name="dureza" class="java.lang.String"/>
+	<field name="id_pedimento" class="java.lang.Integer"/>
+	<field name="inv" class="java.lang.Double"/>
+	<variable name="tcant" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? -$F{cantidad} : $F{cantidad} )]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{inv}]]></initialValueExpression>
+	</variable>
+	<variable name="In" class="java.lang.Double">
+		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? 0 : $F{cantidad} )]]></variableExpression>
+	</variable>
+	<variable name="Out" class="java.lang.Double">
+		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? $F{cantidad} : 0 )]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{tcant}.sum( $F{inv}, $V{tcant} )]]></variableExpression>
+	</variable>
+	<variable name="invi" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{inv}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="13">
+			<staticText>
+				<reportElement x="303" y="0" width="100" height="11" uuid="242fc8b1-7a5e-4efe-83c3-506f6fe3b138"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inventario Inicial]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="403" y="0" width="43" height="13" uuid="25120f2a-c492-4262-a6fa-fc4ff1440787"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="41" height="11" uuid="d4c6ed17-2c9e-4923-8b15-5e61e64510aa"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_kardex}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="0" width="106" height="11" uuid="4902f388-9531-43dc-b006-bd2f78ed1d60"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="0" width="20" height="11" uuid="f27aa0b4-923b-45c0-8d5c-028381c589cb"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="0" width="20" height="11" uuid="e871ea95-3032-4082-984d-e3ffd154eb70"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subcuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="0" width="60" height="11" uuid="b1311b14-13f2-4e65-a7c6-b090623765ab"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="0" width="100" height="11" uuid="dc9c853e-5d1b-4985-a7f7-f78a588ae73c"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="446" y="0" width="46" height="11" uuid="d5c92984-bc09-428d-86b2-3e8cdf7d82d0"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="492" y="0" width="63" height="11" uuid="9482b37c-3406-4f22-8c8e-274f0868f333"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ref}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="347" y="0" width="28" height="11" uuid="050c0e45-7418-4c06-a39c-7cf70030f82a"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{In}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="375" y="0" width="28" height="11" uuid="9967bf1b-2881-4914-b4bd-943c665bbd60"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Out}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="403" y="0" width="43" height="11" uuid="41fa98ed-425d-4a49-88c8-c6e956c93615"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

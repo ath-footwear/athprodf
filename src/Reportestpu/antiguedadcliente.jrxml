@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0a206b91-78e1-47bc-b53a-8c26a7cf01d7">
+	<property name="ireport.zoom" value="2.143588810000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="agente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select numcliente,cliente,sum(a1)+sum(a2)+sum(a3)+sum(a4)+sum(a5)+sum(a6) as suma
+from antiguedad_notas
+where numagente=$P{agente}
+group by numcliente,cliente
+order by cliente;]]>
+	</queryString>
+	<field name="numcliente" class="java.lang.Object"/>
+	<field name="cliente" class="java.lang.Object"/>
+	<field name="suma" class="java.lang.Object"/>
+	<variable name="a1" class="java.lang.Double" calculation="Sum"/>
+	<variable name="a2" class="java.lang.Double" calculation="Sum"/>
+	<variable name="a3" class="java.lang.Double" calculation="Sum"/>
+	<variable name="a4" class="java.lang.Double" calculation="Sum"/>
+	<variable name="a5" class="java.lang.Double" calculation="Sum"/>
+	<variable name="a6" class="java.lang.Double" calculation="Sum"/>
+	<variable name="total" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{a1}+$V{a2}+$V{a3}+$V{a4}+$V{a5}+$V{a6}]]></variableExpression>
+	</variable>
+	<variable name="t1" class="java.lang.Double" calculation="Sum"/>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="25" y="0" width="577" height="20" uuid="9f56f924-7e89-4037-a0cd-cbdcf6b376ff"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{cliente}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="20" width="612" height="17" uuid="29833579-7c8d-4c56-b8ee-150df875491e"/>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$P{agente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cliente">
+					<subreportParameterExpression><![CDATA[$F{numcliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="a1" toVariable="a1" calculation="Sum"/>
+				<returnValue subreportVariable="a2" toVariable="a2" calculation="Sum"/>
+				<returnValue subreportVariable="a3" toVariable="a3" calculation="Sum"/>
+				<returnValue subreportVariable="a4" toVariable="a4" calculation="Sum"/>
+				<returnValue subreportVariable="a5" toVariable="a5" calculation="Sum"/>
+				<returnValue subreportVariable="a6" toVariable="a6" calculation="Sum"/>
+				<returnValue subreportVariable="total" toVariable="t1" calculation="Sum"/>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\antiguedaddetalle.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="28">
+			<textField pattern="#,##0.00">
+				<reportElement x="325" y="5" width="40" height="10" uuid="f0651896-d587-4169-9b42-6d1827d63295"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="365" y="5" width="40" height="10" uuid="53c403e0-661f-49db-bd08-633b8525af7a"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="405" y="5" width="40" height="10" uuid="539e9f6f-55e1-4f04-b741-b0168997dfc4"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="445" y="5" width="40" height="10" uuid="ac14015d-8e43-45e0-a07f-b2065446069d"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="485" y="5" width="40" height="10" uuid="a546ced9-3cd9-4b82-8f95-7b481723df9a"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="525" y="5" width="40" height="10" uuid="56714cc2-ccac-4d34-814b-d1bf273572b6"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{a6}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="295" y="5" width="30" height="10" uuid="f10ebb98-313c-488d-8d53-53a154eb802b"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="15" width="45" height="10" uuid="3c2a1126-403f-48f6-a905-9f692a6aee77"/>
+				<textElement>
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total agente]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="125" y="15" width="100" height="10" uuid="fbb2f2d8-e502-4763-af55-9246206b3e19"/>
+				<textElement>
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{t1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

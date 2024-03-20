@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="bb685253-89e7-47c0-a634-7aa1a07bdf22">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechah" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct c.id_cliente,cli.nombre
+from cargo c 
+join agente a on c.id_agente=a.id_agente
+join cliente cli on c.id_cliente=cli.id_cliente
+where fechavencimiento<=$P{fechah}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P{cliente}]]>
+	</queryString>
+	<field name="id_cliente" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<variable name="saldo" class="java.lang.Double"/>
+	<variable name="saldomx" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="28" y="0" width="33" height="12" uuid="d7c531c3-41d5-43ce-b840-0ebaeb84ecff"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="528" height="12" uuid="aac6d64f-474c-4079-abe4-cfbd1b5f93f0"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="12" width="612" height="5" uuid="e285038c-bd7e-4abe-8afa-0c9cd4f93ea3"/>
+				<subreportParameter name="cliente">
+					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$P{cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechah">
+					<subreportParameterExpression><![CDATA[$P{fechah}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="saldo" toVariable="saldo"/>
+				<returnValue subreportVariable="saldomx" toVariable="saldomx"/>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepSaldosV2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

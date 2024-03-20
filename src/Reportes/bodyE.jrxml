@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8f1f053b-25ca-445b-b09c-b28ccaff9e25">
+	<property name="ireport.zoom" value="2.1435888100000047"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="clave" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from documentosdetalle where iddocumento=$P{clave}]]>
+	</queryString>
+	<field name="Id" class="java.lang.Integer"/>
+	<field name="IdDocumento" class="java.lang.Integer"/>
+	<field name="IdProducto" class="java.lang.Integer"/>
+	<field name="Cantidad" class="java.lang.Double"/>
+	<field name="Descripcion" class="java.lang.String"/>
+	<field name="Codigo" class="java.lang.String"/>
+	<field name="UMedida" class="java.lang.String"/>
+	<field name="Precio" class="java.lang.Double"/>
+	<field name="Talla" class="java.lang.Integer"/>
+	<field name="DescripcionProv" class="java.lang.String"/>
+	<field name="Base" class="java.lang.Double"/>
+	<field name="Impuesto" class="java.lang.String"/>
+	<field name="TipoFactor" class="java.lang.String"/>
+	<field name="TasaOCuota" class="java.lang.Double"/>
+	<field name="Importe" class="java.lang.Double"/>
+	<field name="Descuento" class="java.lang.Double"/>
+	<variable name="ncant" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Cantidad}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.String">
+		<variableExpression><![CDATA[$F{Cantidad}.toString()]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="32" height="8" uuid="c1698d7d-5046-4c92-be4f-539a2354d3dd"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UMedida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="0" width="47" height="8" uuid="cebe84c9-5d10-48a5-9dae-fdd01e0f687d"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="0" width="325" height="27" uuid="cec2505a-b075-4e80-97a2-6b1beef8bc8f"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="444" y="0" width="45" height="8" uuid="59054590-4e21-44d8-ab57-b63216981fab"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="489" y="0" width="72" height="8" uuid="45c04a20-5364-4e41-9349-6f42a1bccce9"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Cantidad}.floatValue()*$F{Precio}.floatValue()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="88" y="27" width="35" height="8" uuid="9efcd129-6ad9-47e0-9e82-6dbbf8eeedc2"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Traslados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="27" width="29" height="8" uuid="628fca49-8111-4cf4-ab42-b655f1f08ec7"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Base:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="152" y="27" width="46" height="8" uuid="04a5b9a7-ed06-486a-89e9-5534ff1dee4f"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Base}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="198" y="27" width="79" height="8" uuid="ff8d6519-febb-479c-8ecb-3a1441611202"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Impuesto:002 IVA]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="277" y="27" width="30" height="8" uuid="185e8e75-1e2a-4b2f-b2d3-aa579bb60975"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TasaOCuota}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="307" y="27" width="29" height="8" uuid="5bb4b9df-2e7e-49b7-85f6-5a3fb4f2deea"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tasa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="27" width="44" height="8" uuid="d021fffc-12b5-489c-a1d1-101c06973c26"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="380" y="27" width="47" height="8" uuid="d2dd0a58-c59a-4006-b606-1ad9eddd93d2"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="8" uuid="b4741cc7-7aa9-4c4c-ad11-6c57b65b982b"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
