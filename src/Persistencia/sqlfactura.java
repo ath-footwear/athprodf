@@ -1420,8 +1420,10 @@ public class sqlfactura {
                 fechav = rs.getString("fechav");
             }
 
-            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,plazo,parcialidad,estatus,fechavencimiento) "
-                    + "values(" + agente + ",1," + idcliente + ",'" + ped + "','" + fecha + "'," + total + "," + total + "," + total + "," + total + "," + turno + ",0,0," + plazo + ",'1','" + fechav + "')";
+            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,"
+                    + "SIM,saldomx,turno,comision,plazo,parcialidad,estatus,fechavencimiento) "
+                    + "values(" + agente + ",1," + idcliente + ",'" + ped + "','" + fecha + "'," +
+                    total + "," + total + "," + total + "," + total + "," + turno + ",0," + plazo + ",0,'1','" + fechav + "')";
 //            System.out.println("cargos " + sql);
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();
