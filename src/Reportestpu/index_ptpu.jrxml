@@ -509,7 +509,7 @@
 			</staticText>
 			<image>
 				<reportElement x="466" y="85" width="106" height="101" uuid="b04d7293-e11d-448d-a0cd-6a611d4b234a"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode(             "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+$F{foliofiscal}+"&re=AFO901221IC2&rr="+$F{rfc}+"&tt="+$F{monto}+"&fe="+$F{sello}.substring(336), com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode(             "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+$F{foliofiscal}+"&re=AFO901221IC2&rr="+$F{rfc}+"&tt="+$F{total}+"&fe="+$F{sello}.substring(336), com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
 			</image>
 		</band>
 	</summary>
