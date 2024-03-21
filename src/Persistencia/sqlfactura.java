@@ -3968,9 +3968,14 @@ public class sqlfactura {
             String n = cl.getNombre();
             String rfc = cl.getRfc();
             String cp = cl.getCp();
-            String sql = "update documentos set nombre='" + n + "', rfc='" + rfc + "',cp='" + cp + "'  where id=" + id;
+            //String sql = "update documentos set nombre='" + n + "', rfc='" + rfc + "',cp='" + cp + "'  where id=" + id;
+            String sql = "update documentos set nombre=?, rfc=?, cp=?  where id=?";
 //            System.out.println("update cliente " + sql);
             st = c.prepareStatement(sql);
+            st.setString(1, n);
+            st.setString(2, rfc);
+            st.setString(3, cp);
+            st.setInt(4, id);
             st.executeUpdate();
             c.commit();
             return true;
