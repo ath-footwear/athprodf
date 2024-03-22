@@ -1222,6 +1222,13 @@ public class fac2E extends javax.swing.JPanel {
         DecimalFormat formateador = new DecimalFormat("####.##");
         if (!arrcliente.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             for (int i = 0; i < t; i++) {
+                //Verifica que la descripcion no sobrepase los digitos de la bd
+                String descr = (JtDetalle.getValueAt(i, 0).toString());
+                if(descr.length()>249){
+                    JOptionPane.showMessageDialog(null, "Error, Estas excediendo el numero de caracteres por renglon");
+                    resp=false;
+                    break;
+                }
 //                valida Precio
                 if (!verificafloat(JtDetalle.getValueAt(i, 3).toString())
                         || !verificafloat(JtDetalle.getValueAt(i, 2).toString())) {// que no se pase algo que no sea un numero
