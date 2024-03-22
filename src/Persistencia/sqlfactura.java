@@ -752,14 +752,16 @@ public class sqlfactura {
                     + "formadepago,metododepago,lugarexpedicion,regimen,usocfdi) "
                     + "values ('" + usuario + "','" + serie + "'," + fol + ",903682,2022,'" + fecha + "','1'," + desc
                     + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
-                    + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
+                    + "," + imp + "," + total + "," + idcliente + ",?,'" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
                     + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
                     + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','" + regimen + "','" + uso + "')";
 //            System.out.println("documentos " + sql);
             st = con.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
             //para rcpt
             st = rcpt.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
 //            System.out.println("rcpt documentos " + sql + "\n");
 
@@ -1537,15 +1539,17 @@ public class sqlfactura {
                     + "formadepago,metododepago,lugarexpedicion,foliofiscalorig,regimen,usocfdi,tiporelacion) "
                     + "values ('" + usuario + "','" + serie + "'," + fol + ",903682,2023,'" + fecha + "','1'," + desc
                     + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
-                    + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
+                    + "," + imp + "," + total + "," + idcliente + ",?,'" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
                     + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
                     + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','" + folioorig + "'"
                     + ",'" + regimen + "','" + uso + "','" + relacion + "')";
 //            System.out.println("documentos " + sql);
             st = con.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
             //para rcpt
             st = rcpt.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
 //            System.out.println("rcpt documentos " + sql + "\n");
             //Max ultimo documento
@@ -1678,14 +1682,16 @@ public class sqlfactura {
                     + "formadepago,metododepago,lugarexpedicion,regimen,usocfdi) "
                     + "values ('" + usuario + "','" + serie + "'," + fol + ",903682,2022,'" + fecha + "','1'," + desc
                     + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
-                    + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
+                    + "," + imp + "," + total + "," + idcliente + ",?,'" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
                     + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
                     + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','" + regimen + "','" + uso + "')";
 //            System.out.println("documentos " + sql);
             st = con.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
             //para rcpt
             st = rcpt.prepareStatement(sql);
+            st.setString(1, nombre);
             st.executeUpdate();
 //            System.out.println("rcpt documentos " + sql + "\n");
 
@@ -2657,9 +2663,14 @@ public class sqlfactura {
             String cert = f.getCertificado();
             String sello = f.getSello();
             String cadena = f.getCadenaorig();
-            sql = "update documentos set nodeseriecertificado='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id=" + f.getId();
+            sql = "update documentos set nodeseriecertificado=?, sello=?, cadenaoriginal=? where id=?";
 //            System.out.println("actualizar sello " + sql);
             st = con.prepareStatement(sql);
+            st.setString(1, cert);
+            st.setString(2, sello);
+            st.setString(3, cadena);
+            st.setInt(4, f.getId());
+            
             st.executeUpdate();
             con.commit();
 //            con.rollback();
