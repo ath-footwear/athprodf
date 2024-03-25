@@ -328,7 +328,9 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         jLabel14.setText("Tipo");
 
         JcInfo.setBackground(new java.awt.Color(255, 255, 255));
+        JcInfo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         JcInfo.setText("No borrar informacion");
+        JcInfo.setToolTipText("Al seleccionar no limpia los campos al terminar el proceso");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
