@@ -68,6 +68,15 @@ public class xmlDAO {
     private String folioorig;
     private String turno;
     private double monto;
+    private String PEDIDO;
+
+    public String getPEDIDO() {
+        return PEDIDO;
+    }
+
+    public void setPEDIDO(String PEDIDO) {
+        this.PEDIDO = PEDIDO;
+    }
 
     public double getMonto() {
         return monto;

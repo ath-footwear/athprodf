@@ -594,6 +594,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,
                         "Error desconocido al generar factura, llama a sistemas "
                         + e.getMessage() + "\n" + e.getLocalizedMessage());
+                Logger.getLogger(pagotpucargo3.class.getName()).log(Level.SEVERE, null, e);
             }
         } else {
             JOptionPane.showMessageDialog(null, "La fecha de pago no puede ir vacia");
@@ -681,6 +682,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Despliega en una lista las facturas seleccionadas
+     */
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
         Formateodedatos fd = new Formateodedatos();
@@ -690,6 +694,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         Jlcargofac.setModel(model);
     }
 
+    /**
+     * Funcion para ejecutar la insercion de la factura en la bd
+     */
     private void setfactura() {
         Formateodedatos fd = new Formateodedatos();
         if (arrcargoseleccion.isEmpty()) {
@@ -737,7 +744,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                 f.setSerie("PAG");
                 f.setFecha(sdf.format(date));
                 f.setDescuento(0);
-                f.setPedido("");
+                f.setPedido("E");
                 f.setFechasolicitado(sdf.format(date));
                 f.setTurno(u.getTurno());
                 f.setFechapago(sdf.format(JtFecha.getDate()));
@@ -789,7 +796,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                     d.setFolio(arrcargoseleccion.get(i).getReferencia());
                     d.setFormadedpago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
                     d.setMetodopago("PUE");
-                    d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
+                    d.setParcialidad(1);
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
                     if (i == 0) {
                         metodo = arrcargoseleccion.get(i).getMetodopago();
@@ -806,7 +813,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                     double sa;
                     double pa;
                     double sal;
-                    sa = (f.getMoneda().equals("MXN")) ? arrcargoseleccion.get(i).getSaldomx() : arrcargoseleccion.get(i).getSaldo();
+                    sa = arrcargoseleccion.get(i).getSaldo();
                     d.setSaldo(sa - arrcargoseleccion.get(i).getDescuento());
                     pa = arrcargoseleccion.get(i).getDescuento();
                     sal = sa - pa;
@@ -844,7 +851,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                         if (verifica != 0) {
                             JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                         } else {
-                            int id = da.insertabonostpu(cpt ,f , ACobranza);
+                            int id = da.insertabonostpu(cpt, f, ACobranza);
                             if (id != 0) {
                                 setcomisiones(f);
                                 JOptionPane.showMessageDialog(null, "Pago realizado con exito");
@@ -868,8 +875,8 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                                 dx.generarfac(f, cpt, sqlempresa);
                                 timbrarXML tim = new timbrarXML();
                                 Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                                dfac.Updatesellofiscalpagotpu(cpt, s, id);
-                                setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+                                dfac.Updatesellofiscalpagotpu_E(cpt, s, id);
+                                setreport(f.getFolio(), f.getRegimen());
                                 JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                                 setcomisiones(f);
                                 vaciarcampos();
@@ -895,13 +902,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
      * creaba el pdf el proyecto se llama "Facturas"
      *
      */
-    private void setreport(int folio, String regimen, String moneda) {
+    private void setreport(int folio, String regimen) {
         try {
-            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
-                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
-                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
-                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
-                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
+            String conformidad = " ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
             String n = "1";
@@ -920,14 +923,14 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             parametros.put("regimen", e.getRegimen());
             parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("logo", "C:\\af\\prod\\images\\" + u.getImag());// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", "PUE");
             parametros.put("uso", "CP01");
             parametros.put("serie", "PAG");
             parametros.put("regimencliente", regimen);
             parametros.put("confo", conformidad);
 
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesmaq/index_ptpuE.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -984,7 +987,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             comi.setId_cargo(arrcomision.get(i).getId_cargo());
             comi.setId_agente(arrcomision.get(i).getId_agente());
             comi.setReferencia(arrcomision.get(i).getReferencia());
-            comi.setSerie("B");
+            comi.setSerie("E");
             comi.setDias(arrcomision.get(i).getDias());
             comi.setFecha(f.getFecha());
             comi.setUsuario(f.getClaveusuario());

@@ -200,18 +200,11 @@ public class sqlabonos {
                         + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
                         + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
                         + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
-                        + uuid + "','" + fo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                        + uuid + "','" + idcargo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
 //                System.out.println("d pagos " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
-                String saldo;
-                if (mon.equals("MXN")) {
-                    sql = "update cargoespecial set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldo";
-                } else {
                     sql = "update cargoespecial set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldomx";
-                }
 //                System.out.println("cargos " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
@@ -226,14 +219,14 @@ public class sqlabonos {
 
                 sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
-                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
+                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'" + resp + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
 //                System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
             }
             // Fin detallado de documento
-
+            //Actualiza numero de folio
             sql = "update seriesfolio set ufolio=" + fol + " where serie='" + serie + "'";
 //            System.out.println("series folios " + sql);
             st = con.prepareStatement(sql);
@@ -249,7 +242,7 @@ public class sqlabonos {
                 con.rollback();
                 cob.rollback();
 //                cobranza.rollback();
-                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                JOptionPane.showMessageDialog(null, "Nuevo Pagespecial -" + ex);
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);

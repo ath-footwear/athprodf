@@ -5,17 +5,12 @@
  */
 package DAO;
 
-import Modelo.Cliente;
 import Modelo.factura;
 import athprod.Facturacion;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.sat.cfd40.generarXML40pagos;
 import mx.sat.cfd40.generarXML40pagostpu;
 import mx.sat.cfd40.xmlDAO;
 
@@ -43,6 +38,8 @@ public class daoxmlpagostpu {
             x.setBaseiva17(f.getBaseiva17());
             x.setTotalpago17(f.getTotalpago17());
             x.setIddocumentos(f.getId());
+            //Tipo de pago, normal o especial
+            x.setPEDIDO(f.getPedido());
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
             x.setSerie(f.getSerie());                                   // Serie

@@ -46,6 +46,7 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         empresacob = cn.getEmpresacob();
         cobB = cn.getCobranzatpuB();
         litecfdi=cn.getLitecfdi();
+        liteempresa=cn.getLiteempresa();
         this.u = u;
         generaciontab();//Tabs de facturacion
         setarraylist();
