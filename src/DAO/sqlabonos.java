@@ -204,14 +204,7 @@ public class sqlabonos {
 //                System.out.println("d pagos " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
-                String saldo;
-                if (mon.equals("MXN")) {
-                    sql = "update cargoespecial set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldo";
-                } else {
                     sql = "update cargoespecial set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldomx";
-                }
 //                System.out.println("cargos " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();

@@ -681,6 +681,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Despliega en una lista las facturas seleccionadas
+     */
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
         Formateodedatos fd = new Formateodedatos();
@@ -690,6 +693,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         Jlcargofac.setModel(model);
     }
 
+    /**
+     * Funcion para ejecutar la insercion de la factura en la bd
+     */
     private void setfactura() {
         Formateodedatos fd = new Formateodedatos();
         if (arrcargoseleccion.isEmpty()) {
@@ -789,7 +795,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                     d.setFolio(arrcargoseleccion.get(i).getReferencia());
                     d.setFormadedpago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
                     d.setMetodopago("PUE");
-                    d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
+                    d.setParcialidad(1);
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
                     if (i == 0) {
                         metodo = arrcargoseleccion.get(i).getMetodopago();

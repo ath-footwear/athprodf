@@ -103,7 +103,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -2627,6 +2627,7 @@ public final class Principal extends javax.swing.JFrame {
             try {
                 Serverylite s = new Serverylite();
                 liteusuario = s.getconexionusuarios();
+                liteempresa=s.getconexionC();
 //                Es igual administrador pero con datos ya establecidos, 
 //                usado mas para rapidez y evitar la consulta a la bd
                 if (a.equals("0605")) {
@@ -2775,6 +2776,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void actualizaempresa() {
         boolean band = checkempresa();
+        
         if (!u.getUsuario().equals("")) {
             logint = 1;
             if (u.getTurno().equals("5")) {
@@ -2997,6 +2999,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.setCobranzamaqB(s.getconexionTPU("RACobranzamaq"));
 //                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
+                liteempresa=s1.getconexionC();
                 conexion.setLiteusuario(liteusuario);
                 conexion.setLitecfdi(litecfdi);
                 conexion.setLiteempresa(liteempresa);
