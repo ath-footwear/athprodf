@@ -2916,6 +2916,30 @@ public class sqlfactura {
         }
         return false;
     }
+    
+    public boolean actualizasellotpupago_E(Connection con, Sellofiscal s, int id) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql = "update doctospagotpu_especial set sellosat='" + s.getSellosat() + "',certificadoprov='"
+                    + s.getNoceertificado() + "', sellocfdi='" + s.getSellocfd() + "', fechacertificado='"
+                    + s.getFechacer() + "', foliofiscal='" + s.getUuid() + "' where id_doctopago=" + id;
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
 
     /**
      *

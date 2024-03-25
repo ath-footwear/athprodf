@@ -875,7 +875,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                                 dx.generarfac(f, cpt, sqlempresa);
                                 timbrarXML tim = new timbrarXML();
                                 Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                                dfac.Updatesellofiscalpagotpu(cpt, s, id);
+                                dfac.Updatesellofiscalpagotpu_E(cpt, s, id);
                                 setreport(f.getFolio(), f.getRegimen());
                                 JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                                 setcomisiones(f);

@@ -34,9 +34,9 @@ public interface Facturas {
      * @return
      */
     public int nuevafactpu(Connection cpt, factura f, Connection cob);
-    
+
     public int nuevafactpu_Especial(Connection cpt, factura f, Connection cob);
-    
+
     public int nuevafactpuATH(Connection cpt, factura f, Connection cob, Connection cpttpu, Connection rcpt);
 
     public int nuevaremtpu(Connection cpt, factura f, Connection cob);
@@ -90,21 +90,21 @@ public interface Facturas {
     public boolean actualizacadenatpu(Connection c, factura f);
 
     public void actualizacadenapago(Connection c, factura f);
-    
+
     public void actualizacadenapagotpu(Connection c, factura f);
-    
+
     public void actualizacadenapagotpu_E(Connection c, factura f);
 
     public int getmaxncr(Connection c);
 
     public ArrayList<ConceptosES> getalcuentas(Connection c, String cuenta);
-    
+
     public ArrayList<ConceptosES> getalcuentastpu(Connection c, String cuenta);
 
     public ArrayList<cargo> getfactstoncr(Connection c, String r, String bd);
-    
+
     public ArrayList<cargo> getfactsoncrtpu(Connection c, String r, String bd);
-    
+
     public ArrayList<cargo> getfactopagotpu(Connection c, String r, String bd);
 
     /**
@@ -116,7 +116,7 @@ public interface Facturas {
      * @return
      */
     public int nuevancr(Connection c, factura f, Connection cob, Connection rcpt);// ncr y generar xml
-    
+
     public int nuevancrtpu(Connection c, factura f, Connection cob, Connection rcpt);
 
     public ArrayList<abono> getabonospago(Connection c, String op, String bd, int cuenta);
@@ -128,11 +128,11 @@ public interface Facturas {
     public ArrayList<factura> getdoc(Connection cpt, String fol, String serie, String empcobranza);
 
     public ArrayList<factura> getdocpagos(Connection cpt, String fol, String serie, String empcobranza);
-    
+
     public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie, String bd);
-    
+
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
-    
+
     public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie, String bd);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);
@@ -140,8 +140,10 @@ public interface Facturas {
     public boolean Updatesellofiscaltpu(Connection cpt, Sellofiscal s, int id);
 
     public boolean Updatesellofiscalpago(Connection cpt, Sellofiscal s, int id);
+
+    public boolean Updatesellofiscalpagotpu(Connection cpt, Sellofiscal s, int id);
     
-        public boolean Updatesellofiscalpagotpu(Connection cpt, Sellofiscal s, int id);
+    public boolean Updatesellofiscalpagotpu_E(Connection cpt, Sellofiscal s, int id);
 
     public ArrayList<Cliente> getClienteface(Connection cob, String ncliente);
 
@@ -196,58 +198,58 @@ public interface Facturas {
     public boolean setpaquetefact(Connection rcpt, Connection cpt, int paquete, int folio);
 
     /**
-     * 
+     *
      * @param cpt
      * @param folio
      * @param serie
-     * @return 
+     * @return
      */
     public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie);
-    
+
     public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie, String bd);
-    
+
     public ArrayList<factura> getdocspagosremi(Connection con, String folio);
-    
+
     public ArrayList<factura> getdocvspago(Connection cpt, String folio);
-    
+
     public ArrayList<factura> getdocvspagoall(Connection cpt, int id);
-    
+
     public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f, String fecha, String usuario);
-    
+
     public int insertpagotpu(Connection cpt, Connection cob, factura f);
-    
+
     public int insertpagotpuPUE(Connection cpt, Connection cob, factura f);
-    
+
     public ArrayList<factura> getfactwithserie(Connection rcpt, String ncobranza, String serie);
-    
+
     public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año);
-    
+
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
-    
+
     public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie, String bd);
-    
+
     public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
-    
+
     public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd);
-    
+
     public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr);
-    
+
     public boolean nuevocargoespecial(Connection cob, factura f);
-    
+
     public ArrayList<cargo> getcargosespecial(Connection cob, String var);
-    
+
     public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente);
-    
+
     public int insertpagotpu_especial(Connection cpt, Connection cob, factura f);
-    
+
     public ArrayList<factura> getpagostpu_especial(Connection cpt, String cliente);
-    
+
     public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd);
-    
+
     public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr);
-    
+
     public boolean checkcargoespecial_tocancel(Connection cob, int cargo);
-    
+
     public boolean Cancela_cargoespecial(Connection cob, int cargo);
-    
+
 }

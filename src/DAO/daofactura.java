@@ -741,13 +741,28 @@ public class daofactura implements Facturas {
 
     /**
      * Actualiza la cadena original, el sello y certificado
+     *
      * @param c
-     * @param f 
+     * @param f
      */
     @Override
     public void actualizacadenapagotpu_E(Connection c, factura f) {
         sqlfactura s = new sqlfactura();
         s.actualizapagotpuE(c, f);
+    }
+
+    /**
+     * Actualiza datos del pago de los datos recibidos del timbrado
+     *
+     * @param cpt conexion cpt
+     * @param s Objeto Sellofiscal
+     * @param id id del pago
+     * @return
+     */
+    @Override
+    public boolean Updatesellofiscalpagotpu_E(Connection cpt, Sellofiscal s, int id) {
+        sqlfactura sw = new sqlfactura();
+        return sw.actualizasellotpupago_E(cpt, s, id);
     }
 
 }
