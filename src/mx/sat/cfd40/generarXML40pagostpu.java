@@ -2,7 +2,6 @@ package mx.sat.cfd40;
 
 import DAO.daoempresa;
 import DAO.daofactura;
-import Modelo.Detpagos;
 import Modelo.Empresas;
 import Modelo.Formateodedatos;
 import Modelo.factura;
@@ -32,9 +31,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -174,7 +171,12 @@ public class generarXML40pagostpu {
         f.setSello(selloDigital);
         f.setCadenaorig(cadenaOriginal);
         f.setId(encabezado.getIddocumentos());
-        df.actualizacadenapagotpu(con, f);
+        //Hacer distincion entre un pago especial y uno normal
+        if (encabezado.getPEDIDO().equals("E")) {
+            df.actualizacadenapagotpu_E(con, f);
+        } else {
+            df.actualizacadenapagotpu(con, f);
+        }
 //Fin actualizacion de datos        
 
         JAXBContext context = JAXBContext.newInstance(Comprobante.class);

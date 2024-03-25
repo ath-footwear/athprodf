@@ -92,6 +92,8 @@ public interface Facturas {
     public void actualizacadenapago(Connection c, factura f);
     
     public void actualizacadenapagotpu(Connection c, factura f);
+    
+    public void actualizacadenapagotpu_E(Connection c, factura f);
 
     public int getmaxncr(Connection c);
 

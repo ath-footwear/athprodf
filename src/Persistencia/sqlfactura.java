@@ -2801,6 +2801,32 @@ public class sqlfactura {
         }
         return false;
     }
+    
+        public boolean actualizapagotpuE(Connection con, factura f) {//Rcpt y cpt
+        PreparedStatement st;
+        try {
+            con.setAutoCommit(false);
+            String sql;
+            String cert = f.getCertificado();
+            String sello = f.getSello();
+            String cadena = f.getCadenaorig();
+            sql = "update doctospagotpu_especial set certificadoprov='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id_doctopago=" + f.getId();
+            System.out.println("actualizar pago sello " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
 
     /**
      *

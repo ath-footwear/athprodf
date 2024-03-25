@@ -724,9 +724,10 @@ public class daofactura implements Facturas {
     }
 
     /**
-     * Ingresa al sistema una nueva factura pero especial, significa que
-     * no afecta a stock pero si genera un cargo en cargoespecial, por lo tanto
-     * su pago seria en abonos especiales
+     * Ingresa al sistema una nueva factura pero especial, significa que no
+     * afecta a stock pero si genera un cargo en cargoespecial, por lo tanto su
+     * pago seria en abonos especiales
+     *
      * @param cpt conexion de cpt
      * @param f factura
      * @param cob conexion de cobranza
@@ -736,6 +737,17 @@ public class daofactura implements Facturas {
     public int nuevafactpu_Especial(Connection cpt, factura f, Connection cob) {
         sqlfactura s = new sqlfactura();
         return s.insertfacturatpu_Especial(cpt, f, cob);
+    }
+
+    /**
+     * Actualiza la cadena original, el sello y certificado
+     * @param c
+     * @param f 
+     */
+    @Override
+    public void actualizacadenapagotpu_E(Connection c, factura f) {
+        sqlfactura s = new sqlfactura();
+        s.actualizapagotpuE(c, f);
     }
 
 }
