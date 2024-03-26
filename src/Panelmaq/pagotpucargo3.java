@@ -402,6 +402,11 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel12.setText("Observaciones");
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel12MousePressed(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel11.setText("Fecha Pago");
@@ -530,7 +535,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
+            .addComponent(jScrollPane4)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -645,6 +650,16 @@ public class pagotpucargo3 extends javax.swing.JPanel {
     private void JcFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcFormaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JcFormaActionPerformed
+
+    private void jLabel12MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MousePressed
+        factura f = new factura();
+       f.setReferencia("FAC_15");
+       f.setFecha("2024-03-26T15:04:50");
+       cargo carg= new cargo();
+       carg.setReferencia("FAC_15");
+       arrcargoseleccion.add(carg);
+        setcomisiones(f);
+    }//GEN-LAST:event_jLabel12MousePressed
 
     private void setdolar() {
         if (JcUsd.isSelected()) {
@@ -974,8 +989,10 @@ public class pagotpucargo3 extends javax.swing.JPanel {
     private void setcomisiones(factura f) {
         dao_comisiones dc = new dao_comisiones();
         Formateodedatos form = new Formateodedatos();
-//        Realiza la busqueda de acuerdo a la fecha formateada y referencias
-        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, fechasinT(f.getFecha()), referencias());
+//        Realiza la busqueda de acuerdo a la fecha formateada y referencias, es
+//          importante notar que es especial y no normal, por eso cambia el
+//          nombre de la funcion
+        ArrayList<Comision> arrcomision = dc.getcomisiones_Especial(ACobranza, fechasinT(f.getFecha()), referencias());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
 //          del indice con el nuevo valor del objeto
@@ -993,10 +1010,12 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
+            comi.setFoliopago(f.getSerie()+"_"+f.getFolio());
+            comi.setPorcentaje(arrcomision.get(i).getPorcentaje());
             arrcomision.set(i, comi);
         }
 //        Se realiza la insercion de cada de los folios validos en la bd
-        //dc.newcomision(cpt, arrcomision);
+        dc.newcomision(cpt, arrcomision);
     }
 
     private double getcant16(double a) {
