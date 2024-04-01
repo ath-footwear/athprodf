@@ -70,7 +70,9 @@ public class sqlmaterial {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select * from Materiales where descripcion like '%" + mat + "%' order by descripcion");
+            st = con.prepareStatement("select * from Materiales "
+                    + "where descripcion like '%" + mat + "%' m.estatus='1' "
+                    + "order by descripcion");
             rs = st.executeQuery();
             while (rs.next()) {
                 Materiales m = new Materiales();
@@ -159,7 +161,8 @@ public class sqlmaterial {
                     + "noserie,moneda,f.descripcion as marca,m.estatus, m.modelo as model\n"
                     + "from materiales m\n"
                     + "join familias f on m.id_familia=f.id_familia\n"
-                    + "where m.descripcion like '%" + mat + "%' order by m.descripcion";
+                    + "where m.descripcion like '%" + mat + "%' and m.estatus='1' "
+                    + "order by m.descripcion";
             st = con.prepareStatement(sql);
 //            System.out.println(sql);
             rs = st.executeQuery();
