@@ -4626,10 +4626,11 @@ public class sqlfactura {
             double saldoproce = total * tipoc;
             double saldomx = BigDecimal.valueOf(saldoproce).setScale(2, RoundingMode.HALF_UP).doubleValue();
             sql = "insert into cargoespecial(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,"
-                    + "SIM,saldomx,turno,comision,plazo,parcialidad,estatus,serie,ncliente,observaciones,fechavencimiento) "
+                    + "SIM,saldomx,turno,comision,plazo,parcialidad,estatus,serie,"
+                    + "ncliente,observaciones,fechavencimiento,fechacargo) "
                     + "values(" + agente + ",1," + idcliente + ",'FAC_" + fol + "','" + fecha + "',"
                     + total + "," + total + "," + total + "," + saldomx + "," + turno + ",0,"
-                    + plazo + ",0,'1','A','" + nombre + "','" + obs + "','" + fechav + "')";
+                    + plazo + ",0,'1','A','" + nombre + "','" + obs + "','" + fechav + "','"+fecha+"')";
 //            System.out.println("cargos " + sql);
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();

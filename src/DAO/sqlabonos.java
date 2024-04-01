@@ -99,6 +99,7 @@ public class sqlabonos {
             st.setInt(3, cargo);
             st.executeUpdate();
             cobranza.commit();
+            st.close();
             return true;
         } catch (SQLException ex) {
             try {
@@ -147,9 +148,6 @@ public class sqlabonos {
             int ag = f.getAgente();
             //fin cliente
             String obs = f.getObservaciones();
-//            int cajas = f.getTotalcajas();
-//            int cxcaja = f.getCantidadxcaja();
-//            String tiposerie = f.getTiposerie();
             String mon = f.getMoneda();
             double tipoc = f.getTipocambio();
             String Lugar = f.getLugarexpedicion();
@@ -233,6 +231,7 @@ public class sqlabonos {
             st.executeUpdate();
             con.commit();
             cob.commit();
+            st.close();
 //            cobranza.commit();
 //            con.rollback();
 //            cobranza.rollback();
