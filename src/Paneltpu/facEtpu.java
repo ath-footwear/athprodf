@@ -7,6 +7,7 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daoAgentes;
+import DAO.daoCargos;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
@@ -610,7 +611,7 @@ public class facEtpu extends javax.swing.JPanel {
             //Cualquier forma de pago excepto la 99
             //Para atras esta configuracion
             //if (!arrfpago1.getFormapago().equals("99")) {
-                forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
+            forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
             //}
         }
         for (metodopago arruso1 : arrmetodo) {
@@ -621,7 +622,7 @@ public class facEtpu extends javax.swing.JPanel {
             uso.addElement(arruso1.getusocfdi() + " - " + arruso1.getDescripcion());
         }
         for (Cliente arruso1 : arrcliente) {
-            cliente.addElement(arruso1.getCvecliente()+" - "+arruso1.getNombre());
+            cliente.addElement(arruso1.getCvecliente() + " - " + arruso1.getNombre());
         }
         JcForma.setModel(forma);
         JcMetodo.setModel(metodo);
@@ -685,12 +686,18 @@ public class facEtpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkclvprov() && checkunidad()) {
-            setfactura();
-        } else {
-            importes_a_cero();
-            JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
+        int row = JcCliente.getSelectedIndex();
+        //Verifica el credito del cliente y si es posible realizarle la venta
+        //Si es true es porque el saldo + total es menor al credito
+        if (checkcredito(arrcliente.get(row).getCredito())) {
+            if (checkclvprov() && checkunidad()) {
+                setfactura();
+            } else {
+                importes_a_cero();
+                JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
+            }
         }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     /**
@@ -1342,6 +1349,37 @@ public class facEtpu extends javax.swing.JPanel {
         Jlsub.setText("0");
         JlDesc.setText("0");
         JlTotal.setText("0");
+    }
+
+    /**
+     * Verifica que el saldo mas el total no exceda el credito del cliente
+     *
+     * @param credito
+     * @param saldo
+     * @return booelan
+     */
+    private boolean checkcredito(double credito) {
+        daoCargos dc = new daoCargos();
+        Formateodedatos fd = new Formateodedatos();
+        int row = JcCliente.getSelectedIndex();
+        double saldo = total;
+        //Se suma el saldo anterior que es el total mas el actual
+        saldo += dc.getcargopendiente(ACobranza, arrcliente.get(row).getId_cliente(),
+                fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"));
+        //Formatea el saldo a 2 decimales
+        saldo = fd.formatdecimalv2(saldo);
+        //Si el saldo es mayor es false y despliega un mensaje
+        if (saldo > credito) {
+            JcCliente.requestFocus();
+            JOptionPane.showMessageDialog(null,
+                    " El SALDO mas el TOTAL exceden el credito preestablecido"
+                    + " saldo=" + saldo + ", credito=" + credito,
+                     "Error en Credito",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -14,6 +14,15 @@ public class Cliente implements java.io.Serializable{
     private String nombre,rfc,cp,calle,numext, numint, colonia,municipio,estado, pais,regimen,ciudad, marca,
             formapago, usocfdi, clave, nombreagente,estatus,correo,cuenta,telefono;
     private Agentes ag;
+    private double credito;
+
+    public double getCredito() {
+        return credito;
+    }
+
+    public void setCredito(double credito) {
+        this.credito = credito;
+    }
 
     public int getId_cliente() {
         return Id_cliente;

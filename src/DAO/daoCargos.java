@@ -74,4 +74,17 @@ public class daoCargos implements Cargos {
         return S.getcargos_especial_CompPagos(cpt, cliente, bdcob);
     }
 
+    /**
+     * Busca todos los cargos pendientes del cliente de acuerdo a la conexion
+     * y bd
+     * @param c conexion cobranza
+     * @param id_cliente id del cliente
+     * @param bd puede ser cargo o cargoespecial
+     * @return  suma de saldos pendientes
+     */
+    @Override
+    public double getcargopendiente(Connection c, int id_cliente, String bd) {
+        return S.get_Cargopendiente(c, id_cliente, bd);
+    }
+
 }

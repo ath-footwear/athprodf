@@ -5,6 +5,7 @@
  */
 package Paneltpu;
 
+import DAO.daoCargos;
 import DAO.daoConceptos;
 import Paneles.*;
 import DAO.daocfdi;
@@ -488,146 +489,32 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     }//GEN-LAST:event_JtFolio1ActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (!k2.isEmpty()) {
-            boolean a = verificafloat(JtDescuento.getText());
-            boolean a1 = verificadetalle();
-            boolean a2 = checkstock();
-            if (!a) {
-                JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
-            }
-            if (!a1) {
-                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
-            }
-            if (!a2) {
-                JOptionPane.showMessageDialog(null, "Error, La cantidad no puede ser mayor a lo que hay en stock o la cantidad es cero");
-            }
+        int row1 = JcCliente.getSelectedIndex();
+        //Verifica el credito del cliente y si es posible realizarle la venta
+        //Si es true es porque el saldo + total es menor al credito
+        if (checkcredito(arrcliente.get(row1).getCredito())) {
+            if (!k2.isEmpty()) {
+                boolean a = verificafloat(JtDescuento.getText());
+                boolean a1 = verificadetalle();
+                boolean a2 = checkstock();
+                if (!a) {
+                    JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
+                }
+                if (!a1) {
+                    JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+                }
+                if (!a2) {
+                    JOptionPane.showMessageDialog(null, "Error, La cantidad no puede ser mayor a lo que hay en stock o la cantidad es cero");
+                }
 //            System.out.println(a + " - " + a1);
-            if (!a && !a1 && !a2) {
-                JtDescuento.requestFocus();
-            } else {
-                factura f = new factura();
-                int row = 0;
-                String condicion;
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                Calendar fecha = Calendar.getInstance();
-                int mes = fecha.get(Calendar.MONTH) + 1;
-                daofactura dfac = new daofactura();
-                ArrayList<Dfactura> arrf = new ArrayList<>();
-                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-                f.setFolio(dfac.getmaxfoliotpu(cpt, "REM"));//Obtiene y setea el foliomaximo de *documentos
-                int rowc = JcCliente.getSelectedIndex();
-                Formateodedatos fort= new Formateodedatos();
-//                f.setFolio(n.getfolio());
-//                if (u.getTurno().equals("5")) {
-//                    f.setPedido("TPU " + mes + "-" + f.getFolio());
-//                } else if (u.getTurno().equals("6")) {
-//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
-//                } else if (u.getTurno().equals("7")) {
-//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
-//                }
-//              Obtiene el folio ya formateado de acuerdo al turno
-                f.setPedido(fort.folioremision(u.getTurno(), mes, f.getFolio()));
-                daokardexrcpt dk = new daokardexrcpt();
-                f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
-                f.setClaveusuario(u.getUsuario());
-                f.setSerie("REM");
-                f.setTurno(u.getTurno());
-                f.setConceptos(arrcuentas.get(JcConceptos.getSelectedIndex()).getId_concepto());
-//                f.setConceptos(15);
-                f.setFecha(sdf.format(date));
-                f.setIdcliente(arrcliente.get(rowc).getCvecliente());
-                f.setNombre(arrcliente.get(rowc).getNombre());
-                f.setRfc(arrcliente.get(rowc).getRfc());
-                f.setCalle(arrcliente.get(rowc).getCalle());
-                f.setColonia(arrcliente.get(rowc).getColonia());
-                f.setMunicipio(arrcliente.get(rowc).getCiudad());
-                f.setEstado(arrcliente.get(rowc).getEstado());
-                f.setPais(arrcliente.get(rowc).getPais());
-                f.setCp(arrcliente.get(rowc).getCp());
-                f.setObservaciones(JtObs.getText().toUpperCase());
-                f.setLugarexpedicion("36400");
-                f.setPlazo(arrcliente.get(rowc).getPlazo());
-//                f.setAgente(k.get(row).getCli().getAgente());
-                f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
-                if (JcUsd1.isSelected()) {
-                    f.setMoneda("USD");
-                    f.setTipocambio(Double.parseDouble(JtTCambio1.getText()));
+                if (!a && !a1 && !a2) {
+                    JtDescuento.requestFocus();
                 } else {
-                    f.setMoneda("MXN");
-                    f.setTipocambio(1);
+                    setfactura();
                 }
-                f.setEmpresa("1");
-                int totalpares = 0;// Se usa para la tabla facturas
-                impuestos = 0;
-                descuentos = 0;
-//                Detallado de productos selecionados
-                String cuenta=arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta();
-                String sb=arrcuentas.get(JcConceptos.getSelectedIndex()).getSubcuenta();
-                for (int i = 0; i < k2.size(); i++) {
-                    Dfactura df = new Dfactura();
-                    if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
-                        double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
-                        double tpares = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
-                        double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
-                        df.setRenglon(i + 1);
-                        df.setProducto(k2.get(i).getDp().getId_material());
-                        df.setCantidadfloat(tpares);
-                        df.setDescripcion(k2.get(i).getDp().getMatped());
-                        df.setCodigo(k2.get(i).getDp().getCodigosat());
-                        df.setUmedida(k2.get(i).getDp().getUnidad());
-                        df.setDureza(k2.get(i).getDp().getDureza());
-                        df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
-                        df.setId_pedimento(k2.get(i).getId_pedimento());
-                        df.setDescumedida("");
-                        df.setImpuesto("000");
-                        df.setTipofactor("Tasa");
-                        String as1;
-                        df.setTasaocuota("0");
-                        if (cuenta.equals("60") && sb.equals("25")) {
-                            as1 = "0";
-                            df.setDescuento(0);
-                            df.setPrecio(0);
-                            df.setBase(0);
-                            df.setImporta(0);
-                            subtotal = 0;
-                        } else {
-                            String as = formateador.format(((tpares * precio) - descuento));
-                            as1 = formateador.format(descuento);
-                            df.setDescuento(Double.parseDouble(as1));
-                            df.setPrecio(Double.parseDouble(formateador.format(precio)));
-                            df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
-                            df.setImporta(Double.parseDouble(as));
-                        }
-                        arrf.add(df);
-                        totalpares += tpares;
-                        impuestos = 0;
-                        descuentos += Double.parseDouble(as1);
-                    }
-                }
-                total = subtotal - descuentos;
-                f.setTotalpares(totalpares);
-                f.setArr(arrf);
-                f.setImpuestos(formatdecimal(impuestos));
-                f.setDescuento(formatdecimal(descuentos));
-                f.setSubtotal(formatdecimal(subtotal));
-                f.setTotal(formatdecimal(total));
-                if (arrf.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Error al realizar remision, intente capturar de nuevo", "Error", JOptionPane.ERROR_MESSAGE);
-                    vaciarcampos();
-                } else {
-                    int id = dfac.nuevaremtpu(cpt, f, cobB);
-                    if (id != 0) {
-//                        setreport(id, f.getRegimen(), f.getMoneda(), "B", f.getPedido());
-                        JOptionPane.showMessageDialog(null, "Proceso terminado ");
-                        vaciarcampos();
-                        JtCliente.requestFocus();
-                    }
-                }
-
             }
         }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     public void cargacombos() {//catalogos de Sat
@@ -683,6 +570,133 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
         return resp;
+    }
+
+    /**
+     * Setea valores en el objeto inserta nuevos valos en la bd y ademas genera
+     * el XMl
+     */
+    private void setfactura() {
+        factura f = new factura();
+        int row = 0;
+        String condicion;
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Calendar fecha = Calendar.getInstance();
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        daofactura dfac = new daofactura();
+        ArrayList<Dfactura> arrf = new ArrayList<>();
+        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+        f.setFolio(dfac.getmaxfoliotpu(cpt, "REM"));//Obtiene y setea el foliomaximo de *documentos
+        int rowc = JcCliente.getSelectedIndex();
+        Formateodedatos fort = new Formateodedatos();
+//                f.setFolio(n.getfolio());
+//                if (u.getTurno().equals("5")) {
+//                    f.setPedido("TPU " + mes + "-" + f.getFolio());
+//                } else if (u.getTurno().equals("6")) {
+//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
+//                } else if (u.getTurno().equals("7")) {
+//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
+//                }
+//              Obtiene el folio ya formateado de acuerdo al turno
+        f.setPedido(fort.folioremision(u.getTurno(), mes, f.getFolio()));
+        daokardexrcpt dk = new daokardexrcpt();
+        f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
+        f.setClaveusuario(u.getUsuario());
+        f.setSerie("REM");
+        f.setTurno(u.getTurno());
+        f.setConceptos(arrcuentas.get(JcConceptos.getSelectedIndex()).getId_concepto());
+//                f.setConceptos(15);
+        f.setFecha(sdf.format(date));
+        f.setIdcliente(arrcliente.get(rowc).getCvecliente());
+        f.setNombre(arrcliente.get(rowc).getNombre());
+        f.setRfc(arrcliente.get(rowc).getRfc());
+        f.setCalle(arrcliente.get(rowc).getCalle());
+        f.setColonia(arrcliente.get(rowc).getColonia());
+        f.setMunicipio(arrcliente.get(rowc).getCiudad());
+        f.setEstado(arrcliente.get(rowc).getEstado());
+        f.setPais(arrcliente.get(rowc).getPais());
+        f.setCp(arrcliente.get(rowc).getCp());
+        f.setObservaciones(JtObs.getText().toUpperCase());
+        f.setLugarexpedicion("36400");
+        f.setPlazo(arrcliente.get(rowc).getPlazo());
+//                f.setAgente(k.get(row).getCli().getAgente());
+        f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
+        if (JcUsd1.isSelected()) {
+            f.setMoneda("USD");
+            f.setTipocambio(Double.parseDouble(JtTCambio1.getText()));
+        } else {
+            f.setMoneda("MXN");
+            f.setTipocambio(1);
+        }
+        f.setEmpresa("1");
+        int totalpares = 0;// Se usa para la tabla facturas
+        impuestos = 0;
+        descuentos = 0;
+//                Detallado de productos selecionados
+        String cuenta = arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta();
+        String sb = arrcuentas.get(JcConceptos.getSelectedIndex()).getSubcuenta();
+        for (int i = 0; i < k2.size(); i++) {
+            Dfactura df = new Dfactura();
+            if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
+                double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
+                double tpares = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
+                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
+                df.setRenglon(i + 1);
+                df.setProducto(k2.get(i).getDp().getId_material());
+                df.setCantidadfloat(tpares);
+                df.setDescripcion(k2.get(i).getDp().getMatped());
+                df.setCodigo(k2.get(i).getDp().getCodigosat());
+                df.setUmedida(k2.get(i).getDp().getUnidad());
+                df.setDureza(k2.get(i).getDp().getDureza());
+                df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
+                df.setId_pedimento(k2.get(i).getId_pedimento());
+                df.setDescumedida("");
+                df.setImpuesto("000");
+                df.setTipofactor("Tasa");
+                String as1;
+                df.setTasaocuota("0");
+                if (cuenta.equals("60") && sb.equals("25")) {
+                    as1 = "0";
+                    df.setDescuento(0);
+                    df.setPrecio(0);
+                    df.setBase(0);
+                    df.setImporta(0);
+                    subtotal = 0;
+                } else {
+                    String as = formateador.format(((tpares * precio) - descuento));
+                    as1 = formateador.format(descuento);
+                    df.setDescuento(Double.parseDouble(as1));
+                    df.setPrecio(Double.parseDouble(formateador.format(precio)));
+                    df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
+                    df.setImporta(Double.parseDouble(as));
+                }
+                arrf.add(df);
+                totalpares += tpares;
+                impuestos = 0;
+                descuentos += Double.parseDouble(as1);
+            }
+        }
+        total = subtotal - descuentos;
+        f.setTotalpares(totalpares);
+        f.setArr(arrf);
+        f.setImpuestos(formatdecimal(impuestos));
+        f.setDescuento(formatdecimal(descuentos));
+        f.setSubtotal(formatdecimal(subtotal));
+        f.setTotal(formatdecimal(total));
+        if (arrf.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error al realizar remision, intente capturar de nuevo", "Error", JOptionPane.ERROR_MESSAGE);
+            vaciarcampos();
+        } else {
+            int id = dfac.nuevaremtpu(cpt, f, cobB);
+            if (id != 0) {
+//                        setreport(id, f.getRegimen(), f.getMoneda(), "B", f.getPedido());
+                JOptionPane.showMessageDialog(null, "Proceso terminado ");
+                vaciarcampos();
+                JtCliente.requestFocus();
+            }
+        }
     }
 
     /**
@@ -798,9 +812,9 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     }//GEN-LAST:event_JcConceptosMousePressed
 
     private void JcConceptosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcConceptosItemStateChanged
-        int row=JcConceptos.getSelectedIndex();
-        String cuenta=arrcuentas.get(row).getCuenta();
-        String sc=arrcuentas.get(row).getSubcuenta();
+        int row = JcConceptos.getSelectedIndex();
+        String cuenta = arrcuentas.get(row).getCuenta();
+        String sc = arrcuentas.get(row).getSubcuenta();
         if (cuenta.equals("60") && sc.equals("25")) {
             JOptionPane.showMessageDialog(null, "Seleccionaste consignacion, recuerda que el cargo e importe será de cero");
         }
@@ -1031,6 +1045,37 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             a = false;
         }
         return a;
+    }
+
+    /**
+     * Verifica que el saldo mas el total no exceda el credito del cliente
+     *
+     * @param credito
+     * @param saldo
+     * @return booelan
+     */
+    private boolean checkcredito(double credito) {
+        daoCargos dc = new daoCargos();
+        Formateodedatos fd = new Formateodedatos();
+        int row = JcCliente.getSelectedIndex();
+        double saldo = total;
+        //Se suma el saldo anterior que es el total mas el actual
+        saldo += dc.getcargopendiente(ACobranza, arrcliente.get(row).getId_cliente(),
+                fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"));
+        //Formatea el saldo a 2 decimales
+        saldo = fd.formatdecimalv2(saldo);
+        //Si el saldo es mayor es false y despliega un mensaje
+        if (saldo > credito) {
+            JcCliente.requestFocus();
+            JOptionPane.showMessageDialog(null,
+                    " El SALDO mas el TOTAL exceden el credito preestablecido"
+                    + " saldo=" + saldo + ", credito=" + credito,
+                    "Error en Credito",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

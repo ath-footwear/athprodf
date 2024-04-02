@@ -23,4 +23,6 @@ public interface Cargos {
     public cargo getCargowith_pedido(Connection c, factura pedido);
     
     public ArrayList<cargo> getcargos_especial_CompPagos(Connection cpt, String cliente, String bdcob);
+    
+    public double getcargopendiente(Connection c, int id_cliente, String bd);
 }

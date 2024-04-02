@@ -18,7 +18,6 @@ import DAO.daoxmltpu;
 import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
-import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
@@ -689,12 +688,13 @@ public class fac2tpu extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JcTraslado)
                             .addComponent(jLabel19)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel20)
-                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
-                            .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20)
+                            .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
@@ -814,16 +814,22 @@ public class fac2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkclvprov() || (JcNcargo.isSelected() && verificafloat(JtNcargo.getText()))) {
-            setfactura();
-        } else {
-            if (!verificafloat(JtNcargo.getText()) && JcNcargo.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Error al ingresar nota de cargo, verifique su importe");
-                JtNcargo.requestFocus();
-                JtNcargo.setText("");
+        int row = JcCliente.getSelectedIndex();
+        //Verifica el credito del cliente y si es posible realizarle la venta
+        //Si es true es porque el saldo + total es menor al credito
+        if (checkcredito(arrcliente.get(row).getCredito())) {
+            if (checkclvprov() || (JcNcargo.isSelected() && verificafloat(JtNcargo.getText()))) {
+                setfactura();
+            } else {
+                if (!verificafloat(JtNcargo.getText()) && JcNcargo.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Error al ingresar nota de cargo, verifique su importe");
+                    JtNcargo.requestFocus();
+                    JtNcargo.setText("");
+                }
+                JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
             }
-            JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
         }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     /**
@@ -863,7 +869,7 @@ public class fac2tpu extends javax.swing.JPanel {
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
-                Formateo_Nempresas fn= new Formateo_Nempresas();
+                Formateo_Nempresas fn = new Formateo_Nempresas();
                 traslado = (JcTraslado.isSelected()) ? "1" : "0";
                 factura f = new factura();
                 int row = 0;
@@ -1229,7 +1235,7 @@ public class fac2tpu extends javax.swing.JPanel {
         if (k1.isEmpty()) {
 
         } else {
-            Formateodedatos fd= new Formateodedatos();
+            Formateodedatos fd = new Formateodedatos();
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura df = new daofactura();
             arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
@@ -1563,6 +1569,37 @@ public class fac2tpu extends javax.swing.JPanel {
             a = false;
         }
         return a;
+    }
+
+    /**
+     * Verifica que el saldo mas el total no exceda el credito del cliente
+     *
+     * @param credito
+     * @param saldo
+     * @return booelan
+     */
+    private boolean checkcredito(double credito) {
+        daoCargos dc = new daoCargos();
+        Formateodedatos fd = new Formateodedatos();
+        int row = JcCliente.getSelectedIndex();
+        double saldo = total;
+        //Se suma el saldo anterior que es el total mas el actual
+        saldo += dc.getcargopendiente(ACobranza, arrcliente.get(row).getId_cliente(),
+                fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"));
+        //Formatea el saldo a 2 decimales
+        saldo = fd.formatdecimalv2(saldo);
+        //Si el saldo es mayor es false y despliega un mensaje
+        if (saldo > credito) {
+            JcCliente.requestFocus();
+            JOptionPane.showMessageDialog(null, 
+                    " El SALDO mas el TOTAL exceden el credito preestablecido"
+                    + " saldo="+saldo+", credito="+credito
+                    ,"Error en Credito",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
