@@ -108,7 +108,7 @@ public class sqlclientes {
             ResultSet rs;
             String sql = "select id_cliente, id_agente, nombre, rfc, cp, razonsocial, "
                     + "usocfdi, calle, colonia, pais, Estado, regimen, estatus, ciudad,"
-                    + "correo,cuenta,telefono,plazo \n"
+                    + "correo,cuenta,telefono,plazo,credito \n"
                     + "from cliente c\n"
                     + "where nombre like ? \n"
                     + "order by id_cliente desc";
@@ -135,6 +135,7 @@ public class sqlclientes {
                 c.setTelefono(rs.getString("telefono"));
                 c.setAgente(rs.getInt("id_agente"));
                 c.setPlazo(rs.getInt("plazo"));
+                c.setCredito(rs.getDouble("credito"));
                 arr.add(c);
             }
             rs.close();
@@ -243,7 +244,8 @@ public class sqlclientes {
             cpt.setAutoCommit(false);
             PreparedStatement st;
             String sql = "update cliente set nombre=?,rfc=?,cp=?,usocfdi=?,calle=?,colonia=?,pais=?,"
-                    + "estado=?,regimen=?,ciudad=?,correo=?,cuenta=?,telefono=?, id_agente=?, plazo=?  "
+                    + "estado=?,regimen=?,ciudad=?,correo=?,cuenta=?,telefono=?, id_agente=?, plazo=?,"
+                    + "credito=? "
                     + "where id_cliente=?";
             st = cpt.prepareStatement(sql);
             st.setString(1, c.getNombre());
@@ -261,7 +263,8 @@ public class sqlclientes {
             st.setString(13, c.getTelefono());
             st.setInt(14, c.getAgente());
             st.setInt(15, c.getPlazo());
-            st.setInt(16, c.getCvecliente());
+            st.setDouble(16, c.getCredito());
+            st.setInt(17, c.getCvecliente());
             st.executeUpdate();
 //            System.out.println("mod cliente " + i);
             cpt.commit();
@@ -302,8 +305,8 @@ public class sqlclientes {
             PreparedStatement st;
             String sql = "insert into cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,"
                     + "usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad,"
-                    + "correo,cuenta,telefono, plazo) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?,?)";
+                    + "correo,cuenta,telefono, plazo, credito) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?,?,?)";
             cpt.setAutoCommit(false);
             st = cpt.prepareStatement(sql);
             st.setInt(1, c.getCvecliente());
@@ -323,6 +326,7 @@ public class sqlclientes {
             st.setString(15, "");
             st.setString(16, c.getTelefono());
             st.setInt(17, c.getPlazo());
+            st.setDouble(18, c.getCredito());
             st.executeUpdate();
             cpt.commit();
             return true;
