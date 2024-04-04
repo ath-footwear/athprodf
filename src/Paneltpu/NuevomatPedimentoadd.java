@@ -70,6 +70,12 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
         JlUnidad = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         JlPedimento = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        JtCantidad = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        JtCosto = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -114,10 +120,54 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
 
         JlPedimento.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
+        jSeparator4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        JtCantidad.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        JtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        JtCantidad.setBorder(null);
+        JtCantidad.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        JtCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JtCantidadMousePressed(evt);
+            }
+        });
+        JtCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtCantidadActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel10.setText("Cantidad");
+
+        jSeparator3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        JtCosto.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        JtCosto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        JtCosto.setBorder(null);
+        JtCosto.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        JtCosto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JtCostoMousePressed(evt);
+            }
+        });
+        JtCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtCostoActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel7.setText("Costo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(428, 428, 428))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,13 +194,21 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
                             .addComponent(jLabel6)
                             .addComponent(jLabel9)
                             .addComponent(JcAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JcDureza, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JcDureza, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator3)
+                                    .addComponent(JtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator4)
+                                    .addComponent(JtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(428, 428, 428))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +235,21 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
                 .addComponent(jLabel9)
                 .addGap(7, 7, 7)
                 .addComponent(JcAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(11, 11, 11)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(11, 11, 11)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -229,17 +301,53 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
         int material = arrmat.get(JcSat.getSelectedIndex()).getId_material();
         int pedimento = ped.getId_pedimento();
         String dur = arrdur.get(JcDureza.getSelectedIndex()).getDureza();
-        if (dp.checkmatdureza(cpt, material, dur, pedimento)) {
-            setmaterial(material, dur, pedimento);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ya esta dado de alta ese material con esa dureza");
+        String costo = JtCosto.getText();
+        String cant = JtCantidad.getText();
+        //Banderas para cada una de las validaciones
+        boolean flag = verificafloat(costo);
+        boolean flag2 = verificafloat(cant);
+        boolean flag3 = dp.checkmatdureza(cpt, material, dur, pedimento);
+        if (!flag || costo.equals("0") || costo.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Utilice solo numero y distinto de cero para poder continuar");
+            JtCosto.requestFocus();
+            JtCosto.setText("");
         }
-
+        if (!flag2 || cant.equals("0") || cant.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Utilice solo numero y distinto de cero para poder continuar");
+            JtCantidad.requestFocus();
+            JtCantidad.setText("");
+        }
+        if (!flag3) {
+            JOptionPane.showMessageDialog(null,
+                    "Ya esta dado de alta ese material con esa dureza");
+            JtCantidad.requestFocus();
+        }
+        if (flag && flag2 && flag3) {
+            setmaterial(material, dur, pedimento);
+        }
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JcSatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcSatMousePressed
         JlUnidad.setText(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
     }//GEN-LAST:event_JcSatMousePressed
+
+    private void JtCantidadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtCantidadMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JtCantidadMousePressed
+
+    private void JtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCantidadActionPerformed
+
+    }//GEN-LAST:event_JtCantidadActionPerformed
+
+    private void JtCostoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtCostoMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JtCostoMousePressed
+
+    private void JtCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCostoActionPerformed
+        JtCantidad.requestFocus();
+    }//GEN-LAST:event_JtCostoActionPerformed
 
     /**
      * Funcion para insertar en la bd
@@ -253,11 +361,12 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
         Dpedimento pedi = new Dpedimento();
         pedi.setId_material(material);
         pedi.setId_pedimento(pedimento);
-        pedi.setCantidad(0);
-        pedi.setPrecio(0);
-        pedi.setCosto(0);
+        pedi.setCantidad(Double.parseDouble(JtCantidad.getText()));
+        pedi.setCosto(Double.parseDouble(JtCosto.getText()));
+        pedi.setPrecio(arrmat.get(JcSat.getSelectedIndex()).getPrecio());
         pedi.setCantrestante(0);
-        pedi.setMatped(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
+        pedi.setMatped(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " 
+                + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
         pedi.setDureza(dureza);
         if (dp.newmatpedimento(cpt, pedi)) {
             JOptionPane.showMessageDialog(null, "Material agregado al pedimento");
@@ -350,12 +459,18 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> JcSat;
     private javax.swing.JLabel JlPedimento;
     private javax.swing.JLabel JlUnidad;
+    public javax.swing.JTextField JtCantidad;
+    public javax.swing.JTextField JtCosto;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }

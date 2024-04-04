@@ -98,13 +98,14 @@ public class sqlpedimentos {
             for (int i = 0; i < p.getArr().size(); i++) {
                 int mat = p.getArr().get(i).getId_material();
                 double precio = p.getArr().get(i).getPrecio();
+                double costo =p.getArr().get(i).getCosto();
                 double cant = p.getArr().get(i).getCantidad();
                 String matped = p.getArr().get(i).getMatped();
                 double importe = p.getArr().get(i).getImporte();
                 String dureza = p.getArr().get(i).getDureza();
                 int alm = p.getArr().get(i).getId_almacen();
                 sql = "insert into dpedimentos(id_material,id_pedimento,cantidad,precio,costo,importe,cantidadrestante,estatus,matpedimento,dureza,cantinv)"
-                        + " values(" + mat + "," + pedimento + "," + cant + "," + precio + "," + precio + "," + importe + "," + cant + ",'1','" + matped + "','" + dureza + "'," + cant + ")";
+                        + " values(" + mat + "," + pedimento + "," + cant + "," + precio + "," + costo + "," + importe + "," + cant + ",'1','" + matped + "','" + dureza + "'," + cant + ")";
 ////                System.out.println("dped " + sql);
                 st = cpt.prepareStatement(sql);
                 st.executeUpdate();

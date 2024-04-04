@@ -71,7 +71,7 @@ public class sqlmaterial {
             PreparedStatement st;
             ResultSet rs;
             st = con.prepareStatement("select * from Materiales "
-                    + "where descripcion like '%" + mat + "%' m.estatus='1' "
+                    + "where descripcion like '%" + mat + "%' and estatus='1' "
                     + "order by descripcion");
             rs = st.executeQuery();
             while (rs.next()) {

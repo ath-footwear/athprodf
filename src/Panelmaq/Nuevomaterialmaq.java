@@ -185,7 +185,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         });
 
         jLabel10.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel10.setText("Familia");
+        jLabel10.setText("Familia/Marca");
 
         jSeparator4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -325,7 +325,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         JcTipo.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel14.setText("Tipo");
+        jLabel14.setText("Descripcion");
 
         JcInfo.setBackground(new java.awt.Color(255, 255, 255));
         JcInfo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N

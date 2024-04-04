@@ -81,7 +81,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         jLabel6.setText("Dureza de producto");
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel7.setText("Precio");
+        jLabel7.setText("Costo");
 
         jSeparator3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -320,7 +320,8 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         if (band && band1) {
             mat = new Materiales();
             mat.setId_material(arrmat.get(JcSat.getSelectedIndex()).getId_material());
-            mat.setPrecio(Double.parseDouble(JtPrecio.getText()));
+            mat.setCosto(Double.parseDouble(JtPrecio.getText()));
+            mat.setPrecio(arrmat.get(JcSat.getSelectedIndex()).getPrecio());
             mat.setCantidad(Double.parseDouble(JtCantidad.getText()));
             mat.setDureza(arrdur.get(JcDureza.getSelectedIndex()).getDureza());
             mat.setDescripcion(arrmat.get(JcSat.getSelectedIndex()).getDescripcion());

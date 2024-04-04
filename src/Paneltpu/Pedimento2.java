@@ -365,8 +365,9 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             for (int i = 0; i < arrmatseleccion.size(); i++) {
                 Dpedimento dp = new Dpedimento();
                 double precio = arrmatseleccion.get(i).getPrecio();
+                double costo = arrmatseleccion.get(i).getCosto();
                 double cant = arrmatseleccion.get(i).getCantidad();
-                double importe = precio * cant;
+                double importe = costo * cant;
                 String matped = arrmatseleccion.get(i).getMaterialpedimento();
                 int almacen = arrmatseleccion.get(i).getId_almacen();
                 total += importe;
@@ -377,7 +378,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
                 dp.setPrecio(BigDecimal.valueOf(precio).setScale(2).doubleValue());
                 dp.setImporte(BigDecimal.valueOf(importe).setScale(2).doubleValue());
                 dp.setCantrestante(BigDecimal.valueOf(cant).setScale(2).doubleValue());
-                dp.setCosto(BigDecimal.valueOf(precio).setScale(2).doubleValue());
+                dp.setCosto(BigDecimal.valueOf(costo).setScale(2).doubleValue());
                 dp.setId_almacen(almacen);
                 dp.setMatped(matped);
                 dp.setImpuesto(0);
@@ -449,18 +450,21 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         model.addColumn("Material");
         model.addColumn("Material pedimento");
         model.addColumn("Precio");
+        model.addColumn("Costo");
         model.addColumn("cantidad");
         model.addColumn("Unidad");
         model.setNumRows(arrmatseleccion.size());
         for (int i = 0; i < arrmatseleccion.size(); i++) {
             double cant = arrmatseleccion.get(i).getCantidad();
             double precio = arrmatseleccion.get(i).getPrecio();
+            double costo = arrmatseleccion.get(i).getCosto();
             model.setValueAt(arrmatseleccion.get(i).getDescripcion(), i, 0);
             model.setValueAt(arrmatseleccion.get(i).getMaterialpedimento(), i, 1);
             model.setValueAt(precio, i, 2);
-            model.setValueAt(cant, i, 3);
-            model.setValueAt(arrmatseleccion.get(i).getUnidad(), i, 4);
-            total += precio * cant;
+            model.setValueAt(costo, i, 3);
+            model.setValueAt(cant, i, 4);
+            model.setValueAt(arrmatseleccion.get(i).getUnidad(), i, 5);
+            total += costo * cant;
         }
         JtDetalle.setModel(model);
         JlTotal.setText(formateador.format(total));
