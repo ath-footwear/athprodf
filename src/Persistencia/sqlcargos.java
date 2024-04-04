@@ -165,16 +165,17 @@ public class sqlcargos {
     public double get_Cargopendiente(Connection c, int cliente, String bd) {
         double saldo = 0;
         try {
-            String sql = "select sum(saldomx) as saldo,\n"
-                    + "(select sum(saldo) as saldoint from cargoespecial) as saldoesp,\n"
-                    + "(select sum(saldomx) as saldoint "
-                    + "from "+bd+".dbo.cargo) as saldoint\n"
-                    + "from cargo \n"
-                    + "where (saldo!=0 or saldomx!=0) and estatus='1' and id_cliente=?";
+            String sql = "select isnull(sum(c.saldomx),0) as saldo,\n"
+                    + "isnull((select sum(saldo) as saldoint from cargoespecial "
+                    + "where (saldo!=0 or saldomx!=0) and estatus='1' and id_cliente="+cliente+"),0) as saldoesp,\n"
+                    + "isnull((select sum(saldomx) as saldoint \n"
+                    + "from "+bd+".dbo.cargo where (saldo!=0 or saldomx!=0) and "
+                    + "estatus='1' and id_cliente="+cliente+") ,0)as saldoint\n"
+                    + "from cargo c\n"
+                    + "where (c.saldo!=0 or c.saldomx!=0) and c.estatus='1' and c.id_cliente=" + cliente;
             PreparedStatement st;
             ResultSet rs;
             st = c.prepareStatement(sql);
-            st.setInt(1, cliente);
             rs = st.executeQuery();
             while (rs.next()) {
                 saldo = rs.getDouble("saldo") + rs.getDouble("saldoesp")
