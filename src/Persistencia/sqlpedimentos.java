@@ -207,11 +207,14 @@ public class sqlpedimentos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,m.modelo,m.descripcion,m.noserie,cantidadrestante,unidad,dp.precio as precio,\n"
-                    + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped\n"
+            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,"
+                    + "m.modelo,m.descripcion,m.noserie,cantidadrestante,unidad,"
+                    + "dp.precio as precio,codigosat,dureza,dp.id_material as mat,"
+                    + " convert(date,fechapedimento) as fechaped,f.descripcion as marca\n"
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
+                    + "join familias f on m.id_familia=f.id_familia\n"
                     + "where (" + referencias + ") and dp.estatus='1'"
                     + "order by p.id_pedimento";
 //            System.out.println(sql);
@@ -232,6 +235,7 @@ public class sqlpedimentos {
                 dp.setCodigosat(rs.getString("codigosat"));
                 dp.setDureza(rs.getString("dureza"));
                 dp.setId_material(rs.getInt("mat"));
+                dp.setNfamilia(rs.getString("marca"));
                 p.setFechapedimento(rs.getString("fechaped"));
                 p.setDp(dp);
                 arr.add(p);

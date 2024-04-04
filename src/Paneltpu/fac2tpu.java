@@ -978,7 +978,11 @@ public class fac2tpu extends javax.swing.JPanel {
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
-                            df.setDescripcion(k2.get(i).getDp().getMatped() + " (PEDIMENTO: " + k2.get(i).getReferencia() + ", ADUANA: 160 MANZANILLO COLIMA," + k2.get(i).getFechapedimento() + ")");
+                            df.setDescripcion(k2.get(i).getDp().getMatped() 
+                                    + " (PEDIMENTO: " + k2.get(i).getReferencia() 
+                                    + ", ADUANA: 160 MANZANILLO COLIMA," 
+                                    + k2.get(i).getFechapedimento() + ")"
+                                    +" MARCA: "+k2.get(i).getDp().getNfamilia());
                         }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
@@ -1584,7 +1588,7 @@ public class fac2tpu extends javax.swing.JPanel {
         int row = JcCliente.getSelectedIndex();
         double saldo = total;
         //Se suma el saldo anterior que es el total mas el actual
-        saldo += dc.getcargopendiente(ACobranza, arrcliente.get(row).getId_cliente(),
+        saldo += dc.getcargopendiente(ACobranza, arrcliente.get(row).getCvecliente(),
                 fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"));
         //Formatea el saldo a 2 decimales
         saldo = fd.formatdecimalv2(saldo);

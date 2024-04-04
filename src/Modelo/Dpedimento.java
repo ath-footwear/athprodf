@@ -13,7 +13,16 @@ public class Dpedimento implements java.io.Serializable {
 
     private int id_dpedimento, id_material, id_almacen, id_pedimento;
     private double cantidad, precio, costo, importe, impuesto, cantrestante;
-    private String matped, dureza, unidad, codigosat, codigo, noserie, descripcion;
+    private String matped, dureza, unidad, codigosat, codigo, noserie, descripcion,
+            nfamilia;
+
+    public String getNfamilia() {
+        return nfamilia;
+    }
+
+    public void setNfamilia(String nfamilia) {
+        this.nfamilia = nfamilia;
+    }
 
     public String getNoserie() {
         return noserie;
