@@ -121,10 +121,27 @@ public class sqlantiguedadnotas {
                 double imp = arr1.getImporte();
                 String sql = "insert into antiguedad_notas(cuenta,subcuenta,desc_cuenta,numcliente,"
                         + "cliente,numagente,agente,referencia,fecha,fechav,dias,a1,a2,a3,a4,a5,a6,importe) "
-                        + "values(" + cuenta + "," + sub + ",'" + desc + "'," + ncli + ",'" + cli + "'," + nag + ",'" + ag + "','"
-                        + ref + "','" + f + "','" + fv + "'," + dia + "," + a1 + "," + a2 + "," + a3 + "," + a4 + "," + a5 + "," + a6 + "," + imp + ")";
+                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //                System.out.println(sql);
                 st = c.prepareStatement(sql);
+                st.setInt(1, cuenta);
+                st.setInt(2, sub);
+                st.setString(3, desc);
+                st.setInt(4, ncli);
+                st.setString(5, cli);
+                st.setInt(6, nag);
+                st.setString(7, ag);
+                st.setString(8, ref);
+                st.setString(9, f);
+                st.setString(10, fv);
+                st.setInt(11, dia);
+                st.setDouble(12, a1);
+                st.setDouble(13, a2);
+                st.setDouble(14, a3);
+                st.setDouble(15, a4);
+                st.setDouble(16, a5);
+                st.setDouble(17, a6);
+                st.setDouble(18, imp);
                 st.executeUpdate();
             }
             c.commit();

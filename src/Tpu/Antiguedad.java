@@ -92,7 +92,7 @@ public class Antiguedad extends javax.swing.JFrame {
             model.addElement(arr1.getNombre() + ", " + arr1.getIdagente());
         }
         JcAgente.setModel(model);
-
+        setclientes();
     }
 
     /**
@@ -151,6 +151,11 @@ public class Antiguedad extends javax.swing.JFrame {
         jLabel3.setText("Seleccion de Agente");
 
         JcAgente.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        JcAgente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcAgenteItemStateChanged(evt);
+            }
+        });
         JcAgente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 JcAgenteMousePressed(evt);
@@ -403,16 +408,24 @@ public class Antiguedad extends javax.swing.JFrame {
     }//GEN-LAST:event_JraActionPerformed
 
     private void JcAgenteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcAgenteMousePressed
+
+    }//GEN-LAST:event_JcAgenteMousePressed
+
+    private void JcAgenteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcAgenteItemStateChanged
+        setclientes();
+    }//GEN-LAST:event_JcAgenteItemStateChanged
+
+    private void setclientes() {
         DefaultComboBoxModel model1 = new DefaultComboBoxModel();
         daoantiguedadnotas d = new daoantiguedadnotas();
-        String ag=(JcAgente.getSelectedIndex()==0)?"":arr.get(JcAgente.getSelectedIndex()-1).getIdagente()+"";
+        String ag = (JcAgente.getSelectedIndex() == 0) ? "" : arr.get(JcAgente.getSelectedIndex() - 1).getIdagente() + "";
         arrc = d.getclientes(s68, ag);
         model1.addElement("TODOS");
         for (Cliente arr1 : arrc) {
             model1.addElement(arr1.getNombre() + ", " + arr1.getId_cliente());
         }
         JcCliente.setModel(model1);
-    }//GEN-LAST:event_JcAgenteMousePressed
+    }
 
     /**
      * Funcion para ejecutar los procesos y despliegue del reporte
