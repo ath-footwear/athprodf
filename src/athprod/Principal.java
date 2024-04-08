@@ -11,6 +11,7 @@ import DAO.daoPrincipal;
 import DAO.daopedimentos;
 import Maq.Materialesmaq;
 import Maq.PagostpuCargos;
+import Maq.Tipomaquina;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Procserie;
@@ -259,6 +260,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPedimento1 = new javax.swing.JMenuItem();
         JmEntradasS1 = new javax.swing.JMenuItem();
         JmDevoluciones1 = new javax.swing.JMenuItem();
+        JmDescmaquinas1 = new javax.swing.JMenuItem();
         JmMaq2 = new javax.swing.JMenu();
         Catalogos2 = new javax.swing.JMenu();
         JmMaterial2 = new javax.swing.JMenuItem();
@@ -266,6 +268,7 @@ public final class Principal extends javax.swing.JFrame {
         JmCliente2 = new javax.swing.JMenuItem();
         JmFamilia2 = new javax.swing.JMenuItem();
         JmAgente1 = new javax.swing.JMenuItem();
+        JmDescmaquinas = new javax.swing.JMenuItem();
         Jmreportes2 = new javax.swing.JMenu();
         JmRepcob2 = new javax.swing.JMenu();
         JmEdocuenta2 = new javax.swing.JMenuItem();
@@ -985,6 +988,15 @@ public final class Principal extends javax.swing.JFrame {
         });
         JmMaq.add(JmDevoluciones1);
 
+        JmDescmaquinas1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensa.png"))); // NOI18N
+        JmDescmaquinas1.setText("Descripcion de maquinas");
+        JmDescmaquinas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmDescmaquinas1ActionPerformed(evt);
+            }
+        });
+        JmMaq.add(JmDescmaquinas1);
+
         JmMaq2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/industry_package_box_storage_factory_icon_188937.png"))); // NOI18N
         JmMaq2.setText("Top Maquinaria");
         JmMaq2.addMenuListener(new javax.swing.event.MenuListener() {
@@ -1049,6 +1061,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Catalogos2.add(JmAgente1);
+
+        JmDescmaquinas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensa.png"))); // NOI18N
+        JmDescmaquinas.setText("Descripcion de maquinas");
+        JmDescmaquinas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmDescmaquinasActionPerformed(evt);
+            }
+        });
+        Catalogos2.add(JmDescmaquinas);
 
         JmMaq2.add(Catalogos2);
 
@@ -2585,6 +2606,31 @@ public final class Principal extends javax.swing.JFrame {
         setcomisiones();
     }//GEN-LAST:event_JmComisionesadm1ActionPerformed
 
+    private void JmDescmaquinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDescmaquinasActionPerformed
+        setdescmaquinas();
+    }//GEN-LAST:event_JmDescmaquinasActionPerformed
+
+    private void JmDescmaquinas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDescmaquinas1ActionPerformed
+        setdescmaquinas();
+    }//GEN-LAST:event_JmDescmaquinas1ActionPerformed
+
+    /**
+     * Despliega menu de gestion de descripcion de maquinas
+     */
+    private void setdescmaquinas() {
+        try {
+            Tipomaquina p = new Tipomaquina(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Despliega menu de comisiones
+     */
     private void setcomisiones() {
         try {
             Comisiones p = new Comisiones(conexion, u);
@@ -3251,6 +3297,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmComisionesadm;
     private javax.swing.JMenuItem JmComisionesadm1;
     private javax.swing.JMenu JmConf;
+    private javax.swing.JMenuItem JmDescmaquinas;
+    private javax.swing.JMenuItem JmDescmaquinas1;
     private javax.swing.JMenuItem JmDevoluciones;
     private javax.swing.JMenuItem JmDevoluciones1;
     private javax.swing.JMenuItem JmDevoluciones2;
