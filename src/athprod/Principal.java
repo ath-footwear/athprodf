@@ -34,6 +34,7 @@ import Tpu.Agentestpu;
 import Tpu.Antiguedad;
 import Tpu.Cargos_especiales;
 import Tpu.ClientesTpu;
+import Tpu.Comisiones;
 import Tpu.Devolucionestpu;
 import Tpu.Durezastpu;
 import Tpu.EntradasSalidas;
@@ -235,6 +236,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPedimento = new javax.swing.JMenuItem();
         JmEntradasS = new javax.swing.JMenuItem();
         JmDevoluciones = new javax.swing.JMenuItem();
+        JmComisionesadm = new javax.swing.JMenuItem();
         JmMaq = new javax.swing.JMenu();
         Catalogos1 = new javax.swing.JMenu();
         JmMaterial1 = new javax.swing.JMenuItem();
@@ -289,6 +291,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPedimento2 = new javax.swing.JMenuItem();
         JmEntradasS2 = new javax.swing.JMenuItem();
         JmDevoluciones2 = new javax.swing.JMenuItem();
+        JmComisionesadm1 = new javax.swing.JMenuItem();
         JmCmp = new javax.swing.JMenu();
         JmCatalogoscmp = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
@@ -785,6 +788,15 @@ public final class Principal extends javax.swing.JFrame {
         });
         JmTpu.add(JmDevoluciones);
 
+        JmComisionesadm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cash_40532.png"))); // NOI18N
+        JmComisionesadm.setText("Comisiones");
+        JmComisionesadm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmComisionesadmActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmComisionesadm);
+
         JmMaq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/industry_package_box_storage_factory_icon_188937.png"))); // NOI18N
         JmMaq.setText("Maquinaria");
         JmMaq.addMenuListener(new javax.swing.event.MenuListener() {
@@ -1241,6 +1253,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmMaq2.add(JmDevoluciones2);
+
+        JmComisionesadm1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cash_40532.png"))); // NOI18N
+        JmComisionesadm1.setText("Comisiones");
+        JmComisionesadm1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmComisionesadm1ActionPerformed(evt);
+            }
+        });
+        JmMaq2.add(JmComisionesadm1);
 
         JmCmp.setText("jMenu1");
 
@@ -2556,6 +2577,25 @@ public final class Principal extends javax.swing.JFrame {
         setrepcomision();
     }//GEN-LAST:event_JmComisiones1ActionPerformed
 
+    private void JmComisionesadmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmComisionesadmActionPerformed
+        setcomisiones();
+    }//GEN-LAST:event_JmComisionesadmActionPerformed
+
+    private void JmComisionesadm1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmComisionesadm1ActionPerformed
+        setcomisiones();
+    }//GEN-LAST:event_JmComisionesadm1ActionPerformed
+
+    private void setcomisiones() {
+        try {
+            Comisiones p = new Comisiones(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Muestra la interfaz del reporte de comisiones
      */
@@ -2564,12 +2604,12 @@ public final class Principal extends javax.swing.JFrame {
         n.setconexiones(u, conexion);
         n.setVisible(true);
     }
-    
+
     /**
      * Muestra la interfaz de los pagos especiales
      */
-    private void Pagoespecial(){
-            try {
+    private void Pagoespecial() {
+        try {
             Pagostpu p = new Pagostpu(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
@@ -2627,7 +2667,7 @@ public final class Principal extends javax.swing.JFrame {
             try {
                 Serverylite s = new Serverylite();
                 liteusuario = s.getconexionusuarios();
-                liteempresa=s.getconexionC();
+                liteempresa = s.getconexionC();
 //                Es igual administrador pero con datos ya establecidos, 
 //                usado mas para rapidez y evitar la consulta a la bd
                 if (a.equals("0605")) {
@@ -2776,7 +2816,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void actualizaempresa() {
         boolean band = checkempresa();
-        
+
         if (!u.getUsuario().equals("")) {
             logint = 1;
             if (u.getTurno().equals("5")) {
@@ -2999,7 +3039,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.setCobranzamaqB(s.getconexionTPU("RACobranzamaq"));
 //                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
-                liteempresa=s1.getconexionC();
+                liteempresa = s1.getconexionC();
                 conexion.setLiteusuario(liteusuario);
                 conexion.setLitecfdi(litecfdi);
                 conexion.setLiteempresa(liteempresa);
@@ -3208,6 +3248,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmCobranzatpu2;
     private javax.swing.JMenuItem JmComisiones;
     private javax.swing.JMenuItem JmComisiones1;
+    private javax.swing.JMenuItem JmComisionesadm;
+    private javax.swing.JMenuItem JmComisionesadm1;
     private javax.swing.JMenu JmConf;
     private javax.swing.JMenuItem JmDevoluciones;
     private javax.swing.JMenuItem JmDevoluciones1;
