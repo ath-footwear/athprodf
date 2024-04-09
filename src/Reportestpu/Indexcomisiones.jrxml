@@ -79,7 +79,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus='1']]>
 	<columnHeader>
 		<band height="33" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="20" width="36" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
+				<reportElement x="0" y="20" width="47" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ref]]></text>
 			</staticText>
@@ -94,9 +94,9 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus='1']]>
 				<text><![CDATA[Dias]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="342" y="20" width="52" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<reportElement x="342" y="7" width="52" height="26" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Importe]]></text>
+				<text><![CDATA[Importe USD]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="477" y="20" width="45" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
@@ -109,7 +109,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus='1']]>
 				<text><![CDATA[S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="36" y="20" width="171" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<reportElement x="47" y="20" width="160" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>

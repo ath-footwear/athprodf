@@ -51,6 +51,8 @@ public class Comisiones extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         pop = new javax.swing.JPopupMenu();
+        JmSingle = new javax.swing.JMenuItem();
+        JmMultiple = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         JtNombre = new javax.swing.JTextField();
@@ -58,6 +60,26 @@ public class Comisiones extends javax.swing.JInternalFrame {
         JlTotal = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+
+        JmSingle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Options_36736.png"))); // NOI18N
+        JmSingle.setText("Todos");
+        JmSingle.setToolTipText("Genera el pago de todos los registros encontrados");
+        JmSingle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmSingleActionPerformed(evt);
+            }
+        });
+        pop.add(JmSingle);
+
+        JmMultiple.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Options_36737.png"))); // NOI18N
+        JmMultiple.setText("Seleccion");
+        JmMultiple.setToolTipText("Genera el pago de acuerdo a los registros seleccionados en la tabla");
+        JmMultiple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmMultipleActionPerformed(evt);
+            }
+        });
+        pop.add(JmMultiple);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -169,6 +191,43 @@ public class Comisiones extends javax.swing.JInternalFrame {
         setrows();
     }//GEN-LAST:event_JtNombreActionPerformed
 
+    private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+        checkseleccion();
+    }//GEN-LAST:event_JtDetalleMousePressed
+
+    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
+        pop.show(evt.getComponent(), evt.getX(), evt.getY());
+    }//GEN-LAST:event_jLabel7MousePressed
+
+    private void JmSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSingleActionPerformed
+        generapagocomision();
+    }//GEN-LAST:event_JmSingleActionPerformed
+
+    private void JmMultipleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMultipleActionPerformed
+        validaseleccion();
+        generapagocomision();
+    }//GEN-LAST:event_JmMultipleActionPerformed
+
+    /**
+     * Funcion para realizar el pago de las comisiones a los agentes
+     */
+    private void generapagocomision() {
+        int input = JOptionPane.showConfirmDialog(null,
+                "Estas seguro/a que quieres realizar el pago al agente?, "
+                + "\n ", "Selecciona una opcion",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (input == 0) {
+            dao_comisiones dc = new dao_comisiones();
+            if (dc.Comisionpagada(cpt, arra)) {
+                JOptionPane.showMessageDialog(null, "Pago realizado con Exito");
+                setrows();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error",
+                        "Pago realizado con Exito", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
     /**
      * Hace la busqueda de registros de acuerdo al turno
      */
@@ -194,6 +253,7 @@ public class Comisiones extends javax.swing.JInternalFrame {
         model.addColumn("Porcentaje");
         model.addColumn("Comision");
         model.addColumn("Estatus");
+        model.addColumn("Seleccion");
         model.setNumRows(arra.size());
         JtDetalle.setModel(model);
         for (int i = 0; i < arra.size(); i++) {
@@ -206,37 +266,55 @@ public class Comisiones extends javax.swing.JInternalFrame {
             model.setValueAt(arra.get(i).getPorcentaje(), i, 5);
             model.setValueAt(arra.get(i).getComision(), i, 6);
             model.setValueAt(estado, i, 7);
+            model.setValueAt("", i, 8);
             pretotal += arra.get(i).getComision();
         }
         Formateodedatos fd = new Formateodedatos();
         JlTotal.setText(fd.formatdecimalv2(pretotal) + "");
     }
 
-    private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-        if (evt.getButton() == 3) {// activar con clic derecho
-            pop.show(evt.getComponent(), evt.getX(), evt.getY());
+    /**
+     * Actualiza la tabla y el total de comision a pagar
+     */
+    private void checkseleccion() {
+        int row = JtDetalle.getSelectedRow();
+        Formateodedatos fd = new Formateodedatos();
+        String sel = JtDetalle.getValueAt(row, 8).toString();
+        total = 0;
+        int pretotal = 0;
+        //Si encunetra el caracter lo marcará como vacio
+        if (sel.equals("*")) {
+            JtDetalle.setValueAt("", row, 8);
+        } else {
+        //Si encuentra como vacio lo marcará como "*"    
+            JtDetalle.setValueAt("*", row, 8);
         }
-    }//GEN-LAST:event_JtDetalleMousePressed
-
-    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
-        int input = JOptionPane.showConfirmDialog(null,
-                "Estas seguro/a que quieres realizar el pago al agente?, "
-                + "\n ", "Selecciona una opcion",
-                JOptionPane.YES_NO_CANCEL_OPTION);
-        if (input == 0) {
-            dao_comisiones dc = new dao_comisiones();
-            if (dc.Comisionpagada(cpt, arra)) {
-                JOptionPane.showMessageDialog(null, "Pago realizado con Exito");
-                setrows();
-            } else {
-                JOptionPane.showMessageDialog(null, "Error",
-                        "Pago realizado con Exito", JOptionPane.ERROR_MESSAGE);
+        for (int i = 0; i < arra.size(); i++) {
+            sel = JtDetalle.getValueAt(i, 8).toString();
+            if (sel.equals("*")) {
+                pretotal += arra.get(i).getComision();
             }
         }
-    }//GEN-LAST:event_jLabel7MousePressed
-
+        //Formatear total y no salga con decimales extra
+        total = fd.formatdecimalv2(pretotal);
+        JlTotal.setText(total + "");
+    }
+    
+    /**
+     * Elimina registros del array y solo tomar los seleccionados
+     */
+    private void validaseleccion(){
+        for (int i = arra.size()-1; i >= 0; i--) {
+            String sel = JtDetalle.getValueAt(i, 8).toString();
+            if (!sel.equals("*")) {
+                arra.remove(i);
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlTotal;
+    private javax.swing.JMenuItem JmMultiple;
+    private javax.swing.JMenuItem JmSingle;
     private javax.swing.JTable JtDetalle;
     public javax.swing.JTextField JtNombre;
     private javax.swing.JLabel jLabel2;

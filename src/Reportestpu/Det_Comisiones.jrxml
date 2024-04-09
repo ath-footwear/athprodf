@@ -46,7 +46,7 @@ order by p.fecha]]>
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="36" height="10" uuid="d529a03b-9d58-4546-a099-92f12c8cd0fa"/>
+				<reportElement x="0" y="0" width="47" height="10" uuid="d529a03b-9d58-4546-a099-92f12c8cd0fa"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="7"/>
 				</textElement>
@@ -88,7 +88,7 @@ order by p.fecha]]>
 				<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="36" y="0" width="171" height="10" uuid="8abf33e0-6d84-4f64-9528-dd6f3fb96b2c"/>
+				<reportElement x="47" y="0" width="160" height="10" uuid="8abf33e0-6d84-4f64-9528-dd6f3fb96b2c"/>
 				<textElement>
 					<font fontName="Calibri" size="7"/>
 				</textElement>
