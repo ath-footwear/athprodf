@@ -992,7 +992,8 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias, es
 //          importante notar que es especial y no normal, por eso cambia el
 //          nombre de la funcion
-        ArrayList<Comision> arrcomision = dc.getcomisiones_Especial(ACobranza, fechasinT(f.getFecha()), referencias());
+        ArrayList<Comision> arrcomision = dc.getcomisiones_Especial(ACobranza, 
+                fechasinT(f.getFecha()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
 //          del indice con el nuevo valor del objeto

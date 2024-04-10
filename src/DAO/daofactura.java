@@ -765,12 +765,31 @@ public class daofactura implements Facturas {
         return sw.actualizasellotpupago_E(cpt, s, id);
     }
 
+    /**
+     * Valida que no haya Documentos dependientes de la factura, solo aplica en
+     * la cancelacio especial
+     *
+     * @param c
+     * @param iddoc
+     * @param serie
+     * @param bd
+     * @return
+     */
     @Override
     public ArrayList<factura> searchPagncrtofac_Especial(Connection c, int iddoc, String serie, String bd) {
         sqlfactura s = new sqlfactura();
         return s.searchPagncrtofac_Especial(c, iddoc, serie, bd);
     }
 
+    /**
+     * Realiza la cancelacion de los registros sobre la factura, solo aplica en
+     * la cancelacion especial
+     *
+     * @param cpt
+     * @param cob
+     * @param f
+     * @return
+     */
     @Override
     public boolean Cancelafactura_Especial(Connection cpt, Connection cob, factura f) {
         sqlfactura s = new sqlfactura();
