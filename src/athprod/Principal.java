@@ -22,6 +22,7 @@ import Panelmaq.Rep_ventaxproducto;
 import Panelmaq.ReporteInventario;
 import Paneltpu.Impresion_etiquetas;
 import Paneltpu.Kardexprod;
+import Paneltpu.RepFacturas;
 import Paneltpu.RepSaldosV;
 import Paneltpu.Rep_Comisiones;
 import Paneltpu.Repauxcliente;
@@ -278,6 +279,7 @@ public final class Principal extends javax.swing.JFrame {
         JmVentaserie3 = new javax.swing.JMenuItem();
         JmKardexprod2 = new javax.swing.JMenuItem();
         JmVentaserie4 = new javax.swing.JMenuItem();
+        JmVentaserie5 = new javax.swing.JMenuItem();
         JmVentaxprod = new javax.swing.JMenuItem();
         JmComisiones = new javax.swing.JMenuItem();
         JmCobranzatpu2 = new javax.swing.JMenu();
@@ -1137,6 +1139,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Jmreportes2.add(JmVentaserie4);
+
+        JmVentaserie5.setText("Reporte de facturas");
+        JmVentaserie5.setToolTipText("");
+        JmVentaserie5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmVentaserie5ActionPerformed(evt);
+            }
+        });
+        Jmreportes2.add(JmVentaserie5);
 
         JmVentaxprod.setText("Reporte de ventas x producto");
         JmVentaxprod.addActionListener(new java.awt.event.ActionListener() {
@@ -2108,10 +2119,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmKardexprodActionPerformed
 
     private void JmVentaserieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserieActionPerformed
-        Ventasserie n = new Ventasserie(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setrepventas();
     }//GEN-LAST:event_JmVentaserieActionPerformed
 
     private void JmPagostpu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu2ActionPerformed
@@ -2390,10 +2398,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmKardexprod2ActionPerformed
 
     private void JmVentaserie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie4ActionPerformed
-        Ventasserie n = new Ventasserie(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setrepventas();
     }//GEN-LAST:event_JmVentaserie4ActionPerformed
 
     private void JmNotascrtpu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrtpu2ActionPerformed
@@ -2613,6 +2618,30 @@ public final class Principal extends javax.swing.JFrame {
     private void JmDescmaquinas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDescmaquinas1ActionPerformed
         setdescmaquinas();
     }//GEN-LAST:event_JmDescmaquinas1ActionPerformed
+
+    private void JmVentaserie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie5ActionPerformed
+        setrepfacts();
+    }//GEN-LAST:event_JmVentaserie5ActionPerformed
+
+        /**
+     * Despliega interfaz para reporte de facturas
+     */
+    private void setrepfacts() {
+        RepFacturas n = new RepFacturas(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }
+    
+    /**
+     * Despliega interfaz para reporte de ventas
+     */
+    private void setrepventas() {
+        Ventasserie n = new Ventasserie(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }
 
     /**
      * Despliega menu de gestion de descripcion de maquinas
@@ -3372,6 +3401,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmVentaserie2;
     private javax.swing.JMenuItem JmVentaserie3;
     private javax.swing.JMenuItem JmVentaserie4;
+    private javax.swing.JMenuItem JmVentaserie5;
     private javax.swing.JMenu JmVentastpu;
     private javax.swing.JMenu JmVentastpu1;
     private javax.swing.JMenuItem JmVentaxprod;

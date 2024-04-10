@@ -1094,6 +1094,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmVentaserie4ActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="JmVentaserie5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reporte de facturas"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmVentaserie5ActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="JmVentaxprod">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reporte de ventas x producto"/>
