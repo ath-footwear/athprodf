@@ -227,6 +227,8 @@ public interface Facturas {
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
 
     public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie, String bd);
+    
+    public ArrayList<factura> searchPagncrtofac_Especial(Connection c, int iddoc, String serie, String bd);
 
     public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
 
@@ -252,4 +254,5 @@ public interface Facturas {
 
     public boolean Cancela_cargoespecial(Connection cob, int cargo);
 
+    public boolean Cancelafactura_Especial(Connection cpt, Connection cob, factura f);
 }

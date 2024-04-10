@@ -109,6 +109,7 @@ public class fac1tpu extends javax.swing.JPanel {
 
         Pop = new javax.swing.JPopupMenu();
         JmPedfac = new javax.swing.JMenuItem();
+        JmCheckcancel = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -128,6 +129,16 @@ public class fac1tpu extends javax.swing.JPanel {
             }
         });
         Pop.add(JmPedfac);
+
+        JmCheckcancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/questionregular_106274.png"))); // NOI18N
+        JmCheckcancel.setText("Verificar cancelacion");
+        JmCheckcancel.setToolTipText("Verifica Status de cancelacion en el SAT");
+        JmCheckcancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCheckcancelActionPerformed(evt);
+            }
+        });
+        Pop.add(JmCheckcancel);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -380,6 +391,7 @@ public class fac1tpu extends javax.swing.JPanel {
         int e = arrfactura.get(row).getEstatus();
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
         String tipo = arrfactura.get(row).getTipofac();
+        String estat = (arrfactura.get(row).getEstatus() == 1) ? "1" : "0";
         //Verifica si esta timbrada
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
@@ -394,8 +406,15 @@ public class fac1tpu extends javax.swing.JPanel {
         } else {
             JbCancelar.setEnabled(false);
             JbCancelar.setToolTipText("No puedes cancelar una factura especial, ve a cargos especiales o dada de baja");
+            JmPedfac.setEnabled(true);
+        }
+        if (estat.equals("1")) {
+            JmCheckcancel.setEnabled(false);
+        } else {
+            JmCheckcancel.setEnabled(true);
             JmPedfac.setEnabled(false);
         }
+
         if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
             JbAddenda.setEnabled(true);
         } else {
@@ -498,68 +517,24 @@ public class fac1tpu extends javax.swing.JPanel {
         String botones[] = {"Aceptar", ""
             + ""
             + "Cancelar"};
-        int opcion = JOptionPane.showOptionDialog(this, "¿Estas seguro que deseas realizar la cancelacion?, \nRecuerda que ya no hay retroceso en este proceso", "ATHLETIC",
+        int opcion = JOptionPane.showOptionDialog(this,
+                "¿Estas seguro que deseas realizar la cancelacion?, \n"
+                + "Recuerda que ya no hay retroceso en este proceso", "ATHLETIC",
                 0, 0, null, botones, this);
         if (opcion == JOptionPane.YES_OPTION) {
-            ArrayList<Ddevolucion> arrd = new ArrayList<>();
-            ArrayList<Ddevolucion> arrdevpedimento = new ArrayList<>();
-            Devolucion dev = new Devolucion();
-            daoDevolucion d = new daoDevolucion();
-            daokardexrcpt dk = new daokardexrcpt();
             int row = JtDetalle.getSelectedRow();
-            boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
-            boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
-            if (!ncr && !pag) {
-                Formateodedatos fort = new Formateodedatos();
-                int rows = d.verificadevs(cpt, "A", arrfactura.get(JtDetalle.getSelectedRow()).getId());
-//                Obtiene el nombre de la bd de cobranza mediante el turno
-                String bd = fort.getbd_tocargo(u.getTurno());
-                String bdcob = bd + ".dbo.Cargo c on doc.folio=c.referencia";
-//                arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
-//                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
-                if (rows != 0) {
-                    arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
-                    arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
-                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
-                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
-                } else {
-                    arrd = d.getpedidocancelsindevfac(cpt, arrfactura.get(row).getId(), "A", bdcob);
-                    dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
-                }
-//                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
-//                } else {
-                daoConceptos dc = new daoConceptos();
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
-                ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
-                dev.setCuenta1(cuentacancel.getId_concepto());
-                dev.setCuenta2(cuentadevstock.getId_concepto());
-                dev.setFecha(sdf.format(date));
-                dev.setId_pedido(arrd.get(0).getId_pedido());
-                dev.setNombre(arrfactura.get(row).getNombre());
-                dev.setId_cliente(arrfactura.get(row).getIdcliente());
-                dev.setSerie("A");
-                dev.setId_cargoenc(arrd.get(0).getId_cargo());
-                dev.setId_dev(arrd.get(0).getId_devolucion());
-                dev.setUsuario(u.getUsuario());
-//                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
-//                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
-                dev.setArr(arrd);
-                if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
-                    Formateo_Nempresas fn= new Formateo_Nempresas();                    
-                    fn.cancelacomision(cpt, dev);
-                    JOptionPane.showMessageDialog(null, "Proceso completo");
-                    Buscanotas();
-                    JtCliente.requestFocus();
-                }
-//                }
+            if (arrfactura.get(row).getTipofac().equals("N")) {
+                ejecutacancelacionnormal();
+            } else {
+                ejecutacancelacionespecial();
             }
         }
     }//GEN-LAST:event_JmPedfacActionPerformed
 
-
+    private void JmCheckcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCheckcancelActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        respcancela(arrfactura.get(row));
+    }//GEN-LAST:event_JmCheckcancelActionPerformed
 
     /**
      * Funcion para corroborar que no haya algun documento relacionado con la
@@ -583,6 +558,33 @@ public class fac1tpu extends javax.swing.JPanel {
                 var += arrf1.getReferencia() + "\n";
             }
             JOptionPane.showMessageDialog(null, "Necesitas cancelar estas " + serie + " para continuar:\n" + var);
+        }
+        return resp;
+    }
+
+    /**
+     * Funcion para corroborar que no haya algun documento especial relacionado
+     * con la factura Que debidamente dedbe ser cancelado
+     *
+     * @param id
+     * @param serie
+     * @return
+     */
+    private boolean getdoccancel_Especial(int id, String serie) {
+        boolean resp = true;
+        daofactura df = new daofactura();
+        Formateodedatos fd = new Formateodedatos();
+        //Necesario, ya que por si hay mas de un turno, manejar distintas bd de acuerdo a ese parametro
+        ArrayList<factura> arrf = df.searchPagncrtofac_Especial(cpt, id, serie, fd.getbd_tocargo(u.getTurno()));
+        if (arrf.isEmpty()) {
+            resp = false;
+        } else {
+            String var = "";
+            for (factura arrf1 : arrf) {
+                var += arrf1.getReferencia() + "\n";
+            }
+            JOptionPane.showMessageDialog(null,
+                    "Necesitas cancelar estas " + serie + " para continuar:\n" + var);
         }
         return resp;
     }
@@ -615,42 +617,6 @@ public class fac1tpu extends javax.swing.JPanel {
         daoempresa d = new daoempresa();
         Empresas e = d.getempresarfc(c, n);
         return e.getXml();
-    }
-
-    /**
-     *
-     * @param tipo
-     * @param cant
-     *
-     * @return
-     */
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp = 0;
-        String c = String.valueOf(cant);
-        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-                    i = c.length();
-                    break;
-                }
-                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
     }
 
     private void setreport() {
@@ -704,20 +670,22 @@ public class fac1tpu extends javax.swing.JPanel {
         }
     }
 
-    private void respcancela() {
-        factura fac = new factura();
-        daofactura df = new daofactura();
-//                Asigna valores de folio y fecha de cancelacion
-        fac.setFolio(arrfactura.get(0).getFolio());
-        fac.setFechacancel("");
-//                MOvimientos en la bd para cancelacion de la factura
-        df.cancelafac(cpt, rcpt, ACobranza, fac);
-        String tim = (arrfactura.get(0).getFoliofiscal().equals("")) ? "N" : "T";
+    /**
+     * Funcion para cancelacion en el sat
+     *
+     * @param f
+     */
+    private void respcancela(factura f) {
+        String tim = (f.getFoliofiscal().equals("")) ? "N" : "T";
 //                Aplica solo si esta timbrada sino solo se da de baja en la bd
         if (tim.equals("T")) {
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            String n = fn.getEmpresa(u.getTurno(), "");
             timbrarXML t = new timbrarXML();
-            String resp = t.cancelarfolio("FAC_" + arrfactura.get(0).getFolio(), sqlempresa, n, arrfactura.get(0).getFoliofiscal());
+            String resp = t.cancelarfolio("FAC_" + f.getFolio(), sqlempresa, n, f.getFoliofiscal());
+//            System.out.println(resp);
+            JOptionPane.showMessageDialog(null,resp,"Respuesta SAT"
+                    ,JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -801,10 +769,83 @@ public class fac1tpu extends javax.swing.JPanel {
         return resp;
     }
 
+    private void ejecutacancelacionnormal() {
+        ArrayList<Ddevolucion> arrd = new ArrayList<>();
+        ArrayList<Ddevolucion> arrdevpedimento = new ArrayList<>();
+        Devolucion dev = new Devolucion();
+        daoDevolucion d = new daoDevolucion();
+        daokardexrcpt dk = new daokardexrcpt();
+        int row = JtDetalle.getSelectedRow();
+        //Se busca si hay notas de credito y complementos que dependan de la factura
+        boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
+        boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
+        if (!ncr && !pag) {
+            Formateodedatos fort = new Formateodedatos();
+            int rows = d.verificadevs(cpt, "A", arrfactura.get(JtDetalle.getSelectedRow()).getId());
+//                Obtiene el nombre de la bd de cobranza mediante el turno
+            String bd = fort.getbd_tocargo(u.getTurno());
+            String bdcob = bd + ".dbo.Cargo c on doc.folio=c.referencia";
+//                arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
+//                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
+            if (rows != 0) {
+                arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
+                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
+                dev.setId_kardex(dk.maxkardexsincuenta(cpt));
+                dev.setId_kardexnuevo(dev.getId_kardex() + 1);
+            } else {
+                arrd = d.getpedidocancelsindevfac(cpt, arrfactura.get(row).getId(), "A", bdcob);
+                dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
+            }
+//                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
+//                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
+//                } else {
+            daoConceptos dc = new daoConceptos();
+            java.util.Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
+            ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
+            dev.setCuenta1(cuentacancel.getId_concepto());
+            dev.setCuenta2(cuentadevstock.getId_concepto());
+            dev.setFecha(sdf.format(date));
+            dev.setId_pedido(arrd.get(0).getId_pedido());
+            dev.setNombre(arrfactura.get(row).getNombre());
+            dev.setId_cliente(arrfactura.get(row).getIdcliente());
+            dev.setSerie("A");
+            dev.setId_cargoenc(arrd.get(0).getId_cargo());
+            dev.setId_dev(arrd.get(0).getId_devolucion());
+            dev.setUsuario(u.getUsuario());
+//                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
+//                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
+            dev.setArr(arrd);
+            //Ejecuta procedimientos para la cancelacion y devolucion de stock
+            if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
+                Formateo_Nempresas fn = new Formateo_Nempresas();
+                fn.cancelacomision(cpt, dev);
+                JOptionPane.showMessageDialog(null, "Proceso completo");
+                respcancela(arrfactura.get(row));
+                Buscanotas();
+                JtCliente.requestFocus();
+            }
+//                }
+        }
+    }
+
+    private void ejecutacancelacionespecial() {
+        int row = JtDetalle.getSelectedRow();
+        boolean ncr = getdoccancel_Especial(arrfactura.get(row).getId(), "NCR");
+        boolean pag = getdoccancel_Especial(arrfactura.get(row).getId(), "PAG");
+        if (!ncr && !pag) {
+            daofactura df = new daofactura();
+            if (df.Cancelafactura_Especial(cpt, ACobranza, arrfactura.get(row))) {
+                respcancela(arrfactura.get(row));
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbAddenda;
     private javax.swing.JButton JbCancelar;
     private javax.swing.JButton JbXml;
+    private javax.swing.JMenuItem JmCheckcancel;
     private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;

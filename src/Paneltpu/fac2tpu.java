@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -875,7 +876,9 @@ public class fac2tpu extends javax.swing.JPanel {
                 int row = 0;
                 String condicion;
                 java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                //Prueba de Locale en la fecha para cambios de horario
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",
+                        Locale.getDefault());
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 Formateodedatos fd = new Formateodedatos();

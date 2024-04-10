@@ -765,4 +765,16 @@ public class daofactura implements Facturas {
         return sw.actualizasellotpupago_E(cpt, s, id);
     }
 
+    @Override
+    public ArrayList<factura> searchPagncrtofac_Especial(Connection c, int iddoc, String serie, String bd) {
+        sqlfactura s = new sqlfactura();
+        return s.searchPagncrtofac_Especial(c, iddoc, serie, bd);
+    }
+
+    @Override
+    public boolean Cancelafactura_Especial(Connection cpt, Connection cob, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.Cancelafactura_Especial(cpt, cob, f);
+    }
+
 }
