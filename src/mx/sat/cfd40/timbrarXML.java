@@ -37,7 +37,7 @@ public class timbrarXML {
     private String estado = "";
     private String estatustim = "";
     Sellofiscal s = new Sellofiscal();
-    boolean produccion = false;
+    boolean produccion = true;
     String user = "testing@solucionfactible.com";
     String pass = "timbrado.SF.16672";
 
@@ -302,6 +302,10 @@ public class timbrarXML {
             //Bd de empresas y directorios
             daoempresa d = new daoempresa();
             Empresas e = d.getempresarfc(c, nempresa);
+            if (produccion) {// solo lo tomara 
+                user = e.getUsuariopac();
+                pass = e.getPasspac();
+            }
             Timbrado timbrado = new Timbrado();
             String[] arruuid = {uuidd + "|03|"};
             CFDICancelacion a = timbrado.cancelar(user, pass, arruuid, e.getCertificado(), e.getKey(), e.getPass(), produccion);
