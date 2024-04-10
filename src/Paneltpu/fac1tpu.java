@@ -75,16 +75,12 @@ public class fac1tpu extends javax.swing.JPanel {
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt;
-    Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<factura> arrfactura = new ArrayList<>();
     ArrayList<factura> arrfacturaxml = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
-    int estado = 0;
-    int ciudad = 0;
-    int pais = 0;
     public Usuarios u;
 
     /**
@@ -453,8 +449,6 @@ public class fac1tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JbCancelarActionPerformed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
-
-//        System.out.println("Leeyendo XML");
         try {
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             daoempresa d = new daoempresa();
@@ -589,6 +583,10 @@ public class fac1tpu extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Agrega la adenda a la factura, cabe resaltar que hay que revisar la clase
+     * encargada del llenado de la misma
+     */
     private void generaradenda() {
         if (!arrfactura.isEmpty()) {
             String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
@@ -619,6 +617,9 @@ public class fac1tpu extends javax.swing.JPanel {
         return e.getXml();
     }
 
+    /**
+     * Genera reporte de la factura seleccionada
+     */
     private void setreport() {
         try {
             daoempresa d = new daoempresa();
@@ -671,7 +672,8 @@ public class fac1tpu extends javax.swing.JPanel {
     }
 
     /**
-     * Funcion para cancelacion en el sat
+     * Funcion para cancelacion en el sat, debe de estar timbrada si no, no
+     * ejecuta la funcion de cancelar de la clase timbrado
      *
      * @param f
      */
@@ -684,31 +686,10 @@ public class fac1tpu extends javax.swing.JPanel {
             timbrarXML t = new timbrarXML();
             String resp = t.cancelarfolio("FAC_" + f.getFolio(), sqlempresa, n, f.getFoliofiscal());
 //            System.out.println(resp);
-            JOptionPane.showMessageDialog(null,resp,"Respuesta SAT"
-                    ,JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, resp, "Respuesta SAT",
+                    JOptionPane.INFORMATION_MESSAGE);
+            Buscanotas();
         }
-    }
-
-    private String getnmetodo(String m) {
-        String r = "";
-        for (int i = 0; i < arrmetodo.size(); i++) {
-            if (m.equals(arrmetodo.get(i).getMetodopago())) {
-                r = arrmetodo.get(i).getDescripcion();
-                break;
-            }
-        }
-        return r;
-    }
-
-    private String getnuso(String m) {
-        String r = "";
-        for (int i = 0; i < arruso.size(); i++) {
-            if (m.equals(arruso.get(i).getusocfdi())) {
-                r = arruso.get(i).getDescripcion();
-                break;
-            }
-        }
-        return r;
     }
 
 //    Busca las facturas que encuentre
@@ -719,6 +700,9 @@ public class fac1tpu extends javax.swing.JPanel {
         generatabla();
     }
 
+    /**
+     * Genera la tabla con la informacion de las facturas normales y especiales
+     */
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Folio");
@@ -758,17 +742,12 @@ public class fac1tpu extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
-
+    /**
+     * Funcion para realizar la validacion, cancelacion de factura en la bd y
+     * ejecucion de cancelacion en el sat, PD. Solo aplica para facturas
+     * normales La validacion requiere que no se tengan documentos dependientes
+     * de la factura
+     */
     private void ejecutacancelacionnormal() {
         ArrayList<Ddevolucion> arrd = new ArrayList<>();
         ArrayList<Ddevolucion> arrdevpedimento = new ArrayList<>();
@@ -830,6 +809,12 @@ public class fac1tpu extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Funcion para realizar la validacion, cancelacion de factura en la bd y
+     * ejecucion de cancelacion en el sat, PD. Solo aplica para facturas
+     * especiales. La validacion requiere que no se tengan documentos
+     * dependientes de la factura
+     */
     private void ejecutacancelacionespecial() {
         int row = JtDetalle.getSelectedRow();
         boolean ncr = getdoccancel_Especial(arrfactura.get(row).getId(), "NCR");

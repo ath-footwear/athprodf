@@ -359,9 +359,9 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select folio,serie,a.referencia\n"
+            String sql = "select folio,d.serie,a.referencia\n"
                     + "from documento d\n"
-                    + "join " + bd + ".dbo.cargoespecial c on d.folio=c.referencia\n"
+                    + "join " + bd + ".dbo.cargoespecial c on d.folio=c.referenciadoc\n"
                     + "join " + bd + ".dbo.abonoespecial a on c.id_cargo=a.id_cargo\n"
                     + "where d.id_documento=" + iddoc + " and a.referencia like '%" + serie + "%' and a.estatus='1'";
             System.out.println(sql);
