@@ -18,7 +18,7 @@ from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
 join abono a on a.id_cargo=c.id_cargo
 join Catcuenta cu on a.id_concepto=cu.id_concepto
-where c.id_cargo=$P{cargo}
+where c.id_cargo=$P{cargo} and a.estatus='1'
 order by cli.nombre]]>
 	</queryString>
 	<field name="id_cargo" class="java.lang.Integer"/>

@@ -26,4 +26,6 @@ public interface materiales {
     public boolean deletemat(Connection cpt, int material);
 
     public boolean modmaterial(Connection cpt, Connection rcpt, Materiales m);
+    
+    public boolean check_nserie(Connection cpt, Materiales m);
 }

@@ -23,7 +23,7 @@ public class daomateriales implements materiales {
     }
 
     @Override
-    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat,String turno) {
+    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat, String turno) {
         sqlmaterial s = new sqlmaterial();
         return s.getallMaterials(rcpt, mat, turno);
     }
@@ -49,6 +49,19 @@ public class daomateriales implements materiales {
     public ArrayList<Materiales> getmaterialesmaq(Connection rcpt, String mat) {
         sqlmaterial s = new sqlmaterial();
         return s.getallMaterialsmaq(rcpt, mat);
+    }
+
+    /**
+     * Valida si el numero de serie esta dado de alta o no de acuerdo al modelo
+     *
+     * @param cpt
+     * @param m
+     * @return
+     */
+    @Override
+    public boolean check_nserie(Connection cpt, Materiales m) {
+        sqlmaterial s = new sqlmaterial();
+        return s.check_nserie(cpt, m);
     }
 
 }

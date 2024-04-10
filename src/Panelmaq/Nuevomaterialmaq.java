@@ -10,6 +10,7 @@ import DAO.daofamilias;
 import DAO.daomateriales;
 import Modelo.Claveprov;
 import Modelo.Familia;
+import Modelo.Formateodedatos;
 import Modelo.Materiales;
 import Modelo.Unidades;
 import athprod.Fichatecnica;
@@ -34,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -532,43 +534,9 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        if (!verificafloat(JtPrecio.getText())) {
-            JOptionPane.showMessageDialog(null, "Ingrese un numero valido");
-            JtPrecio.setText("");
-            JtPrecio.requestFocus();
-        } else {
-            daomateriales dm = new daomateriales();
-            Materiales m = new Materiales();
-            String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
-            String claveprod = (JtCodigo.getText().equals("")) ? ""
-                    : arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
-            String tipo = arrtipo.get(JcTipo.getSelectedIndex());
-            m.setDescripcion(JtMaterial.getText().toUpperCase());
-            m.setPrecio(Double.parseDouble(JtPrecio.getText()));
-            m.setUnidad(unidad);
-            m.setCodigosat(claveprod);
-            m.setNoserie(JtNoserie.getText().toUpperCase());
-            m.setMoneda(JcMoneda.getSelectedItem().toString());
-            m.setTipo_maquina(tipo);
-            m.setImag1("C:\\af\\prod\\maquinas\\" + ((n1.equals("")) ? "whitefont.png" : n1));
-            m.setImag2("C:\\af\\prod\\maquinas\\" + ((n2.equals("")) ? "whitefont.png" : n2));
-            m.setImag3("C:\\af\\prod\\maquinas\\" + ((n3.equals("")) ? "whitefont.png" : n3));
-            m.setId_familia(arrfam.get(JcFamilia.getSelectedIndex()).getId_familia());
-            if (dm.nuevomatmaq(cpt, m)) {
-                JOptionPane.showMessageDialog(null, "Alta de producto Completo");
-                copyfile();
-                //Valida que el check para que los datos de los campos no se limpien
-                if (!JcInfo.isSelected()) {
-                    limpiar();
-                }
-                JtMaterial.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al dar de alta material, intentelo de nuevo");
-                JtMaterial.setText("");
-                JtMaterial.requestFocus();
-            }
+        if(validacampos()){
+         setmaterial();
         }
-
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void limpiar() {
@@ -601,7 +569,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNoserieMousePressed
 
     private void JtNoserieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNoserieActionPerformed
-        JtPrecio.requestFocus();
+        checknoserie();
     }//GEN-LAST:event_JtNoserieActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -633,6 +601,13 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Asigna en variable la ruta de la imagen
+     *
+     * @param imag
+     * @param nombre
+     * @return
+     */
     private String imagen(JLabel imag, String nombre) {
         String archivo = "";
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -668,6 +643,9 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         return archivo;
     }
 
+    /**
+     * Copia el archivo seleccionado a la ruta raiz del sistema
+     */
     private void copyfile() {
         try {
 //           Verifica que el nombre de la imagen sea distinta a vacio para poder hacer la copia
@@ -693,6 +671,9 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Obtiene la lista de claves de producto del catalogo del SAT
+     */
     private void getprov() {
         DefaultListModel<String> model = new DefaultListModel<>();
         daocfdi d = new daocfdi();
@@ -733,6 +714,93 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
             resp = true;
         }
         return resp;
+    }
+
+    /**
+     * Funcion que valida que el numero de serie y modelono sean repetidos
+     *
+     * @return
+     */
+    private boolean checknoserie() {
+        daomateriales dm = new daomateriales();
+        Materiales m = new Materiales();
+        m.setDescripcion(JtMaterial.getText());
+        m.setNoserie(JtNoserie.getText());
+        if (dm.check_nserie(cpt, m)) {
+            JOptionPane.showMessageDialog(null,
+                    "El numero de serie se ha duplicado intento con otro o verifique su informacion ",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            JtPrecio.requestFocus();
+            return true;
+        }
+    }
+
+    /**
+     * Validacion restante y asignacion de valores para dar de alta el material
+     */
+    private void setmaterial() {
+        if (!verificafloat(JtPrecio.getText())) {
+            JOptionPane.showMessageDialog(null, "Ingrese un numero valido");
+            JtPrecio.setText("");
+            JtPrecio.requestFocus();
+        } else {
+            daomateriales dm = new daomateriales();
+            Materiales m = new Materiales();
+            String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
+            String claveprod = (JtCodigo.getText().equals("")) ? ""
+                    : arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
+            String tipo = arrtipo.get(JcTipo.getSelectedIndex());
+            m.setDescripcion(JtMaterial.getText().toUpperCase());
+            m.setPrecio(Double.parseDouble(JtPrecio.getText()));
+            m.setUnidad(unidad);
+            m.setCodigosat(claveprod);
+            m.setNoserie(JtNoserie.getText().toUpperCase());
+            m.setMoneda(JcMoneda.getSelectedItem().toString());
+            m.setTipo_maquina(tipo);
+            m.setImag1("C:\\af\\prod\\maquinas\\" + ((n1.equals("")) ? "whitefont.png" : n1));
+            m.setImag2("C:\\af\\prod\\maquinas\\" + ((n2.equals("")) ? "whitefont.png" : n2));
+            m.setImag3("C:\\af\\prod\\maquinas\\" + ((n3.equals("")) ? "whitefont.png" : n3));
+            m.setId_familia(arrfam.get(JcFamilia.getSelectedIndex()).getId_familia());
+            if (dm.nuevomatmaq(cpt, m)) {
+                JOptionPane.showMessageDialog(null, "Alta de producto Completo");
+                copyfile();
+                //Valida que el check para que los datos de los campos no se limpien
+                if (!JcInfo.isSelected()) {
+                    limpiar();
+                }
+                JtMaterial.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al dar de alta material, intentelo de nuevo");
+                JtMaterial.setText("");
+                JtMaterial.requestFocus();
+            }
+        }
+    }
+
+    private boolean validacampos() {
+        return (subvalidacion(JtMaterial) && subvalidacion(JtNoserie));
+    }
+
+    /**
+     * Funcion para validar el Jtext individual, y si hay error mandarlo al
+     * campo al cual tiene error
+     *
+     * @param jt
+     * @return
+     */
+    private boolean subvalidacion(JTextField jt) {
+        Formateodedatos fd = new Formateodedatos();
+        if (!fd.verificaStringsSC(jt.getText()) || jt.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El valor introducido no es valido"
+                    + ", intentelo de nuevo");
+            jt.requestFocus();
+            jt.setText(n1);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
