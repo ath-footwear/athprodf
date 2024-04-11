@@ -8,7 +8,12 @@ package testclass;
 import Modelo.Formateodedatos;
 import Modelo.cargo;
 import Modelo.convertirNumeros;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,8 +28,9 @@ public class Testformatos {
         //Formateodedatos fort= new Formateodedatos();
 //        t.folios();
 //        t.fechasinT("2024-01-15T13:12:05");
-        convertirNumeros n = new convertirNumeros();
-        System.out.println(n.Convertir("8800000", true, "MXN"));
+//        convertirNumeros n = new convertirNumeros();
+//        System.out.println(n.Convertir("8800000", true, "MXN"));
+        
 
     }
 
@@ -72,17 +78,17 @@ public class Testformatos {
         }
         System.out.println(ref);
     }
-    
-        private String fechasinT(String fecha) {
-        String resp="";
-        for(int i=0;i<fecha.length();i++){
-            if(fecha.charAt(i)=='T'){
-                resp+=' ';
-            }else{
-                resp+=fecha.charAt(i)+"";
+
+    private String fechasinT(String fecha) {
+        String resp = "";
+        for (int i = 0; i < fecha.length(); i++) {
+            if (fecha.charAt(i) == 'T') {
+                resp += ' ';
+            } else {
+                resp += fecha.charAt(i) + "";
             }
         }
-            System.out.println(resp);
+        System.out.println(resp);
         return resp;
     }
 

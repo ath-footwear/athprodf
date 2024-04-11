@@ -9,9 +9,14 @@ import DAO.daodurezas;
 import Modelo.Dureza;
 import java.io.IOException;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -53,6 +58,7 @@ public class Pantavance extends javax.swing.JInternalFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         Pane = new javax.swing.JEditorPane();
+        jLabel1 = new javax.swing.JLabel();
 
         JmBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
         JmBaja.setText("Dar de baja");
@@ -101,6 +107,13 @@ public class Pantavance extends javax.swing.JInternalFrame {
 
         jScrollPane1.setViewportView(Pane);
 
+        jLabel1.setText("jLabel1");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,7 +123,9 @@ public class Pantavance extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(JtMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                     .addComponent(jSeparator2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(271, 271, 271))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1244, Short.MAX_VALUE)
@@ -120,7 +135,9 @@ public class Pantavance extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JtMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JtMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -141,7 +158,7 @@ public class Pantavance extends javax.swing.JInternalFrame {
 
     private void setrows() {
         daodurezas d = new daodurezas();
-        arrdureza=d.getalldurezas(cpt, JtMaterial.getText());
+        arrdureza = d.getalldurezas(cpt, JtMaterial.getText());
         settable();
     }
 
@@ -149,10 +166,10 @@ public class Pantavance extends javax.swing.JInternalFrame {
         try {
             Pane.setEditable(false);
             Pane.setPage("http://192.168.6.8:85/Avances/index.jsp");
-            Pane.addHyperlinkListener(new HyperlinkListener(){
+            Pane.addHyperlinkListener(new HyperlinkListener() {
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED){
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                         try {
                             Pane.setPage(e.getURL());
                         } catch (IOException ex) {
@@ -161,7 +178,7 @@ public class Pantavance extends javax.swing.JInternalFrame {
                     }
                 }
             });
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Pantavance.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -176,6 +193,24 @@ public class Pantavance extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_JmAltaActionPerformed
 
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault());
+        Date now = new Date();
+        String dateNow = dateFormat.format(now);
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("ddMMyyyy_HHmmss");
+        String dateNow1 = dateFormat1.format(now);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT-6"));
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault());
+        String dateNow2 = dateFormat2.format(now);
+        SimpleDateFormat dateFormat3 = new SimpleDateFormat("ddMMyyyy_HHmmss");
+        String dateNow3 = dateFormat3.format(now);
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Mexico_City"));
+        SimpleDateFormat dateFormat4 = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault());
+        String dateNow4 = dateFormat4.format(now);
+        SimpleDateFormat dateFormat5 = new SimpleDateFormat("ddMMyyyy_HHmmss");
+        String dateNow5 = dateFormat5.format(now);
+        JOptionPane.showMessageDialog(null, dateNow + "\n " + dateNow1 + "\n " + dateNow2 + "\n " + dateNow3 + "\n "+ dateNow4 + "\n "+ dateNow5 + "\n ");
+    }//GEN-LAST:event_jLabel1MousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -183,6 +218,7 @@ public class Pantavance extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem JmBaja;
     public javax.swing.JTextField JtMaterial;
     private javax.swing.JEditorPane Pane;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu pop;
