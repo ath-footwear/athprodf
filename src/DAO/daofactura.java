@@ -796,4 +796,19 @@ public class daofactura implements Facturas {
         return s.Cancelafactura_Especial(cpt, cob, f);
     }
 
+    /**
+     * Actualiza los datos de la tabla de documento por si el cliente durante el
+     * proceso de facturacion o desconocimiento sufrio algun cambio fiscal
+     *
+     * @param con
+     * @param c
+     * @param id_documento
+     * @return
+     */
+    @Override
+    public boolean updateclientefacv2_TPU(Connection con, Cliente c, int id_documento) {
+        sqlfactura s = new sqlfactura();
+        return s.updateclientedoc_TPU(con, c, id_documento);
+    }
+
 }

@@ -7,6 +7,7 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daoAddenda;
+import DAO.daoClientes;
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
 import DAO.daocfdi;
@@ -15,6 +16,7 @@ import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daoxmltpu;
 import Modelo.Addenda;
+import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Corridaaddenda;
 import Modelo.Ddevolucion;
@@ -106,6 +108,7 @@ public class fac1tpu extends javax.swing.JPanel {
         Pop = new javax.swing.JPopupMenu();
         JmPedfac = new javax.swing.JMenuItem();
         JmCheckcancel = new javax.swing.JMenuItem();
+        Jmupdatecliente = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -135,6 +138,16 @@ public class fac1tpu extends javax.swing.JPanel {
             }
         });
         Pop.add(JmCheckcancel);
+
+        Jmupdatecliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/web_ui_complain_icon_233617.png"))); // NOI18N
+        Jmupdatecliente.setText("Actualiza cliente");
+        Jmupdatecliente.setToolTipText("Actualiza datos fiscales del cliente");
+        Jmupdatecliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmupdateclienteActionPerformed(evt);
+            }
+        });
+        Pop.add(Jmupdatecliente);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -399,10 +412,12 @@ public class fac1tpu extends javax.swing.JPanel {
             JbCancelar.setEnabled(true);
             JbCancelar.setToolTipText("Puedes realizar la cancelacion");
             JmPedfac.setEnabled(true);
+            Jmupdatecliente.setEnabled(true);
         } else {
             JbCancelar.setEnabled(false);
             JbCancelar.setToolTipText("No puedes cancelar una factura especial, ve a cargos especiales o dada de baja");
             JmPedfac.setEnabled(true);
+            Jmupdatecliente.setEnabled(false);
         }
         if (estat.equals("1")) {
             JmCheckcancel.setEnabled(false);
@@ -529,6 +544,10 @@ public class fac1tpu extends javax.swing.JPanel {
         int row = JtDetalle.getSelectedRow();
         respcancela(arrfactura.get(row));
     }//GEN-LAST:event_JmCheckcancelActionPerformed
+
+    private void JmupdateclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmupdateclienteActionPerformed
+        setmod();
+    }//GEN-LAST:event_JmupdateclienteActionPerformed
 
     /**
      * Funcion para corroborar que no haya algun documento relacionado con la
@@ -826,12 +845,31 @@ public class fac1tpu extends javax.swing.JPanel {
             }
         }
     }
+
+    /**
+     * Actualiza la tabla de documento por si el cliente tuvo algun cambio
+     * fiscal
+     */
+    private void setmod() {
+        int row = JtDetalle.getSelectedRow();
+        daofactura df = new daofactura();
+        daoClientes dc = new daoClientes();
+        Cliente c = dc.getClientetpu(ACobranza, arrfactura.get(row).getIdcliente());
+        if (df.updateclientefacv2_TPU(cpt, c, arrfactura.get(row).getId())) {
+            JOptionPane.showMessageDialog(null, "Modificacion completa  ");
+            Buscanotas();
+            JtCliente.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbAddenda;
     private javax.swing.JButton JbCancelar;
     private javax.swing.JButton JbXml;
     private javax.swing.JMenuItem JmCheckcancel;
     private javax.swing.JMenuItem JmPedfac;
+    private javax.swing.JMenuItem Jmupdatecliente;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;

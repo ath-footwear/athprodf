@@ -166,11 +166,9 @@ public class sqlcargos {
         double saldo = 0;
         try {
             String sql = "select isnull(sum(c.saldomx),0) as saldo,\n"
-                    + "isnull((select sum(saldo) as saldoint from cargoespecial "
-                    + "where (saldo!=0 or saldomx!=0) and estatus='1' and id_cliente="+cliente+"),0) as saldoesp,\n"
                     + "isnull((select sum(saldomx) as saldoint \n"
-                    + "from "+bd+".dbo.cargo where (saldo!=0 or saldomx!=0) and "
-                    + "estatus='1' and id_cliente="+cliente+") ,0)as saldoint\n"
+                    + "from " + bd + ".dbo.cargo where (saldo!=0 or saldomx!=0) and "
+                    + "estatus='1' and id_cliente=" + cliente + ") ,0)as saldoint\n"
                     + "from cargo c\n"
                     + "where (c.saldo!=0 or c.saldomx!=0) and c.estatus='1' and c.id_cliente=" + cliente;
             PreparedStatement st;
@@ -178,8 +176,7 @@ public class sqlcargos {
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-                saldo = rs.getDouble("saldo") + rs.getDouble("saldoesp")
-                        + rs.getDouble("saldoint");
+                saldo = rs.getDouble("saldo") + rs.getDouble("saldoint");
             }
             rs.close();
             st.close();
@@ -188,5 +185,4 @@ public class sqlcargos {
         }
         return saldo;
     }
-
 }

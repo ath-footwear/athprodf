@@ -4643,11 +4643,11 @@ public class sqlfactura {
             sql = "insert into Documento(id_cliente,id_agente,usuario,pedidos,folio,serie,fecha,condicion"
                     + ",tipodoc,descuento,subtotal,impuestos,total,nombre,rfc,cp,regimen,metodopago,formapago,"
                     + "descmetodopago,lugarexp,observaciones,totalcajas,moneda,tipocambio,usocfdi,estatus) "
-                    + "values (" + idcliente + "," + agente + ",'" + usuario + "','" + pedido + "'," + fol + ",'" 
+                    + "values (" + idcliente + "," + agente + ",'" + usuario + "','" + pedido + "'," + fol + ",'"
                     + serie + "','" + fecha + "','" + cond + "','" + tipodoc + "',"
-                    + desc + "," + subtotal + "," + imp + "," + total + ",'" 
+                    + desc + "," + subtotal + "," + imp + "," + total + ",'"
                     + nombre + "','" + rfc + "','" + cp + "','" + regimen + "','" + mpago + "','"
-                    + fpago + "','" + descmpago + "','" + Lugar + "','" 
+                    + fpago + "','" + descmpago + "','" + Lugar + "','"
                     + obs + "',0,'" + mon + "'," + tipoc + ",'" + uso + "','1')";
 //            System.out.println("documentos " + sql);
             st = con.prepareStatement(sql);
@@ -4672,7 +4672,7 @@ public class sqlfactura {
                     + "ncliente,observaciones,fechavencimiento,fechacargo,referenciadoc) "
                     + "values(" + agente + ",1," + idcliente + ",'FAC_" + fol + "','" + fecha + "',"
                     + total + "," + total + "," + total + "," + saldomx + "," + turno + ",0,"
-                    + plazo + ",0,'1','A','" + nombre + "','" + obs + "','" + fechav + "','" + fecha + "','"+fol+"')";
+                    + plazo + ",0,'1','A','" + nombre + "','" + obs + "','" + fechav + "','" + fecha + "','" + fol + "')";
 //            System.out.println("cargos " + sql);
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();
@@ -4691,7 +4691,7 @@ public class sqlfactura {
                 double descu = arr.getDescuento();
 
                 sql = "insert into Ddocumento(id_documento,id_material,descripcion,cantidad,precio,base,impuestos,descuento,iva,unidad,codigosat) "
-                        + "values(" + docu + "," + prod + ",'" + des + "'," + c + "," 
+                        + "values(" + docu + "," + prod + ",'" + des + "'," + c + ","
                         + precio + "," + b + "," + impo + "," + descu + ",'16','" + med + "','" + cod + "')";
 //                System.out.println("ddocs " + sql);
                 st = con.prepareStatement(sql);
@@ -4716,7 +4716,7 @@ public class sqlfactura {
                 String mext = f.getArrpolizas().get(x).getMext();
                 int ord = f.getArrpolizas().get(x).getOrden();
                 sql = "insert into dpolizas values(" + cuenta + "," + sub + ",'" + fechas + "','" + fo + "',"
-                        + cliente + ",'" + ident + "','" + cuental + "','" + ref + "','" 
+                        + cliente + ",'" + ident + "','" + cuental + "','" + ref + "','"
                         + t + "','" + imps + "','000','" + mext + "','" + concep + "'," + ord + ",'" + Acum + "')";
 //                System.out.println("polizas " + sql);
                 st = cobranza.prepareStatement(sql);
@@ -4783,6 +4783,40 @@ public class sqlfactura {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean updateclientedoc_TPU(Connection c, Cliente cl, int id) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String n = cl.getNombre();
+            String rfc = cl.getRfc();
+            String cp = cl.getCp();
+            String reg = cl.getRegimen();
+            String sql = "update documento set nombre=?, rfc=?, cp=?, regimen=?  "
+                    + "where id_documento=?";
+//            System.out.println("update cliente " + sql);
+            st = c.prepareStatement(sql);
+            st.setString(1, n);
+            st.setString(2, rfc);
+            st.setString(3, cp);
+            st.setString(4, reg);
+            st.setInt(5, id);
+            st.executeUpdate();
+            c.commit();
+            st.close();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+                JOptionPane.showMessageDialog(null, ex1);
             }
             return false;
         }

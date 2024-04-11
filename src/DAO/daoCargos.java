@@ -76,7 +76,7 @@ public class daoCargos implements Cargos {
 
     /**
      * Busca todos los cargos pendientes del cliente de acuerdo a la conexion
-     * y bd
+     * y bd, Solo normal
      * @param c conexion cobranza
      * @param id_cliente id del cliente
      * @param bd puede ser cargo o cargoespecial
