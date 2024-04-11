@@ -57,7 +57,7 @@ public class sqlclientes {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
     }
@@ -96,7 +96,7 @@ public class sqlclientes {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
     }
@@ -141,7 +141,7 @@ public class sqlclientes {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
     }
@@ -173,7 +173,7 @@ public class sqlclientes {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return c;
     }
@@ -195,7 +195,7 @@ public class sqlclientes {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return c;
     }
@@ -219,10 +219,11 @@ public class sqlclientes {
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
-            sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad,plazo) "
+            sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,"
+                    + "calle,colonia,pais,estado,regimen,estatus,ciudad,plazo, credito) "
                     + "values(" + cli.getCvecliente() + "," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
                     + cli.getCp() + "','" + cli.getNombre() + "','" + cli.getUsocfdi() + "','" + cli.getCalle() + "','" + cli.getColonia() + "','"
-                    + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "',30)";
+                    + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "',30,0)";
 //            System.out.println(sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
@@ -340,6 +341,28 @@ public class sqlclientes {
             }
             return false;
         }
+    }
+
+    public boolean exist_cliente(Connection con, Cliente c) {//cobranza
+        boolean flag = false;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_cliente\n"
+                    + "from cliente\n"
+                    + "where id_cliente=?");
+            st.setInt(1, c.getCvecliente());
+            rs = st.executeQuery();
+            while (rs.next()) {
+                flag = true;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            flag = false;
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
     }
 
 }

@@ -11,13 +11,26 @@ import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import Paneles.fac1;
 import Paneltpu.ClienteUpdate;
 import Paneltpu.Clientetpu1;
 import Paneltpu.Clientetpu2;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -70,6 +83,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         JlCliente = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
@@ -138,6 +152,15 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
+        jLabel6.setToolTipText("Reporte de clientes");
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel6MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -145,23 +168,27 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel2)
-                .addGap(124, 124, 124)
+                .addGap(103, 103, 103)
                 .addComponent(jLabel3)
-                .addGap(124, 124, 124)
+                .addGap(113, 113, 113)
                 .addComponent(jLabel4)
-                .addGap(117, 117, 117)
+                .addGap(84, 84, 84)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -328,7 +355,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Cliente arr1 : arr) {
-            model.addElement(arr1.getCvecliente()+" - "+arr1.getNombre());
+            model.addElement(arr1.getCvecliente() + " - " + arr1.getNombre());
         }
         JlCliente.setModel(model);
     }
@@ -453,9 +480,13 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
+        setreport();
+    }//GEN-LAST:event_jLabel6MousePressed
+
     /**
-     * Utilizado para el despliegue de los agentes, pero es necesario que 
-     * un cliente haya sido seleccionado para su posterior seleccion.
+     * Utilizado para el despliegue de los agentes, pero es necesario que un
+     * cliente haya sido seleccionado para su posterior seleccion.
      */
     public void setcampos() {
         //libreria para solo valores del agente
@@ -468,8 +499,8 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }
 
     /**
-     * Solo se utiliza para el despliegue de los clientes sin necesidad
-     * de algun actionlistener
+     * Solo se utiliza para el despliegue de los clientes sin necesidad de algun
+     * actionlistener
      */
     public void setcamposinicial() {
         //libreria para solo valores del agente
@@ -478,6 +509,9 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         c1.setagente(da.getagentes_all(con.getCobranzatpuB()));
     }
 
+    /**
+     * Funcion para hacer busqueda del listado de clientes mediante la serie
+     */
     public void buscacliente() {
         String cliente = JtBuscar.getText();
         daoClientes dc = new daoClientes();
@@ -492,10 +526,30 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 } else {
                     arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
                 }
-
             }
         }
         llenalista();
+    }
+
+    /**
+     * Generar reporte con los clientes dados de alta e importados
+     */
+    private void setreport() {
+        try {
+            Connection c = (serie.equals("A")) ? con.getCobranzatpu() : con.getCobranzatpuB();
+            Map parametros = new HashMap();
+            Formateodedatos fd = new Formateodedatos();
+//            Agregar parametros al reporte
+            parametros.put("imagen", fd.getimagenreporte(u));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Indexclientes.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, c);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("Reporte de clientes");
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public final void generaciontab() {
@@ -518,6 +572,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

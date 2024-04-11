@@ -32,5 +32,7 @@ public interface clientes {
     public boolean nuevocliente(Connection cpt, Cliente cli);
     
     public int maxcliente(Connection cob);
+    
+    public boolean exist_cliente(Connection con, Cliente c);
 
 }

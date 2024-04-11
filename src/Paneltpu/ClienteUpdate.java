@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * @author GATEWAY1-
  */
 public class ClienteUpdate extends javax.swing.JDialog {
-
+    
     public Connection cpttpu;
     public Connection cobB;
 
@@ -200,19 +200,26 @@ public class ClienteUpdate extends javax.swing.JDialog {
         daoClientes d = new daoClientes();
         Cliente cli = d.getClientes(cpttpu, Integer.parseInt(JtBuscar.getText()));
         if (cli.getNombre() != null) {
-            JlNombre.setText(cli.getNombre());
-            JlRfc.setText(cli.getRfc());
-            JlRegimen.setText(cli.getRegimen());
-            JlUso.setText(cli.getUsocfdi());
-            JlAgente.setText(cli.getNombreagente());
-            //Es improtante insertar tanto en fiscal como en Interna
-            if (d.importacliente(cpttpu, cli)) {
-                d.importacliente(cobB, cli);
-                JOptionPane.showMessageDialog(null, "Importacion completa");
+            if (d.exist_cliente(cpttpu, cli)) {
+                JOptionPane.showMessageDialog(null,
+                        "Ya existe ese numero de cliente");
+                JtBuscar.setText("");
             } else {
-                JOptionPane.showMessageDialog(null, "Error al completar operacion intentelo de nuevo");
+                JlNombre.setText(cli.getNombre());
+                JlRfc.setText(cli.getRfc());
+                JlRegimen.setText(cli.getRegimen());
+                JlUso.setText(cli.getUsocfdi());
+                JlAgente.setText(cli.getNombreagente());
+                //Es improtante insertar tanto en fiscal como en Interna
+                if (d.importacliente(cpttpu, cli)) {
+                    d.importacliente(cobB, cli);
+                    JOptionPane.showMessageDialog(null, "Importacion completa");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al completar operacion intentelo de nuevo");
+                }
             }
-        }else{
+            
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontro ningun registro sobre ese cliente");
         }
 
@@ -223,7 +230,7 @@ public class ClienteUpdate extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-
+        
 
     }//GEN-LAST:event_jLabel4MousePressed
 

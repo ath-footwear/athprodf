@@ -98,4 +98,16 @@ public class daoClientes implements clientes {
         return s.maxcliente(cob);
     }
 
+    /**
+     * Busca si existe el clente y regresa un boleana validando si existe o no
+     * @param con conexion cobranza
+     * @param c objeto cliente
+     * @return 
+     */
+    @Override
+    public boolean exist_cliente(Connection con, Cliente c) {
+        sqlclientes s = new sqlclientes();
+        return s.exist_cliente(con, c);
+    }
+
 }

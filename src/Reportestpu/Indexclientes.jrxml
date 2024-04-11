@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9d06351f-13b1-45ec-a170-a81fb41b64fc">
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select id_cliente, nombre, rfc,cp,usocfdi,calle,colonia,regimen,plazo,credito,estatus,
+s = case when estatus='1' then 'ACTIVO' else 'INACTIVO' end
+ from cliente
+order by nombre]]>
+	</queryString>
+	<field name="id_cliente" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="rfc" class="java.lang.String"/>
+	<field name="cp" class="java.lang.String"/>
+	<field name="usocfdi" class="java.lang.String"/>
+	<field name="calle" class="java.lang.String"/>
+	<field name="colonia" class="java.lang.String"/>
+	<field name="regimen" class="java.lang.String"/>
+	<field name="plazo" class="java.lang.Short"/>
+	<field name="credito" class="java.lang.Double"/>
+	<field name="estatus" class="java.lang.String"/>
+	<field name="s" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="219" height="27" uuid="0a17340c-db8a-431a-a49a-a0fd067c2d04"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="39" width="555" height="26" uuid="a88f9272-44ba-4659-a34c-564afda3522f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="17"/>
+				</textElement>
+				<text><![CDATA[Reporte de clientes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="52" y="0" width="167" height="13" uuid="91269c6f-6ea6-4fbf-840a-6a70b9f78249"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="0" width="72" height="13" uuid="96caba11-ee27-4edb-931f-f230dab5f15c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rfc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="0" width="46" height="13" uuid="42aefd38-c815-443d-8a29-e36dc4167dc4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Cp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="0" width="47" height="13" uuid="2b8d5f39-78fd-4659-9c00-8e5617d9ec74"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Regimen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="33" height="13" uuid="cd48a75a-1cb3-47cf-8804-67b592af0cf4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="50" height="13" uuid="9f724a4b-5258-451c-a36d-938a2c951896"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Credito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="0" width="88" height="13" uuid="8ac3a292-cd2c-45b5-b926-43847af0ba18"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estatus]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="52" height="11" uuid="1fb1a7cc-f9d6-4fd0-be1c-2d025954d906"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="0" width="72" height="11" uuid="9c16c641-e346-4af4-9d55-80bfc7b4c505"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="0" width="47" height="11" uuid="128db8e1-2a51-45c7-b046-cabffdc2e215"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regimen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="0" width="33" height="11" uuid="70a2525a-9a43-4726-8b65-0e6a0706953f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="50" height="11" uuid="ae6179cf-d5a8-4c7a-bb31-7bbdbd684e7a"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{credito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="0" width="88" height="11" uuid="98e8b798-75db-4f02-bf27-78747a854f73"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{s}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="0" width="167" height="11" uuid="0721ae1a-74c5-479e-ab9d-ef5ba9b4cb4a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="0" width="46" height="11" uuid="1e3963e0-2c7f-4768-bf0c-5394db1c6bb9"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
