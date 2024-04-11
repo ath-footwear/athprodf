@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -163,6 +164,7 @@ public final class Principal extends javax.swing.JFrame {
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
         }
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT-6"));//Para el cambio de horario
     }
 
     /**
