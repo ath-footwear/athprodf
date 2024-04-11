@@ -6,7 +6,6 @@
 package Paneltpu;
 
 import Paneles.*;
-import DAO.daoAgentes;
 import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daocfdi;
@@ -15,6 +14,7 @@ import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import DAO.daoxmltpu;
+import Dao.Dao_Agente;
 import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
@@ -90,8 +90,6 @@ public class fac2tpu extends javax.swing.JPanel {
     String traslado = "1";
 
     //kardex para fac
-//    ArrayList<Kardexrcpt> k = new ArrayList<>();
-//    ArrayList<Kardexrcpt> k0 = new ArrayList<>();
     ArrayList<pedimento> k1 = new ArrayList<>();
     ArrayList<pedimento> k2 = new ArrayList<>();
     //para factura relacionada
@@ -106,8 +104,6 @@ public class fac2tpu extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JcPublico.setVisible(false);
         setdolar();
-
-//        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
     }
 
@@ -497,6 +493,12 @@ public class fac2tpu extends javax.swing.JPanel {
         jLabel20.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel20.setText("Cliente");
 
+        JcCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcClienteItemStateChanged(evt);
+            }
+        });
+
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/Recursos/bordemorado4x4.png")))); // NOI18N
 
@@ -743,6 +745,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JcMetodo.setModel(metodo);
         JcUso.setModel(uso);
         JcCliente.setModel(cliente);
+        setAgentes();
     }
 
     /**
@@ -751,8 +754,8 @@ public class fac2tpu extends javax.swing.JPanel {
      */
     private void setAgentes() {
         DefaultComboBoxModel ag = new DefaultComboBoxModel();
-        daoAgentes da = new daoAgentes();
-        arragente = da.getAgentes(ACobranza);
+        Dao_Agente da1 = new Dao_Agente();
+        arragente = da1.getagentes_all(ACobranza);
         for (Agentes agent : arragente) {
             ag.addElement(agent.getNombre());
         }
@@ -1289,7 +1292,6 @@ public class fac2tpu extends javax.swing.JPanel {
             }
         }
         seleccionfolio(folios);
-
     }//GEN-LAST:event_JlCliente1MousePressed
 
     private void JlCliente1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JlCliente1ValueChanged
@@ -1323,6 +1325,10 @@ public class fac2tpu extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_JtNcargoActionPerformed
 
+    private void JcClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcClienteItemStateChanged
+        setAgentes();
+    }//GEN-LAST:event_JcClienteItemStateChanged
+
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
@@ -1351,6 +1357,9 @@ public class fac2tpu extends javax.swing.JPanel {
         JlCliente1.requestFocus();
     }
 
+    /**
+     * Vacia cada uno de los campos facturados, listas y registros
+     */
     private void vaciarcampos() {
         if (!k1.isEmpty()) {
             k1.clear();
@@ -1379,6 +1388,11 @@ public class fac2tpu extends javax.swing.JPanel {
         llenalistasalida();
     }
 
+    /**
+     * obtiene los registros de las referencias seleccionadas
+     *
+     * @param folios
+     */
     private void seleccionfolio(String folios) {
 //        daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
@@ -1398,7 +1412,6 @@ public class fac2tpu extends javax.swing.JPanel {
 //        k = dk.getkardexfacMulti(rcpt, empresacob, folios);
 //        System.out.println(k.size());
         generatabla();
-//        setAgentes();
     }
 
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
