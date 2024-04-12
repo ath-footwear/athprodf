@@ -5,22 +5,30 @@
  */
 package Paneltpu;
 
-import DAO.daocfdi;
+import DAO.daoempresa;
 import DAO.daofactura;
-import Modelo.Ciudades;
-import Modelo.Estados;
-import Modelo.Formadepago;
-import Modelo.Paises;
+import Modelo.Empresas;
+import Modelo.Formateo_Nempresas;
+import Modelo.Formateodedatos;
+import Modelo.Usuarios;
+import Modelo.convertnum;
 import Modelo.factura;
-import Modelo.metodopago;
-import Modelo.usocfdi;
-import Server.Serverprod;
-import Server.Serverylite;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -31,17 +39,8 @@ public class pagotpurem1 extends javax.swing.JPanel {
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
-    Serverylite slite = new Serverylite();
-    Serverprod prod = new Serverprod();
-    public ArrayList<Formadepago> arrfpago = new ArrayList<>();
-    public ArrayList<usocfdi> arruso = new ArrayList<>();
-    public ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<Paises> arrpais = new ArrayList<>();
-    ArrayList<Estados> arrestado = new ArrayList<>();
-    ArrayList<Ciudades> arrciudad = new ArrayList<>();
+    public Usuarios u;
     ArrayList<factura> arrfactura = new ArrayList<>();
-    ArrayList<factura> arrfacturaxml = new ArrayList<>();
-    daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
     int pais = 0;
@@ -174,7 +173,10 @@ public class pagotpurem1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        setreport();
+        int row =JtDetalle.getSelectedRow();
+        int folio=arrfactura.get(row).getFolio();
+        double total=arrfactura.get(row).getTotal();
+        setreport(folio,"MXN",total);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -214,36 +216,49 @@ public class pagotpurem1 extends javax.swing.JPanel {
 //                }
 //            }
 //        }
-
     }//GEN-LAST:event_JtCancelarActionPerformed
 
-    private void setreport() {
-//        try {
-//            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
-//
-//            daoempresa d = new daoempresa();
-//            String n = "1";
-//            String logo = "AF.png";
-////            Obtiene los datos del emisor que en este caso en ath
-//            Empresas e = d.getempresarfc(sqlempresa, n);
-//            Map parametros = new HashMap();
-//            convertnum conv = new convertnum();
-//            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-//            parametros.put("folio", folio);
-//            parametros.put("nombre", e.getNombre());
-//            parametros.put("rfc", e.getRfc());
-//            parametros.put("regimen", e.getRegimen());
-//            parametros.put("lugar", e.getCp());
-//            parametros.put("serie", "NCR");
-//            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/indexncrtpu.jasper"));
-//            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
-//            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
-//            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//            ver.setTitle("NCR " + folio);
-//            ver.setVisible(true);
-//        } catch (JRException ex) {
-//            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    private void setreport(int folio, String moneda, double total) {
+        try {
+            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
+            daoempresa d = new daoempresa();
+//            Identificar si es de ath o uptown
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            Formateodedatos fd = new Formateodedatos();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            String logo =fd.getimagenreporte(u);
+            Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertnum conv = new convertnum();
+//            Agregar parametros al reporte
+            parametros.put("folio", folio);
+            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", "");
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("serie", "RPAG");
+            parametros.put("regimencliente", "");
+            parametros.put("confo", conformidad);
+            parametros.put("bd", "");
+
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("RPAG " + folio);
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(pagotpurem1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo

@@ -5,17 +5,20 @@
  */
 package Paneltpu;
 
+import DAO.daoClientes;
 import DAO.dao_comisiones;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
+import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Usuarios;
@@ -47,12 +50,9 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -548,33 +548,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-        String r = JtCliente.getText();
-//        Se verifica que no entre vacio y ocacione una excepcion de a gratis
-        if (!r.isEmpty()) {
-            Formateodedatos fd = new Formateodedatos();
-//            Son dos ya que la bd de pruebas es distinta a el servidor real
-            String bdcob;
-            //Es importante hacer diferencia entre los tipos de turno
-            if (u.getTipo_usuario().equals("2")) {
-                bdcob = fd.getbd_tocargo_REM_adm(u.getTurno());
-            } else {
-                bdcob = fd.getbd_tocargo_REM(u.getTurno());
-            }
-//            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu";
-            daofactura df = new daofactura();
-            arrcargo = df.getfactrem(cpt, r, bdcob);
-            if (arrcargo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
-                JtCliente.setText("");
-                JtCliente.requestFocus();
-            } else {
-                JlNombre.setText(arrcargo.get(0).getNombre());
-                cargacombos();
-//            cargacargos();
-            }
-        }
-
-
+        getcargos();
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -800,7 +774,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
                 if (id != 0) {
                     setcomisiones(f);
 //                    System.out.println("Exito");
-//                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+                    setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                     JOptionPane.showMessageDialog(null, "Proceso terminado- ");
                     vaciarcampos();
                     JtCliente.requestFocus();
@@ -880,7 +854,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         dao_comisiones dc = new dao_comisiones();
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
-        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, 
+        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza,
                 fechasinT(f.getFecha()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
@@ -899,7 +873,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
-            comi.setFoliopago(f.getSerie()+"_"+f.getFolio());
+            comi.setFoliopago(f.getSerie() + "_" + f.getFolio());
             comi.setPorcentaje(arrcomision.get(i).getPorcentaje());
             arrcomision.set(i, comi);
         }
@@ -969,8 +943,10 @@ public class pagotpurem2 extends javax.swing.JPanel {
                     + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
-            String n = "1";
-            String logo = "AF.png";
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            Formateodedatos fd = new Formateodedatos();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            String logo =fd.getimagenreporte(u);
             Empresas e = d.getempresarfc(sqlempresa, n);
 //             fin identificar empresa
             Map parametros = new HashMap();
@@ -984,27 +960,25 @@ public class pagotpurem2 extends javax.swing.JPanel {
             parametros.put("regimen", e.getRegimen());
             parametros.put("lugar", e.getCp());
             parametros.put("comprobante", e.getNumcertificado());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
-            parametros.put("serie", "PAG");
+            parametros.put("logo", logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("serie", "RPAG");
             parametros.put("regimencliente", regimen);
             parametros.put("confo", conformidad);
 
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("PAG " + folio);
+            ver.setTitle("RPAG " + folio);
             ver.setVisible(true);
-//            Exportacion al archivo pdf
-            JRExporter exporter = new JRPdfExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
-            exporter.exportReport();
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Vacia los campos al terminar el proceso
+     */
     private void vaciarcampos() {
         arrcargoseleccion.clear();
         JtTCambio.setText("");
@@ -1128,6 +1102,47 @@ public class pagotpurem2 extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Carga los cargos pendientes del o los clientes que introduzca en el campo
+     * , esta funcion cambia de la fiscal ya que se utiliza la bd interna pero
+     */
+    private void getcargos() {
+        String r = JtCliente.getText();
+        Formateodedatos fd = new Formateodedatos();
+        daoClientes dc = new daoClientes();
+        //Son dos ya que la bd de pruebas es distinta a el servidor real
+        String bdcob;
+        //Es importante hacer diferencia entre los tipos de turno
+        if (u.getTipo_usuario().equals("2")) {
+            bdcob = fd.getbd_tocargo_REM_adm(u.getTurno());
+        } else {
+            bdcob = fd.getbd_tocargo_REM(u.getTurno());
+        }
+        //Aqui hay que recalcar que la funcion es distinta que en la fiscal
+        ArrayList<Cliente> arrcliente = dc.getfoliotopagotpu_Clientes_REM(ACobranza,
+                r);
+        Buscacliente_Pago bp = new Buscacliente_Pago(null, true);
+        bp.setarrcliente(arrcliente);
+        //llena de informacion la lista
+        bp.setlista();
+        bp.setVisible(true);
+        //Obtiene el registro del cliente recien seleccionado
+        int cliente = bp.getCliente();
+        //Verifica que el cliente no sea cero o menor a el
+        if (cliente != 0) {
+            daofactura df = new daofactura();
+            arrcargo = df.getfactrem(cpt, cliente + "", bdcob);
+            if (arrcargo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
+                JtCliente.setText("");
+                JtCliente.requestFocus();
+            } else {
+                JlNombre.setText(arrcargo.get(0).getNombre());
+                cargacombos();
+                cargacargos();
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCuenta;

@@ -38,5 +38,7 @@ public interface clientes {
     public Cliente getClientetpu(Connection c, int id);
     
     public ArrayList<Cliente> getfoliotopagotpu_Clientes(Connection con, String nombre, String bd);
+    
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes_REM(Connection con, String nombre);
 
 }

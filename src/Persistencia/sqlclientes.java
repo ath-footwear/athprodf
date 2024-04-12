@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author GATEWAY1-Michel araujo
  */
 public class sqlclientes {
-    
+
     public ArrayList<Cliente> getClientes(Connection con) {//cobranza
         ArrayList<Cliente> arr = new ArrayList<>();
         try {
@@ -61,7 +61,7 @@ public class sqlclientes {
         }
         return arr;
     }
-    
+
     public ArrayList<Cliente> getClientestpu(Connection con) {//cobranza
         ArrayList<Cliente> arr = new ArrayList<>();
         try {
@@ -100,7 +100,7 @@ public class sqlclientes {
         }
         return arr;
     }
-    
+
     public ArrayList<Cliente> getClientestpuall(Connection cob, String cli) {//cobranza
         ArrayList<Cliente> arr = new ArrayList<>();
         try {
@@ -145,7 +145,7 @@ public class sqlclientes {
         }
         return arr;
     }
-    
+
     public Cliente getClientes(Connection con, int cli) {//cobranza
         Cliente c = new Cliente();
         try {
@@ -177,7 +177,7 @@ public class sqlclientes {
         }
         return c;
     }
-    
+
     public Cliente getCliente(Connection con, int idcliente) {//cobranza
         Cliente c = new Cliente();
         try {
@@ -199,7 +199,7 @@ public class sqlclientes {
         }
         return c;
     }
-    
+
     public boolean importacliente(Connection c, Cliente cli) {
         int ag = 0;
         try {
@@ -239,7 +239,7 @@ public class sqlclientes {
             return false;
         }
     }
-    
+
     public boolean modcliente(Connection cpt, Cliente c) {
         try {
             cpt.setAutoCommit(false);
@@ -281,7 +281,7 @@ public class sqlclientes {
             return false;
         }
     }
-    
+
     public int maxcliente(Connection cob) {
         int resp = 0;
         try {
@@ -300,7 +300,7 @@ public class sqlclientes {
         }
         return resp;
     }
-    
+
     public boolean nuevocliente(Connection cpt, Cliente c) {
         try {
             PreparedStatement st;
@@ -342,7 +342,7 @@ public class sqlclientes {
             return false;
         }
     }
-    
+
     public boolean exist_cliente(Connection con, Cliente c) {//cobranza
         boolean flag = false;
         try {
@@ -364,7 +364,7 @@ public class sqlclientes {
         }
         return flag;
     }
-    
+
     public Cliente getClientetpu(Connection con, int idcliente) {//cobranza
         Cliente c = new Cliente();
         try {
@@ -387,7 +387,7 @@ public class sqlclientes {
         }
         return c;
     }
-    
+
     public ArrayList<Cliente> getfoliotopagotpu_Clientes(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
         ArrayList<Cliente> arr = new ArrayList<>();
         try {
@@ -417,5 +417,32 @@ public class sqlclientes {
         }
         return arr;
     }
-    
+
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes_REM(Connection con, String nombre) {//cargos para ncr solo cobranza
+        ArrayList<Cliente> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct cli.id_cliente,cli.nombre\n"
+                    + "from cargo c\n"
+                    + "join cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "where cli.nombre like '%"+nombre+"%' and c.referencia NOT Like '%NCR%' "
+                    + "and saldo!=0 and c.estatus='1' \n"
+                    + "order by cli.nombre";
+//            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Cliente cli = new Cliente();
+                cli.setCvecliente(rs.getInt("id_cliente"));
+                cli.setNombre(rs.getString("nombre"));
+                arr.add(cli);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
 }
