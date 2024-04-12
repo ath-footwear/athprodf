@@ -164,4 +164,17 @@ public class daoClientes implements clientes {
         return s.getClientetpu(c, id);
     }
 
+    /**
+     * Busca los clientes que tengan cargos pendientes sin repetir el cliente
+     * @param con cpt
+     * @param nombre nombre del cliente
+     * @param bd bd de cobranza
+     * @return lista de clientes
+     */
+    @Override
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes(Connection con, String nombre, String bd) {
+        sqlclientes s = new sqlclientes();
+        return s.getfoliotopagotpu_Clientes(con, nombre, bd);
+    }
+
 }

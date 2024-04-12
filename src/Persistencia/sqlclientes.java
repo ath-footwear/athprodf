@@ -388,4 +388,34 @@ public class sqlclientes {
         return c;
     }
     
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<Cliente> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct cli.id_cliente,cli.nombre\n"
+                    + "from " + bd + ".dbo.cargo c\n"
+                    + "join " + bd + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "join Documento d on c.referencia =d.folio\n"
+                    + "where cli.nombre like '%" + nombre + "%' and c.referencia NOT Like '%NCR%' "
+                    + "and saldo!=0 and d.Serie='fac' and d.estatus='1' "
+                    + "and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' \n"
+                    + "order by cli.nombre";
+//            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Cliente cli = new Cliente();
+                cli.setCvecliente(rs.getInt("id_cliente"));
+                cli.setNombre(rs.getString("nombre"));
+                arr.add(cli);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
 }

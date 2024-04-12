@@ -5,12 +5,14 @@
  */
 package Paneltpu;
 
+import DAO.daoClientes;
 import DAO.dao_comisiones;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlpagostpu;
+import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
@@ -156,7 +158,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         JlIva = new javax.swing.JLabel();
         JlTotal = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         JtFecha = new com.toedter.calendar.JDateChooser();
 
@@ -242,7 +243,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JcForma, 0, 441, Short.MAX_VALUE))
+                        .addComponent(JcForma, 0, 344, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(55, 55, 55)
@@ -286,20 +287,20 @@ public class pagotpu2 extends javax.swing.JPanel {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 41, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(JcCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JcCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(27, 27, 27)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(JcCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         JtDetalle.setModel(new javax.swing.table.DefaultTableModel(
@@ -491,19 +492,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         jLabel12.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel12.setText("Observaciones");
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 11, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-
         jLabel11.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel11.setText("Fecha Pago");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -519,7 +507,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -527,32 +515,28 @@ public class pagotpu2 extends javax.swing.JPanel {
                                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(41, 41, 41))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(0, 138, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(268, 268, 268)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(0, 11, Short.MAX_VALUE)
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel2))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -561,48 +545,44 @@ public class pagotpu2 extends javax.swing.JPanel {
                                 .addComponent(jLabel3))
                             .addComponent(jScrollPane1)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(20, 20, 20))
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel6Layout.createSequentialGroup()
-                                            .addGap(66, 66, 66)
-                                            .addComponent(jLabel2))
-                                        .addGroup(jPanel6Layout.createSequentialGroup()
-                                            .addGap(29, 29, 29)
-                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jLabel6)))
-                                            .addGap(6, 6, 6)
-                                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(71, 71, 71))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addGroup(jPanel6Layout.createSequentialGroup()
-                                            .addComponent(jLabel21)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
+                                        .addComponent(jLabel2))))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -611,12 +591,13 @@ public class pagotpu2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel6);
@@ -674,61 +655,6 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     }
 
-    private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
-        JtCliente.setText("");
-    }//GEN-LAST:event_JtClienteMousePressed
-
-    private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-        String r = JtCliente.getText();
-        daofactura df = new daofactura();
-        Formateodedatos fd = new Formateodedatos();
-//        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
-        arrcargo = df.getfactopagotpu(cpt, r, fd.getbd_tocargo(u.getTurno()));
-        if (arrcargo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
-            JtCliente.setText("");
-            JtCliente.requestFocus();
-        } else {
-            JlNombre.setText(arrcargo.get(0).getNombre());
-            cargacombos();
-//            cargacargos();
-        }
-
-    }//GEN-LAST:event_JtClienteActionPerformed
-
-    private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JcMetodoActionPerformed
-
-    private void JcFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcFormaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JcFormaActionPerformed
-
-    private void JcUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsoActionPerformed
-
-    }//GEN-LAST:event_JcUsoActionPerformed
-
-    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Formateodedatos fd = new Formateodedatos();
-        if (!fd.verficafechanula(JtFecha)) {
-            setfactura();
-        }
-    }//GEN-LAST:event_jLabel2MousePressed
-
-    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
-        actualizaimportes();
-    }//GEN-LAST:event_jLabel3MousePressed
-
-    private void JcCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcCuentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JcCuentaActionPerformed
-
-    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        if (!arrcargo.isEmpty()) {
-            cargacargos();
-        }
-    }//GEN-LAST:event_jLabel4MousePressed
-
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
         daocfdi df = new daocfdi();
         boolean a = true;
@@ -744,23 +670,19 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     }//GEN-LAST:event_popMousePressed
 
-    private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-        if (evt.getButton() == 3) {// activar con clic derecho
-            pop.show(evt.getComponent(), evt.getX(), evt.getY());
-        }
-    }//GEN-LAST:event_JtDetalleMousePressed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jLabel3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel3MouseReleased
+    private void jLabel11MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MousePressed
 
-    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
-        setdolar();
-    }//GEN-LAST:event_JcUsdActionPerformed
+    }//GEN-LAST:event_jLabel11MousePressed
+
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        if (!arrcargo.isEmpty()) {
+            cargacargos();
+        }
+    }//GEN-LAST:event_jLabel4MousePressed
 
     private void JtTCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtTCambioActionPerformed
         if (!verificafloat(JtTCambio.getText().toUpperCase())) {
@@ -770,12 +692,89 @@ public class pagotpu2 extends javax.swing.JPanel {
             JtFecha.requestFocus();
             JtFecha.requestFocusInWindow();
         }
-
     }//GEN-LAST:event_JtTCambioActionPerformed
 
-    private void jLabel11MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MousePressed
+    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
+        setdolar();
+    }//GEN-LAST:event_JcUsdActionPerformed
 
-    }//GEN-LAST:event_jLabel11MousePressed
+    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        Formateodedatos fd = new Formateodedatos();
+        if (!fd.verficafechanula(JtFecha)) {
+            setfactura();
+        }
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void jLabel3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel3MouseReleased
+
+    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+        actualizaimportes();
+    }//GEN-LAST:event_jLabel3MousePressed
+
+    private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+        if (evt.getButton() == 3) {// activar con clic derecho
+            pop.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_JtDetalleMousePressed
+
+    private void JcCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcCuentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JcCuentaActionPerformed
+
+    private void JcUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsoActionPerformed
+
+    }//GEN-LAST:event_JcUsoActionPerformed
+
+    private void JcFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcFormaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JcFormaActionPerformed
+
+    private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JcMetodoActionPerformed
+
+    private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
+        getcargos();
+    }//GEN-LAST:event_JtClienteActionPerformed
+
+    private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
+        JtCliente.setText("");
+    }//GEN-LAST:event_JtClienteMousePressed
+
+    /**
+     * Busca y despliega los clientes con cargos, ademas despliega una lista 
+     * de los mismo y realizar su seleccion
+     */
+    private void getcargos() {
+        String r = JtCliente.getText();
+        Formateodedatos fd = new Formateodedatos();
+        daoClientes dc = new daoClientes();
+        ArrayList<Cliente> arrcliente = dc.getfoliotopagotpu_Clientes(cpt,
+                r, fd.getbd_tocargo(u.getTurno()));
+        Buscacliente_Pago bp = new Buscacliente_Pago(null, true);
+        bp.setarrcliente(arrcliente);
+        //llena de informacion la lista
+        bp.setlista();
+        bp.setVisible(true);
+        //Obtiene el registro del cliente recien seleccionado
+        int cliente = bp.getCliente();
+        //Verifica que el cliente no sea cero o menor a el
+        if (cliente != 0) {
+            daofactura df = new daofactura();
+            arrcargo = df.getfactopagotpu(cpt, cliente + "", fd.getbd_tocargo(u.getTurno()));
+            if (arrcargo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
+                JtCliente.setText("");
+                JtCliente.requestFocus();
+            } else {
+                JlNombre.setText(arrcargo.get(0).getNombre());
+                cargacombos();
+                cargacargos();
+            }
+        }
+    }
 
     private void setdolar() {
         if (JcUsd.isSelected()) {
@@ -1100,7 +1099,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         dao_comisiones dc = new dao_comisiones();
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
-        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, 
+        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza,
                 fechasinT(f.getFecha()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
@@ -1119,7 +1118,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
-            comi.setFoliopago(f.getSerie()+"_"+f.getFolio());
+            comi.setFoliopago(f.getSerie() + "_" + f.getFolio());
             comi.setPorcentaje(arrcomision.get(i).getPorcentaje());
             arrcomision.set(i, comi);
         }
@@ -1495,7 +1494,6 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
