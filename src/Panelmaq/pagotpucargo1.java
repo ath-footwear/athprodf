@@ -6,26 +6,32 @@
 package Panelmaq;
 
 import DAO.daocfdi;
+import DAO.daoempresa;
 import DAO.daofactura;
-import Modelo.Ciudades;
-import Modelo.Estados;
-import Modelo.Formadepago;
+import Modelo.Empresas;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
-import Modelo.Paises;
 import Modelo.Usuarios;
 import Modelo.abono;
+import Modelo.convertnum;
 import Modelo.factura;
-import Modelo.metodopago;
-import Modelo.usocfdi;
-import Server.Serverprod;
-import Server.Serverylite;
+import Paneltpu.pagotpurem1;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -36,20 +42,9 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
-    Serverylite slite = new Serverylite();
-    Serverprod prod = new Serverprod();
-    public ArrayList<Formadepago> arrfpago = new ArrayList<>();
-    public ArrayList<usocfdi> arruso = new ArrayList<>();
-    public ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<Paises> arrpais = new ArrayList<>();
-    ArrayList<Estados> arrestado = new ArrayList<>();
-    ArrayList<Ciudades> arrciudad = new ArrayList<>();
     ArrayList<factura> arrfactura = new ArrayList<>();
     ArrayList<factura> arrfacturaxml = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
-    int estado = 0;
-    int ciudad = 0;
-    int pais = 0;
     public Usuarios u;
 
     /**
@@ -180,7 +175,10 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-
+        int row = JtDetalle.getSelectedRow();
+        int folio = arrfactura.get(row).getId();
+        double total = arrfactura.get(row).getTotal();
+        setreport(folio, "MXN", total);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -195,7 +193,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
 
 
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el cargo?");
+        int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el Pago?");
         if (resp == 0) {
             respcancela();
         }
@@ -252,15 +250,47 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
+    private void setreport(int folio, String moneda, double total) {
+        try {
+            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
+            daoempresa d = new daoempresa();
+//            Identificar si es de ath o uptown
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            Formateodedatos fd = new Formateodedatos();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            String logo = fd.getimagenreporte(u);
+            Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertnum conv = new convertnum();
+//            Agregar parametros al reporte
+            parametros.put("folio", folio);
+            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", "");
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("serie", "RPAG");
+            parametros.put("regimencliente", "");
+            parametros.put("confo", conformidad);
+            parametros.put("bd", "_especial");
+
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("RPAG " + folio);
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(pagotpurem1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return resp;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

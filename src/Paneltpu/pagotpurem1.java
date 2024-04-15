@@ -174,7 +174,7 @@ public class pagotpurem1 extends javax.swing.JPanel {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         int row =JtDetalle.getSelectedRow();
-        int folio=arrfactura.get(row).getFolio();
+        int folio=arrfactura.get(row).getId();
         double total=arrfactura.get(row).getTotal();
         setreport(folio,"MXN",total);
     }//GEN-LAST:event_jLabel1MouseClicked

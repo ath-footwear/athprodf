@@ -18,7 +18,7 @@ tipocambio,importe*tipocambio as mx, convert(date,p.fecha) as fechafac, porcenta
 pagado=case when com.estatus='1' then 'N' else 'P' end
 from comisiones com
 join pedido p on pedido=com.referencia
-where convert(date,com.fecha) between $P{f1} and $P{f2} and com.estatus='1' and com.id_agente=$P{agente}
+where convert(date,com.fecha) between $P{f1} and $P{f2} and com.estatus!='0' and com.id_agente=$P{agente}
 order by p.fecha]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>

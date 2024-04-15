@@ -6,14 +6,31 @@
 package Panelmaq;
 
 import DAO.daocfdi;
+import DAO.daoempresa;
 import DAO.daofactura;
+import Modelo.Empresas;
+import Modelo.Formateo_Nempresas;
+import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.cargo;
+import Modelo.convertnum;
+import Paneltpu.pagotpurem1;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -108,16 +125,18 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel6)
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                    .addComponent(jSeparator2))
-                .addGap(22, 1040, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel6)
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(JtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(jSeparator2))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -233,6 +252,48 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
+        private void setreport(int folio, String moneda, double total) {
+        try {
+            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
+            daoempresa d = new daoempresa();
+//            Identificar si es de ath o uptown
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            Formateodedatos fd = new Formateodedatos();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            String logo =fd.getimagenreporte(u);
+            Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertnum conv = new convertnum();
+//            Agregar parametros al reporte
+            parametros.put("folio", folio);
+            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", "");
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("serie", "PAGOE");
+            parametros.put("regimencliente", "");
+            parametros.put("confo", conformidad);
+            parametros.put("bd", "_Especial");
+
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("RPAG " + folio);
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(pagotpurem1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmCancelar;

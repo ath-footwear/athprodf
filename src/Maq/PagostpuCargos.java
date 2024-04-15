@@ -11,7 +11,13 @@ import Modelo.Usuarios;
 import Panelmaq.pagotpucargo1;
 import Panelmaq.pagotpucargo2;
 import Panelmaq.pagotpucargo3;
+import Server.Serverylite;
+import Tpu.Pagostpu;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,11 +51,26 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         empresa = cn.getEmpresa();
         empresacob = cn.getEmpresacob();
         cobB = cn.getCobranzatpuB();
-        litecfdi=cn.getLitecfdi();
-        liteempresa=cn.getLiteempresa();
+        litecfdi = cn.getLitecfdi();
+        liteempresa = cn.getLiteempresa();
         this.u = u;
+        conexiones();
         generaciontab();//Tabs de facturacion
         setarraylist();
+    }
+
+    private void conexiones() {//Conexiones a servidor
+        try {
+            Serverylite l = new Serverylite();
+            litecfdi = l.getconexioncfdi();
+            liteempresa = l.getconexionC();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Pagostpu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Pagostpu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Pagostpu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setarraylist() {
@@ -61,19 +82,19 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
-        c1.u=u;
+        c1.u = u;
 
         //tambien conexiones
         c2.empresa = empresa;
         c2.ACobranza = cobranza;
-        c2.cpt=cpt;
+        c2.cpt = cpt;
         c2.u = u;
-        
+
         c3.empresa = empresa;
         c3.ACobranza = cobranza;
         c3.sqlempresa = liteempresa;
-        c3.arrfpago= d.getFormadepago(litecfdi);
-        c3.cpt=cpt;
+        c3.arrfpago = d.getFormadepago(litecfdi);
+        c3.cpt = cpt;
         c3.u = u;
     }
 
@@ -95,6 +116,23 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Pagos Cargos especiales");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/labelprint.png"))); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -127,6 +165,16 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        try {
+            System.out.println("cerrar pagos");
+            liteempresa.close();
+            litecfdi.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PagostpuCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formInternalFrameClosing
     public final void generaciontab() {//generar tabs
         c1 = new pagotpucargo1();
         c2 = new pagotpucargo2();

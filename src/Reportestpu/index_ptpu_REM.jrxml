@@ -49,7 +49,7 @@
 		<defaultValueExpression><![CDATA["_especial"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from doctospagotpu$P!{bd} where folio =$P{folio} and serie=$P{serie}]]>
+		<![CDATA[select * from doctospagotpu$P!{bd} where id_doctopago =$P{folio}]]>
 	</queryString>
 	<field name="id_doctopago" class="java.lang.Integer"/>
 	<field name="id_cliente" class="java.lang.Integer"/>
@@ -312,11 +312,14 @@
 		<band height="14" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="0" width="564" height="11" uuid="637bba30-6874-4158-a6c6-c01590c21254"/>
+				<subreportParameter name="bd">
+					<subreportParameterExpression><![CDATA[$P{bd}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="id">
 					<subreportParameterExpression><![CDATA[$F{id_doctopago}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["c:\\af\\prod\\reportestpu\\body_p.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["c:\\af\\prod\\reportestpu\\body_p_REM.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

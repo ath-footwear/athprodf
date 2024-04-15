@@ -8,6 +8,8 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -203,9 +205,62 @@ public class Rep_Comisiones extends javax.swing.JDialog {
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             ver.setTitle("Estado de cuenta");
             ver.setVisible(true);
+            regresarventana(ver);
         } catch (JRException ex) {
             Logger.getLogger(Rep_Comisiones.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Vuelve visible la interfaz
+     */
+    private void verrep() {
+        this.setVisible(true);
+    }
+
+    /**
+     * Usamos Windows listener para que cuando cierre el reporte regrese de
+     * nuevo a la ventana del reporte
+     *
+     * @param ver
+     */
+    private void regresarventana(JasperViewer ver) {
+        ver.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                verrep();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     /**
