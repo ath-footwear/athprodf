@@ -16,11 +16,11 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select referencia, fecha, fechavencimiento,cuenta,subcuenta,cat.descripcion,importe, saldo, saldomx,DATEDIFF(day,fechavencimiento,$P{fechah}) as dias
+		<![CDATA[select referencia, fecha, fechavencimiento,cuenta,subcuenta,cat.descripcion,importe, saldo, saldomx,DATEDIFF(day,fechavencimiento,$P{f2}) as dias
 from cargo c 
 join Catcuenta cat on c.id_concepto=cat.id_concepto
-where fechavencimiento<=$P{f2} and (saldo!=0 and saldomx!=0) and c.id_agente=$P{agente} and c.id_cliente =$P{cliente}
-order by DATEDIFF(day,fechavencimiento,$P{fechah}) desc]]>
+where (fechavencimiento<=$P{f2} or fecha<=$P{f2}) and (saldo!=0 and saldomx!=0) and c.id_agente=$P{agente} and c.id_cliente =$P{cliente}
+order by DATEDIFF(day,fechavencimiento,$P{f2}) desc]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
 	<field name="fecha" class="java.sql.Timestamp"/>

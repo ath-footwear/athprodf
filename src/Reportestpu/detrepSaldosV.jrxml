@@ -17,7 +17,7 @@
 from cargo c 
 join agente a on c.id_agente=a.id_agente
 join cliente cli on c.id_cliente=cli.id_cliente
-where fechavencimiento<=$P{fechah}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P{cliente}]]>
+where (fechavencimiento<=$P{f2} or fecha<=$P{f2})  and (saldo!=0 and saldomx!=0) and c.id_agente=$P{cliente}]]>
 	</queryString>
 	<field name="id_cliente" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>

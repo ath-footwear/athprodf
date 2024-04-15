@@ -8,6 +8,7 @@ package Modelo;
 import com.toedter.calendar.JDateChooser;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -637,6 +638,29 @@ public class Formateodedatos {
                 break;
         }
         return resp;
+    }
+
+    /**
+     * Obtiene la conexion de cobranza de acuerdo al turno
+     *
+     * @param turno
+     * @param con
+     * @param serie
+     * @return
+     */
+    public Connection Getconnection_toturno_cob(String turno, Conexiones con, String serie) {
+        Connection c = null;
+        switch (turno) {
+            case "5":
+            case "7":
+                c = (serie.equals("A"))
+                        ? con.getCobranzatpu() : con.getCobranzatpuB();
+                break;
+            case "6":
+                c = con.getCobranzatpuB();
+                break;
+        }
+        return c;
     }
 
 }
