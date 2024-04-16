@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a088cfe-daee-43d8-8318-6a18ef1bc796">
-	<property name="ireport.zoom" value="1.9487171000000065"/>
+	<property name="ireport.zoom" value="1.6105100000000054"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="52"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="folio" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -509,7 +509,7 @@
 			</staticText>
 			<image>
 				<reportElement x="466" y="85" width="106" height="101" uuid="b04d7293-e11d-448d-a0cd-6a611d4b234a"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode(             "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+$F{foliofiscal}+"&re=AFO901221IC2&rr="+$F{rfc}+"&tt="+$F{total}+"&fe="+$F{sello}.substring(336), com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode(             "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+$F{foliofiscal}+"&re=AFO901221IC2&rr="+$F{rfc}+"&tt=0.0&fe="+$F{sello}.substring(336), com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
 			</image>
 		</band>
 	</summary>

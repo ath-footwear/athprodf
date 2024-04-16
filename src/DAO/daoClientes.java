@@ -192,4 +192,19 @@ public class daoClientes implements clientes {
         return s.getfoliotopagotpu_Clientes_REM(con, nombre);
     }
 
+    /**
+     * Busca los clientes que tengan cargos especiales pendientes sin repetir el
+     * cliente
+     *
+     * @param con conexion cobranza si no hay que meter documentos u otra bd
+     * @param nombre valor del campo
+     * @param bd campo extra por si enb algun momento hay cambio o uso de una
+     * @return
+     */
+    @Override
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes_ESPECIAL(Connection con, String nombre, String bd) {
+        sqlclientes s = new sqlclientes();
+        return s.getfoliotopagotpu_Clientes_ESPECIAL(con, nombre, bd);
+    }
+
 }

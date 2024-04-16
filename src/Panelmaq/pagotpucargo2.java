@@ -5,8 +5,10 @@
  */
 package Panelmaq;
 
+import DAO.daoClientes;
 import DAO.dao_comisiones;
 import DAO.daofactura;
+import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
@@ -15,6 +17,7 @@ import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.cargo;
 import Modelo.factura;
+import Paneltpu.Buscacliente_Pago;
 import Server.Serverprod;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
@@ -36,7 +39,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
 
     public String nombre, empresa;
 //    ACobranza es la conexion a la bd interna, no hay fiscal
-    public Connection ACobranza,cpt;
+    public Connection ACobranza, cpt;
     Serverprod prod = new Serverprod();
     public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
@@ -507,31 +510,19 @@ public class pagotpucargo2 extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
 //        Se verifica que no entre vacio y ocacione una excepcion de a gratis
-        if (!r.isEmpty()) {
-            daofactura df = new daofactura();
-            arrcargo = df.getcargos_especialwithcliente(ACobranza, JtCliente.getText());
-            if (arrcargo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
-                JtCliente.setText("");
-                JtCliente.requestFocus();
-            } else {
-                JlNombre.setText(arrcargo.get(0).getNombre());
-                cargacombos();
-//            cargacargos();
-            }
-        }
 
+        getcargos();
 
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
-        if(!fd.verficafechanula(JtFecha)){
+        if (!fd.verficafechanula(JtFecha)) {
             setfactura();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "La fecha de pago no puede ir vacia");
         }
-        
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
@@ -688,7 +679,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                     d.setRfcctareceptora("BC");
                     d.setCtareceptora("34");
                     d.setUuid(arrcargoseleccion.get(i).getReferencia());
-                    d.setFolio(arrcargoseleccion.get(i).getId_cargo()+"");
+                    d.setFolio(arrcargoseleccion.get(i).getId_cargo() + "");
                     d.setMetodopago("");
                     d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
@@ -765,7 +756,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         dao_comisiones dc = new dao_comisiones();
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
-        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, 
+        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza,
                 fechasinT(f.getFecha()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
@@ -903,7 +894,38 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         return resp;
     }
 
-
+    /**
+     * Busca y despliega los clientes con cargos, ademas despliega una lista de
+     * los mismo y realizar su seleccion
+     */
+    private void getcargos() {
+        String r = JtCliente.getText();
+        Formateodedatos fd = new Formateodedatos();
+        daoClientes dc = new daoClientes();
+        ArrayList<Cliente> arrcliente = dc.getfoliotopagotpu_Clientes_ESPECIAL(ACobranza,
+                r, fd.getbd_tocargo(u.getTurno()));
+        Buscacliente_Pago bp = new Buscacliente_Pago(null, true);
+        bp.setarrcliente(arrcliente);
+        //llena de informacion la lista
+        bp.setlista();
+        bp.setVisible(true);
+        //Obtiene el registro del cliente recien seleccionado
+        int cliente = bp.getCliente();
+        //Verifica que el cliente no sea cero o menor a el
+        if (cliente != 0) {
+            daofactura df = new daofactura();
+            arrcargo = df.getcargos_especialwithcliente(ACobranza, cliente+"");
+            if (arrcargo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
+                JtCliente.setText("");
+                JtCliente.requestFocus();
+            } else {
+                JlNombre.setText(arrcargo.get(0).getNombre());
+                cargacombos();
+                cargacargos();
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCuenta;
     private javax.swing.JCheckBox JcUsd;

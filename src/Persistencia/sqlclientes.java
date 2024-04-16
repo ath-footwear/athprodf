@@ -401,7 +401,36 @@ public class sqlclientes {
                     + "and saldo!=0 and d.Serie='fac' and d.estatus='1' "
                     + "and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' \n"
                     + "order by cli.nombre";
-//            System.out.println("get clientencr " + sql);
+            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Cliente cli = new Cliente();
+                cli.setCvecliente(rs.getInt("id_cliente"));
+                cli.setNombre(rs.getString("nombre"));
+                arr.add(cli);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes_ESPECIAL(Connection con,
+            String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<Cliente> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct cli.id_cliente,cli.nombre\n"
+                    + "from cargoespecial c\n"
+                    + "join cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "where cli.nombre like '%"+nombre+"%' and "
+                    + "c.referencia NOT Like '%NCR%' and (saldo!=0 or saldomx!=0)\n"
+                    + "order by cli.nombre";
+//            System.out.println("get clientepagr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -426,7 +455,7 @@ public class sqlclientes {
             String sql = "select distinct cli.id_cliente,cli.nombre\n"
                     + "from cargo c\n"
                     + "join cliente cli on c.id_cliente=cli.id_cliente\n"
-                    + "where cli.nombre like '%"+nombre+"%' and c.referencia NOT Like '%NCR%' "
+                    + "where cli.nombre like '%" + nombre + "%' and c.referencia NOT Like '%NCR%' "
                     + "and saldo!=0 and c.estatus='1' \n"
                     + "order by cli.nombre";
 //            System.out.println("get clientencr " + sql);

@@ -7,10 +7,12 @@ package Panelmaq;
 
 import DAO.daoAbonos;
 import DAO.daoCargos;
+import DAO.daoClientes;
 import DAO.dao_comisiones;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlpagostpu;
+import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
@@ -25,6 +27,7 @@ import Modelo.cargo;
 import Modelo.convertnum;
 import Modelo.factura;
 import Paneles.fac1;
+import Paneltpu.Buscacliente_Pago;
 import Server.Serverprod;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -564,28 +567,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-        String r = JtCliente.getText();
-//        Se verifica que no entre vacio y ocacione una excepcion de a gratis
-        if (!r.isEmpty()) {
-            Formateodedatos fd = new Formateodedatos();
-            daoCargos dc = new daoCargos();
-            arrcargo = dc.getcargos_especial_CompPagos(cpt, JtCliente.getText(),
-                    fd.getbd_tocargo(u.getTurno()));
-//            daofactura df = new daofactura();
-//            arrcargo = df.getcargos_especialwithcliente(ACobranza, JtCliente.getText());
-            if (arrcargo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
-                JtCliente.setText("");
-                JtCliente.requestFocus();
-            } else {
-                JlNombre.setText(arrcargo.get(0).getNombre());
-                cargacombos();
-                cargacargos();
-//            cargacargos();
-            }
-        }
-
-
+        getcargos();
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -653,11 +635,11 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 
     private void jLabel12MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MousePressed
         factura f = new factura();
-       f.setReferencia("FAC_15");
-       f.setFecha("2024-03-26T15:04:50");
-       cargo carg= new cargo();
-       carg.setReferencia("FAC_15");
-       arrcargoseleccion.add(carg);
+        f.setReferencia("FAC_15");
+        f.setFecha("2024-03-26T15:04:50");
+        cargo carg = new cargo();
+        carg.setReferencia("FAC_15");
+        arrcargoseleccion.add(carg);
         setcomisiones(f);
     }//GEN-LAST:event_jLabel12MousePressed
 
@@ -992,7 +974,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias, es
 //          importante notar que es especial y no normal, por eso cambia el
 //          nombre de la funcion
-        ArrayList<Comision> arrcomision = dc.getcomisiones_Especial(ACobranza, 
+        ArrayList<Comision> arrcomision = dc.getcomisiones_Especial(ACobranza,
                 fechasinT(f.getFecha()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
@@ -1011,7 +993,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
-            comi.setFoliopago(f.getSerie()+"_"+f.getFolio());
+            comi.setFoliopago(f.getSerie() + "_" + f.getFolio());
             comi.setPorcentaje(arrcomision.get(i).getPorcentaje());
             arrcomision.set(i, comi);
         }
@@ -1152,7 +1134,41 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         return resp;
     }
 
-
+    /**
+     * Busca y despliega los clientes con cargos, ademas despliega una lista de
+     * los mismo y realizar su seleccion
+     */
+    private void getcargos() {
+        String r = JtCliente.getText();
+        Formateodedatos fd = new Formateodedatos();
+        daoClientes dc = new daoClientes();
+        ArrayList<Cliente> arrcliente = dc.getfoliotopagotpu_Clientes_ESPECIAL(ACobranza,
+                r, fd.getbd_tocargo(u.getTurno()));
+        Buscacliente_Pago bp = new Buscacliente_Pago(null, true);
+        bp.setarrcliente(arrcliente);
+        //llena de informacion la lista
+        bp.setlista();
+        bp.setVisible(true);
+        //Obtiene el registro del cliente recien seleccionado
+        int cliente = bp.getCliente();
+        //Verifica que el cliente no sea cero o menor a el
+        if (cliente != 0) {
+            daoCargos dca = new daoCargos();
+            arrcargo = dca.getcargos_especial_CompPagos(cpt, cliente+"",
+                    fd.getbd_tocargo(u.getTurno()));
+//            daofactura df = new daofactura();
+//            arrcargo = df.getcargos_especialwithcliente(ACobranza, JtCliente.getText());
+            if (arrcargo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
+                JtCliente.setText("");
+                JtCliente.requestFocus();
+            } else {
+                JlNombre.setText(arrcargo.get(0).getNombre());
+                cargacombos();
+                cargacargos();
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCuenta;
     private javax.swing.JComboBox<String> JcForma;

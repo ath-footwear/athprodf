@@ -36,9 +36,12 @@ public interface clientes {
     public boolean exist_cliente(Connection con, Cliente c);
 
     public Cliente getClientetpu(Connection c, int id);
-    
+
     public ArrayList<Cliente> getfoliotopagotpu_Clientes(Connection con, String nombre, String bd);
-    
+
     public ArrayList<Cliente> getfoliotopagotpu_Clientes_REM(Connection con, String nombre);
+
+    public ArrayList<Cliente> getfoliotopagotpu_Clientes_ESPECIAL(Connection con,
+            String nombre, String bd);
 
 }
