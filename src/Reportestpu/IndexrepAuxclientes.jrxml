@@ -112,15 +112,18 @@ order by cli.nombre]]>
 	</columnHeader>
 	<detail>
 		<band height="34" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="572" height="20" forecolor="#3333FF" backcolor="#3333FF" uuid="0850fa15-cac1-441a-b6ec-d163ce7d7e65"/>
+			</rectangle>
 			<textField>
-				<reportElement x="46" y="0" width="509" height="20" uuid="cbb35c46-7edf-43fe-bf77-1793065a85be"/>
+				<reportElement x="46" y="0" width="509" height="20" forecolor="#FFFFFF" uuid="cbb35c46-7edf-43fe-bf77-1793065a85be"/>
 				<textElement>
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="46" height="20" uuid="909cb69a-0bae-49ae-9afe-e81f9544f0b2"/>
+				<reportElement x="0" y="0" width="46" height="20" forecolor="#FFFFFF" uuid="909cb69a-0bae-49ae-9afe-e81f9544f0b2"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
