@@ -9,6 +9,8 @@ import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Paneles.fac1;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -236,13 +238,15 @@ public class Repauxcliente extends javax.swing.JDialog {
 
     private void setreport(String f1, String f2, String n) {
         try {
-            Connection con = getcon(user.getTurno());
             Formateodedatos fd = new Formateodedatos();
+            String serie = JcSerie.getSelectedItem().toString();
+            Connection con =fd.Getconnection_toturno_cob(user.getTurno(), u, serie);
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("cliente", n);
+            parametros.put("db", fd.getbdto_respinv_orig(user.getTurno()));
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/IndexrepAuxclientes.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
@@ -252,35 +256,10 @@ public class Repauxcliente extends javax.swing.JDialog {
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             ver.setTitle("Aux clientes");
             ver.setVisible(true);
+            regresarventana(ver);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Obtiene la conexion adecuada de acuerdo a la serie y el turno, cabe
-     * aclarar que si es por ahora ambos será tipo fiscal, en lo que se terminan
-     * pendientes con mayor urgencia
-     *
-     * @param turno
-     * @return
-     */
-    private Connection getcon(String turno) {
-        Connection resp = null;
-        String serie = JcSerie.getSelectedItem().toString();
-        switch (serie) {
-            case "A":
-                //El turno 6 por ahora es un caso especial ya que solo es interno
-                resp = (turno.equals("6")) ? u.getCobranzatpuB() : u.getCobranzatpu();
-                break;
-            case "B":
-                resp = u.getCobranzatpuB();
-                break;
-            default:
-                u.getCobranzatpu();
-                break;
-        }
-        return resp;
     }
 
     private void vaciarcampos() {
@@ -314,6 +293,58 @@ public class Repauxcliente extends javax.swing.JDialog {
             resp = true;
         }
         return resp;
+    }
+
+    /**
+     * Vuelve visible la interfaz
+     */
+    private void verrep() {
+        this.setVisible(true);
+    }
+
+    /**
+     * Usamos Windows listener para que cuando cierre el reporte regrese de
+     * nuevo a la ventana del reporte
+     *
+     * @param ver
+     */
+    private void regresarventana(JasperViewer ver) {
+        ver.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                verrep();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     /**

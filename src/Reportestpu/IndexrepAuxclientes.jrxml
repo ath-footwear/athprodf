@@ -15,11 +15,14 @@
 	<parameter name="imag" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="db" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select c.id_cliente,cli.nombre
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
-where  c.estatus='1' and c.fecha<$P{f2} and c.id_cliente like '%$P!{cliente}%'
+where  c.estatus='1' and convert(date, c.fecha) between $P{f1} and $P{f2} and c.id_cliente like '%$P!{cliente}%'
 group by c.id_cliente,cli.nombre
 order by cli.nombre]]>
 	</queryString>
@@ -81,27 +84,27 @@ order by cli.nombre]]>
 				<text><![CDATA[S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="0" width="177" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<reportElement x="120" y="0" width="145" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Concepto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="297" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
+				<reportElement x="265" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="424" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<reportElement x="392" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Usd]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="492" y="0" width="70" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
+				<reportElement x="460" y="0" width="70" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Mxn]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="0" width="70" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
+				<reportElement x="322" y="0" width="70" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Importe]]></text>
 			</staticText>
@@ -125,11 +128,17 @@ order by cli.nombre]]>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="24" width="572" height="8" uuid="1af594ce-8afe-43c3-802c-f99577798469"/>
-				<subreportParameter name="f2">
-					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="cliente">
 					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="bd">
+					<subreportParameterExpression><![CDATA[$P{db}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepAuxclientes.jasper"]]></subreportExpression>
@@ -137,7 +146,17 @@ order by cli.nombre]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="11" splitType="Stretch"/>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="452" y="10" width="80" height="20" uuid="8d009534-738d-4f1a-b736-99a709afb4c4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="10" width="40" height="20" uuid="8c4c35d6-daa6-4e4a-8f7d-dbcc139de714"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="9" splitType="Stretch"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="bb685253-89e7-47c0-a634-7aa1a07bdf22">
-	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f2" class="java.lang.String">
@@ -9,12 +9,18 @@
 	<parameter name="cliente" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="bd" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select id_cargo,referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,saldo as saldousd,saldomx,importe
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
 join Catcuenta cu on c.id_concepto=cu.id_concepto
-where c.estatus='1' and c.fecha<$P{f2} and c.id_cliente=$P{cliente}
+where c.estatus='1' and convert(date, c.fecha) between $P{f1} and $P{f2} and c.id_cliente=$P{cliente}
 order by cli.nombre]]>
 	</queryString>
 	<field name="id_cargo" class="java.lang.Integer"/>
@@ -55,28 +61,28 @@ order by cli.nombre]]>
 				<textFieldExpression><![CDATA[$F{subcuenta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="177" height="12" uuid="8c62ef48-4d91-43ef-9b8c-17c39dc83e29"/>
+				<reportElement x="120" y="0" width="145" height="12" uuid="8c62ef48-4d91-43ef-9b8c-17c39dc83e29"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="297" y="0" width="57" height="12" uuid="73a1bb22-cd2c-4adf-8a0a-9dcdb5c9fd02"/>
+				<reportElement x="265" y="0" width="57" height="12" uuid="73a1bb22-cd2c-4adf-8a0a-9dcdb5c9fd02"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="424" y="0" width="70" height="12" uuid="0a618c7b-7ddb-4c23-8753-d4353fa5d742"/>
+				<reportElement x="392" y="0" width="70" height="12" uuid="0a618c7b-7ddb-4c23-8753-d4353fa5d742"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldousd}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="494" y="0" width="70" height="12" uuid="546f7aad-d316-47e0-8ca1-da5f19c45d7f"/>
+				<reportElement x="462" y="0" width="70" height="12" uuid="546f7aad-d316-47e0-8ca1-da5f19c45d7f"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -84,20 +90,26 @@ order by cli.nombre]]>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="17" width="612" height="7" uuid="c0cb8cb2-660f-47d0-bbe6-8deace422d43"/>
-				<subreportParameter name="f2">
-					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="cliente">
 					<subreportParameterExpression><![CDATA[$P{cliente}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="cargo">
 					<subreportParameterExpression><![CDATA[$F{id_cargo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="db">
+					<subreportParameterExpression><![CDATA[$P{bd}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepAuxclientesabono.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement x="354" y="0" width="70" height="12" uuid="deee6f9b-bc9d-460f-9054-1148b0a795de"/>
+				<reportElement x="322" y="0" width="70" height="12" uuid="deee6f9b-bc9d-460f-9054-1148b0a795de"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>

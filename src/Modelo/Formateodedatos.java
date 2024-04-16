@@ -619,7 +619,7 @@ public class Formateodedatos {
     }
 
     /**
-     * Obtiene el nombre integro de la bd con respecto al turno
+     * Obtiene el nombre integro de la bd con respecto al turno, solo de CPT
      *
      * @param turno
      * @return
