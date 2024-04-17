@@ -744,6 +744,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                 f.setPedido("E");
                 f.setFechasolicitado(sdf.format(date));
                 f.setTurno(u.getTurno());
+                f.setFechap(JtFecha.getDate());
                 f.setFechapago(sdf.format(JtFecha.getDate()));
                 f.setSubtotal(0);
                 f.setTotal(total);

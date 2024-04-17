@@ -74,11 +74,13 @@ public class generarXML40pagostpu {
         getempresa(empresa, encabezado.getEmpresa());
 
         XMLGregorianCalendar fecha = null;
+        XMLGregorianCalendar fechap = null;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         try {
             fecha = DatatypeFactory.newInstance().newXMLGregorianCalendar(sdf.format(date));
+            fechap = DatatypeFactory.newInstance().newXMLGregorianCalendar(sdf.format(encabezado.getFechap()));
         } catch (DatatypeConfigurationException ex) {
             Logger.getLogger(generarXML40pagostpu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -131,7 +133,7 @@ public class generarXML40pagostpu {
         File key = new File(urlKEY);
 
         //Datos del Complemento
-        xml.setComplemento(createcomplemento(of, encabezado, fecha));
+        xml.setComplemento(createcomplemento(of, encabezado, fechap));
 
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente
         X509Certificate x509Cer = getX509Certificate(cer);// Metodo de sellado
@@ -219,7 +221,7 @@ public class generarXML40pagostpu {
 //Falta Setear correctamente el prefijo antes de cada tag
 // Nodos implementados manualmente a la clase COmprobante
 
-    private Comprobante.Complemento createcomplemento(ObjectFactory of, xmlDAO f, XMLGregorianCalendar fecha) {//Complemento
+    private Comprobante.Complemento createcomplemento(ObjectFactory of, xmlDAO f, XMLGregorianCalendar fechap) {//Complemento
         Comprobante.Complemento comp = of.createComprobanteComplemento();// Complemento Base
         Comprobante.Complemento.Pagos p = of.createComprobanteComplementoPago();
         Comprobante.Complemento.Pagos.Totales totales = of.createComprobanteComplementoPagosTotales();
@@ -233,7 +235,7 @@ public class generarXML40pagostpu {
         //pago
         // usar por si no funciona la funcion de la linea 273 pago.getDoctoRelacionado().add(doc);
 //        List<Comprobante.Complemento.Pagos.Pago> arr = p.getPago();
-        pago.setFechaPago(fecha);
+        pago.setFechaPago(fechap);
         pago.setFormaDePagoP(f.getFormaP());
         if (f.getMoneda().equals("MXN")) {
             totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16()).setScale(2));

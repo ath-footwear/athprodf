@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -38,6 +39,15 @@ public class factura implements java.io.Serializable{
     private ArrayList<Detpagos> arrpagos = new ArrayList<>();
     private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
     private ArrayList<Poliza> arrpolizas = new ArrayList<>();
+    private Date fechap;
+
+    public Date getFechap() {
+        return fechap;
+    }
+
+    public void setFechap(Date fechap) {
+        this.fechap = fechap;
+    }
 
     public double getSaldo() {
         return saldo;

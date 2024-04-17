@@ -4,6 +4,7 @@ import Modelo.Detpagos;
 import Modelo.cargo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class xmlDAO {
 
@@ -60,15 +61,33 @@ public class xmlDAO {
     private ArrayList<cargo> arrcargo = new ArrayList<>();
     private ArrayList<Detpagos> arrpagos = new ArrayList<>();
     private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
-    private float  montopago;
-    private double impiva16, baseiva16,totalpago16;
-    private double impiva17, baseiva17,totalpago17;
+    private float montopago;
+    private double impiva16, baseiva16, totalpago16;
+    private double impiva17, baseiva17, totalpago17;
     private int parcialidad;
     private String exportacion;
     private String folioorig;
     private String turno;
     private double monto;
     private String PEDIDO;
+    private String fechapago;
+    private Date fechap;
+
+    public Date getFechap() {
+        return fechap;
+    }
+
+    public void setFechap(Date fechap) {
+        this.fechap = fechap;
+    }
+
+    public String getFechapago() {
+        return fechapago;
+    }
+
+    public void setFechapago(String fechapago) {
+        this.fechapago = fechapago;
+    }
 
     public String getPEDIDO() {
         return PEDIDO;
@@ -85,7 +104,6 @@ public class xmlDAO {
     public void setMonto(double monto) {
         this.monto = monto;
     }
-    
 
     public String getTurno() {
         return turno;
@@ -150,7 +168,7 @@ public class xmlDAO {
     public void setParcialidad(int parcialidad) {
         this.parcialidad = parcialidad;
     }
-    
+
     public double getImpiva16() {
         return impiva16;
     }
@@ -206,7 +224,7 @@ public class xmlDAO {
     public void setArruuid(ArrayList<String> arruuid) {
         this.arruuid = arruuid;
     }
-    
+
     public String getRelacion() {
         return relacion;
     }
@@ -234,8 +252,6 @@ public class xmlDAO {
         this.descuentoG = descuentoG;
     }
 
-    
-    
     public BigDecimal getBaseImpuesto() {
         return baseImpuesto;
     }
@@ -243,7 +259,7 @@ public class xmlDAO {
     public void setBaseImpuesto(BigDecimal baseImpuesto) {
         this.baseImpuesto = baseImpuesto;
     }
-    
+
     public String getRazonSocial() {
         return razonSocial;
     }
@@ -251,7 +267,7 @@ public class xmlDAO {
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
-    
+
     public BigDecimal getImporteImpuesto() {
         return importeImpuesto;
     }
@@ -259,7 +275,7 @@ public class xmlDAO {
     public void setImporteImpuesto(BigDecimal importeImpuesto) {
         this.importeImpuesto = importeImpuesto;
     }
-    
+
     public String getUnidad() {
         return unidad;
     }

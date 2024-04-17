@@ -16,6 +16,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
@@ -55,7 +56,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class pagotpu1 extends javax.swing.JPanel {
-    
+
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
@@ -96,6 +97,7 @@ public class pagotpu1 extends javax.swing.JPanel {
 
         pop = new javax.swing.JPopupMenu();
         JtCancelar = new javax.swing.JMenuItem();
+        JmCheckcancel = new javax.swing.JMenuItem();
         JbXml1 = new javax.swing.JButton();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -112,6 +114,16 @@ public class pagotpu1 extends javax.swing.JPanel {
             }
         });
         pop.add(JtCancelar);
+
+        JmCheckcancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/questionregular_106274.png"))); // NOI18N
+        JmCheckcancel.setText("Verificar cancelacion");
+        JmCheckcancel.setToolTipText("Verifica Status de cancelacion en el SAT");
+        JmCheckcancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCheckcancelActionPerformed(evt);
+            }
+        });
+        pop.add(JmCheckcancel);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -227,12 +239,12 @@ public class pagotpu1 extends javax.swing.JPanel {
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
         arrfacturaxml = dfac.getdocxml(cpt, id + "", "NCR", empresacob);
-        
+
         factura f = new factura();
         String condicion;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        
+
         ArrayList<Dfactura> arrf = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
 //        String im = String.valueOf(formateador.format(arrfacturaxml.get(0).getImpuestos()));
@@ -262,7 +274,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             f.setTotal(d);
 //            f.setTotal(BigDecimal.valueOf(arrfacturaxml.get(0).getTotal()).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
-        
+
         switch (arrfacturaxml.get(0).getMetodopago()) {
             case "PPD":
                 f.setDescmetodop("PAGO EN PARCIALIDADES O DIFERIDO");
@@ -325,7 +337,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         //Se utiliza el generar factura especial por los decimales
         daoxmlncr dx = new daoxmlncr();
         dx.generarfac(f, cpt, sqlempresa);
-        
+
         timbrarXML t = new timbrarXML();
         String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
@@ -345,20 +357,32 @@ public class pagotpu1 extends javax.swing.JPanel {
         }
         int row = JtDetalle.getSelectedRow();
         int e = arrfactura.get(row).getEstatus();
-        if (e == 1) {
-            JtCancelar.setEnabled(true);
+        String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
+
+        //Veririca que el documento este timbrado
+        if (tim.equals("T")) {
+            if (e == 1) {
+                JtCancelar.setEnabled(true);
+                //Lo desactiva si su estatus es activo
+                JmCheckcancel.setEnabled(false);
+            } else {
+                JtCancelar.setEnabled(false);
+                //Lo activa si su estatus es cancelado
+                JmCheckcancel.setEnabled(true);
+            }
         } else {
-            JtCancelar.setEnabled(false);
-        }        // TODO add your handling code here:
+            JmCheckcancel.setEnabled(false);
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
-    
+
 
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
         int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
                 + "\n Recuerda que posteriormente debes cancelarla en el SAT", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
         if (input == 0) {
 //            Obtiene los registros por si las facturas relacionadas tienen algun pago
-            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
+            int row = JtDetalle.getSelectedRow();
+            int folio = arrfactura.get(row).getId();
 //            System.out.println("folio "+folio);
             Formateodedatos fd = new Formateodedatos();
             daofactura df = new daofactura();
@@ -366,14 +390,20 @@ public class pagotpu1 extends javax.swing.JPanel {
             if (!arr.isEmpty()) {
                 if (df.execcancelacionPago(cpt, ACobranza, arr)) {
                     JOptionPane.showMessageDialog(null, "Proceso terminado \n ");
+                    respcancela(arrfactura.get(row));
                     Buscanotas();
                 }
             }
-            
+
         }
 
     }//GEN-LAST:event_JtCancelarActionPerformed
-    
+
+    private void JmCheckcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCheckcancelActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        respcancela(arrfactura.get(row));
+    }//GEN-LAST:event_JmCheckcancelActionPerformed
+
     private void setreport() {
         try {
             String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
@@ -415,7 +445,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private String getnmetodo(String m) {
         String r = "";
         for (int i = 0; i < arrmetodo.size(); i++) {
@@ -426,7 +456,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         }
         return r;
     }
-    
+
     private String getnuso(String m) {
         String r = "";
         for (int i = 0; i < arruso.size(); i++) {
@@ -446,7 +476,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         arrfactura = df.getdocpagostpu(cpt, JtCliente.getText(), "PAG", fd.getbd_tocargo(u.getTurno()));
         generatabla();
     }
-    
+
     private double formatdecimal(double cant) {
         int dato = 0;
         int punto = 0;
@@ -497,14 +527,17 @@ public class pagotpu1 extends javax.swing.JPanel {
                     cadena += car;
                 }
             }
-            
+
         }
         if (!cadena.isEmpty()) {
             arr.add(cadena);
         }
         return arr;
     }
-    
+
+    /**
+     * Genera tabla con el numero de registros encontrados
+     */
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Pago");
@@ -533,20 +566,30 @@ public class pagotpu1 extends javax.swing.JPanel {
         }
         JtDetalle.setModel(model);
     }
-    
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
 
+    /**
+     * Funcion para cancelacion en el sat, debe de estar timbrada si no, no
+     * ejecuta la funcion de cancelar de la clase timbrado
+     *
+     * @param f
+     */
+    private void respcancela(factura f) {
+        String tim = (f.getFoliofiscal().equals("")) ? "N" : "T";
+//                Aplica solo si esta timbrada sino solo se da de baja en la bd
+        if (tim.equals("T")) {
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            timbrarXML t = new timbrarXML();
+            String resp = t.cancelarfolio("" + f.getFolio(), sqlempresa, n, f.getFoliofiscal());
+//            System.out.println(resp);
+            JOptionPane.showMessageDialog(null, resp, "Respuesta SAT",
+                    JOptionPane.INFORMATION_MESSAGE);
+            Buscanotas();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbXml1;
+    private javax.swing.JMenuItem JmCheckcancel;
     private javax.swing.JMenuItem JtCancelar;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;

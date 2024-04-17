@@ -4464,7 +4464,9 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select nombre,total, convert(date,fecha) as fecha,usuario,convert(date,fechapago) as fpago, id_doctopago,observaciones,estatus\n"
+            String sql = "select nombre,total, convert(date,fecha) as fecha,usuario,"
+                    + "convert(date,fechapago) as fpago, id_doctopago,observaciones,"
+                    + "estatus, isnull(foliofiscal,'') as foliofiscal\n"
                     + "from doctospagotpu_especial\n"
                     + "where nombre like '%" + cliente + "%'";
 //            System.out.println("get clientencr " + sql);
@@ -4480,6 +4482,7 @@ public class sqlfactura {
                 f.setId(rs.getInt("id_doctopago"));
                 f.setObservaciones(rs.getString("Observaciones"));
                 f.setEstado(rs.getString("estatus"));
+                f.setFoliofiscal(rs.getString("foliofiscal"));
                 arr.add(f);
             }
             rs.close();
@@ -4500,7 +4503,7 @@ public class sqlfactura {
                     + "join " + bd + ".dbo.cargoespecial c on dd.foliorel=c.id_cargo\n"
                     + "join " + bd + ".dbo.abonoespecial a on dd.foliorel=a.id_cargo and dd.id_doctopago=substring(a.referencia,4,5)\n"
                     + "where id_doctopago=" + pago;
-//            System.out.println("get clientencr " + sql);
+//            System.out.println("get pagos especial  " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

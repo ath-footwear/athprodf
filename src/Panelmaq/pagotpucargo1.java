@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -38,7 +39,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class pagotpucargo1 extends javax.swing.JPanel {
-
+    
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
@@ -67,6 +68,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
 
         pop = new javax.swing.JPopupMenu();
         JtCancelar = new javax.swing.JMenuItem();
+        JmCheckcancel = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -75,13 +77,23 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         JtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JtCancelar.setText("Cancelar NCR");
+        JtCancelar.setText("Cancelar Pago");
         JtCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtCancelarActionPerformed(evt);
             }
         });
         pop.add(JtCancelar);
+
+        JmCheckcancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/questionregular_106274.png"))); // NOI18N
+        JmCheckcancel.setText("Verificar cancelacion");
+        JmCheckcancel.setToolTipText("Verifica Status de cancelacion en el SAT");
+        JmCheckcancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCheckcancelActionPerformed(evt);
+            }
+        });
+        pop.add(JmCheckcancel);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -189,8 +201,33 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         if (evt.getButton() == 3) {// activar con clic derecho
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
+        int row = JtDetalle.getSelectedRow();
+        String e = arrfactura.get(row).getEstado();
+        String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
+        if (evt.getButton() == 3) {// activar con clic derecho
+            pop.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+        if (!arrfactura.get(row).getFoliofiscal().equals("")) {
+            JmCheckcancel.setVisible(true);
+        }else{
+            JmCheckcancel.setVisible(false);
+        }
+        //Veririca que el documento este timbrado
+        if (tim.equals("T")) {
+            if (e.equals("1")) {
+                JtCancelar.setEnabled(true);
+                //Lo desactiva si su estatus es activo
+                JmCheckcancel.setEnabled(false);
+            } else {
+                JtCancelar.setEnabled(false);
+                //Lo activa si su estatus es cancelado
+                JmCheckcancel.setEnabled(true);
+            }
+        } else {
+            JmCheckcancel.setEnabled(false);
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
-
+    
 
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
         int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el Pago?");
@@ -199,6 +236,14 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_JtCancelarActionPerformed
 
+    private void JmCheckcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCheckcancelActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        respcancela(arrfactura.get(row));
+    }//GEN-LAST:event_JmCheckcancelActionPerformed
+
+    /**
+     * Cancelacion de pago
+     */
     private void respcancela() {
         daofactura df = new daofactura();
         Formateodedatos fd = new Formateodedatos();
@@ -209,6 +254,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
                 arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
         if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
             JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
+            respcancela(arrfactura.get(row));
             Buscanotas();
         } else {
             JOptionPane.showMessageDialog(null,
@@ -223,7 +269,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
         generatabla();
     }
-
+    
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Folio");
@@ -249,7 +295,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         }
         JtDetalle.setModel(model);
     }
-
+    
     private void setreport(int folio, String moneda, double total) {
         try {
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
@@ -281,7 +327,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
             parametros.put("regimencliente", "");
             parametros.put("confo", conformidad);
             parametros.put("bd", "_especial");
-
+            
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -293,7 +339,28 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Funcion para cancelacion en el sat, debe de estar timbrada si no, no
+     * ejecuta la funcion de cancelar de la clase timbrado
+     *
+     * @param f
+     */
+    private void respcancela(factura f) {
+        String tim = (f.getFoliofiscal().equals("")) ? "N" : "T";
+//                Aplica solo si esta timbrada sino solo se da de baja en la bd
+        if (tim.equals("T")) {
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            String n = fn.getEmpresa(u.getTurno(), "");
+            timbrarXML t = new timbrarXML();
+            String resp = t.cancelarfolio("" + f.getFolio(), sqlempresa, n, f.getFoliofiscal());
+//            System.out.println(resp);
+            JOptionPane.showMessageDialog(null, resp, "Respuesta SAT",
+                    JOptionPane.INFORMATION_MESSAGE);
+            Buscanotas();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JmCheckcancel;
     private javax.swing.JMenuItem JtCancelar;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
