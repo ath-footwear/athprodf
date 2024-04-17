@@ -18,6 +18,15 @@
 	<parameter name="nombre" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="tipoc" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalletra" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select k.id_kardex,k.id_cliente,id_prov,k.serie,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon,isnull(k.referencia,'') as referencia
 from Kardex k
@@ -44,6 +53,9 @@ order by k.fecha desc]]>
 	<field name="pedido" class="java.lang.String"/>
 	<field name="renglon" class="java.lang.Integer"/>
 	<field name="referencia" class="java.lang.String"/>
+	<variable name="tcant" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -158,7 +170,7 @@ order by k.fecha desc]]>
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="247" height="40" uuid="7a8d8983-d379-47dc-a21d-ab3ff3cc59ab"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -227,19 +239,19 @@ order by k.fecha desc]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="4" splitType="Stretch"/>
+		<band height="5" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="36" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="452" y="22" width="80" height="14" uuid="b4cd6f6c-4bad-4001-aa9a-d4aa603a3068"/>
+				<reportElement x="452" y="11" width="80" height="14" uuid="b4cd6f6c-4bad-4001-aa9a-d4aa603a3068"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="532" y="22" width="40" height="14" uuid="39c06060-d6d5-47ae-908d-1e8631b40e3e"/>
+				<reportElement x="532" y="11" width="40" height="14" uuid="39c06060-d6d5-47ae-908d-1e8631b40e3e"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -248,6 +260,36 @@ order by k.fecha desc]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="10" splitType="Stretch"/>
+		<band height="106" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="25" width="430" height="20" uuid="b73d0b55-0f85-4070-8ad5-f2e2d631d96b"/>
+				<textFieldExpression><![CDATA[$P{totalletra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="52" width="100" height="15" uuid="e2a0bb81-c763-4ba8-b1cd-148d6f856b81"/>
+				<textFieldExpression><![CDATA[$P{tipoc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="52" width="95" height="15" uuid="c401dfe9-23ea-42bf-b38f-ebdd7f22fb44"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de cambio]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="318" y="6" width="47" height="15" uuid="3cd5e02b-fc18-4842-8d55-84f6b303c541"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tcant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="205" y="6" width="95" height="15" uuid="f4d2950f-5f10-4b05-a1ef-5c8029f44620"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Total]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>

@@ -107,9 +107,6 @@ public class EntradasSalidas extends javax.swing.JInternalFrame {
         c1.ACobranza=cobranza;
         c1.empresa=empresa;
         c1.empresacob=empresacob;
-        c1.arrfpago = arrforma;
-        c1.arrmetodo = arrmetodo;
-        c1.arruso = arruso;
         c1.sqlcfdi=litecfdi;
         c1.sqlempresa=liteempresa;
         c1.rcpt=rcpt;

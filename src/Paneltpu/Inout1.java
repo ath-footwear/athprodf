@@ -6,21 +6,13 @@
 package Paneltpu;
 
 import DAO.daoConceptos;
-import Paneles.*;
-import DAO.daocfdi;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.ConceptosES;
-import Modelo.Formadepago;
 import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
-import Modelo.factura;
-import Modelo.metodopago;
-import Modelo.usocfdi;
-import Server.Serverprod;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import Modelo.convertirNumeros;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -52,17 +44,7 @@ public class Inout1 extends javax.swing.JPanel {
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt, cobB;
-    Serverprod prod = new Serverprod();
-    public ArrayList<Formadepago> arrfpago = new ArrayList<>();
-    public ArrayList<usocfdi> arruso = new ArrayList<>();
-    public ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<factura> arrfactura = new ArrayList<>();
-    ArrayList<factura> arrfacturaxml = new ArrayList<>();
     ArrayList<KardexCmp> k = new ArrayList<>();
-    daocfdi dcfdi = new daocfdi();
-    int estado = 0;
-    int ciudad = 0;
-    int pais = 0;
     public Usuarios u;
     int clic = 0;
     int clic2 = 0;
@@ -245,11 +227,7 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        int row = JtDetalle.getSelectedRow();
-        int folio = k.get(row).getId_kardex();
-        String ser = k.get(row).getSerie();
-        String name = k.get(row).getNombreproveedor();
-        setreport(folio, name, ser);
+        seprereport();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
@@ -371,6 +349,28 @@ public class Inout1 extends javax.swing.JPanel {
     }
 
     /**
+     * Validacion de datos para el reporte
+     */
+    private void seprereport() {
+        String tipoc = JOptionPane.showInputDialog("Ingrese Tipo de cambio: ");
+        Formateodedatos fd = new Formateodedatos();
+        System.out.println("tipo c"+tipoc);
+        boolean flag = fd.verificafloat(tipoc);
+        if (!flag && !tipoc.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El dato capturado es incorrecto, intentelo de nuevo");
+        } else {
+            if (tipoc.isEmpty()) {
+                tipoc = "1";
+            }
+            int row = JtDetalle.getSelectedRow();
+            int folio = k.get(row).getId_kardex();
+            String ser = k.get(row).getSerie();
+            String name = k.get(row).getNombreproveedor();
+            setreport(folio, name, ser, tipoc);
+        }
+    }
+
+    /**
      * Despliega reporte del pedido individual
      *
      * @param folio
@@ -379,13 +379,19 @@ public class Inout1 extends javax.swing.JPanel {
      * @param serie
      * @param total
      */
-    private void setreport(int folio, String name, String serie) {
+    private void setreport(int folio, String name, String serie, String tipoc) {
         try {
             Map parametros = new HashMap();
+            convertirNumeros cnum = new convertirNumeros();
+            Formateodedatos fd = new Formateodedatos();
+            String moneda=(tipoc.equals("1"))?"MXN":"USD";
 //            Agregar parametros al reporte
             parametros.put("idk", folio);
             parametros.put("serie", serie);
             parametros.put("nombre", name);
+            parametros.put("tipoc", tipoc);
+            parametros.put("totalletra", "");
+            parametros.put("imagen",fd.getimagenreporte(u));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/indexkardex.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -393,7 +399,7 @@ public class Inout1 extends javax.swing.JPanel {
             ver.setTitle("Mov " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Inout1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
