@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1dcf74f-a28f-4605-8927-6de67ac891f2">
-	<property name="ireport.zoom" value="2.9230756500000017"/>
+	<property name="ireport.zoom" value="1.5000000000000007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1233"/>
+	<property name="ireport.y" value="195"/>
 	<parameter name="id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -18,7 +18,7 @@
 	<queryString>
 		<![CDATA[select id_pedido,pedido,fecha,total,subtotal,impuestos,serie,nombre
 from pedido p
-where serie= $P{serie} and id_pedido=$P{id}]]>
+where id_pedido=$P{id}]]>
 	</queryString>
 	<field name="id_pedido" class="java.lang.Integer"/>
 	<field name="pedido" class="java.lang.String"/>
@@ -223,7 +223,7 @@ where serie= $P{serie} and id_pedido=$P{id}]]>
 			</textField>
 			<textField>
 				<reportElement x="79" y="49" width="100" height="20" uuid="8d120db2-e4f4-492b-8199-cd92675b4f47"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipoc}]]></textFieldExpression>

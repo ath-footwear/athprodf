@@ -536,7 +536,7 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select id_doctopago,folio,fecha,fechapago,total,serie,nombre,observaciones,estatus \n"
                     + "from Doctospagotpu\n"
-                    + "where folio like '%%'\n"
+                    + "where folio like '%%' and serie='RPAG'\n"
                     + "order by id_doctopago desc";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
@@ -4132,16 +4132,19 @@ public class sqlfactura {
         return arr;
     }
 
-    public ArrayList<factura> getcancelapago(Connection c, int idpago, String bd) {
+    public ArrayList<factura> getcancelapago(Connection c, int idpago, String bd, String serie) {
         ArrayList<factura> arr = new ArrayList<>();
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_doctopago,folio,moneda,tipocambio,c.id_cargo,id_abono,d.folio,a.referenciac,a.pago,a.importe,c.saldo,c.saldomx\n"
+            String sql = "select id_doctopago,folio,moneda,tipocambio,c.id_cargo,"
+                    + "id_abono,d.folio,a.referenciac,a.pago,a.importe,c.saldo,"
+                    + "c.saldomx, c.referencia as fac\n"
                     + "from doctospagotpu d\n"
                     + "join " + bd + ".dbo.abono a on d.folio=a.referenciac\n"
                     + "join " + bd + ".dbo.cargo c on a.id_cargo=c.id_cargo\n"
-                    + "where serie='PAG' and a.referencia like '%PAG%' and id_doctopago=" + idpago;
+                    + "where serie='"+serie+"' and a.referencia like '%PAG%' and id_doctopago=" + idpago;
+//            System.out.println("get pagos "+sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -4156,6 +4159,7 @@ public class sqlfactura {
                 f.setImporte(rs.getDouble("importe"));
                 f.setSaldo(rs.getDouble("saldo"));
                 f.setSaldomx(rs.getDouble("saldomx"));
+                f.setReferenciafac(rs.getString("fac"));
                 arr.add(f);
             }
         } catch (SQLException ex) {
@@ -4498,7 +4502,8 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select foliorel,monto,id_abono,c.saldo,monto+c.saldo as saldor\n"
+            String sql = "select foliorel,monto,id_abono,c.saldo,monto+c.saldo as saldor,"
+                    + "c.id_cargo \n"
                     + "from ddoctospagotpu_especial dd\n"
                     + "join " + bd + ".dbo.cargoespecial c on dd.foliorel=c.id_cargo\n"
                     + "join " + bd + ".dbo.abonoespecial a on dd.foliorel=a.id_cargo and dd.id_doctopago=substring(a.referencia,4,5)\n"
@@ -4513,6 +4518,7 @@ public class sqlfactura {
                 a.setId_docto(pago);
                 a.setTotal(rs.getDouble("monto"));
                 a.setSaldo(rs.getDouble("saldor"));
+                a.setId_cargo(rs.getInt("id_cargo"));
                 arr.add(a);
             }
             rs.close();

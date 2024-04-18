@@ -5,13 +5,15 @@
  */
 package Paneltpu;
 
+import DAO.dao_comisiones;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daoxmlE;
 import DAO.daoxmlncr;
 import Modelo.Ciudades;
+import Modelo.Comision;
+import Modelo.Devolucion;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
@@ -38,8 +40,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -60,20 +60,12 @@ public class pagotpu1 extends javax.swing.JPanel {
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
-    Serverylite slite = new Serverylite();
-    Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<Paises> arrpais = new ArrayList<>();
-    ArrayList<Estados> arrestado = new ArrayList<>();
-    ArrayList<Ciudades> arrciudad = new ArrayList<>();
     ArrayList<factura> arrfactura = new ArrayList<>();
     ArrayList<factura> arrfacturaxml = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
-    int estado = 0;
-    int ciudad = 0;
-    int pais = 0;
     public Usuarios u;
 
     /**
@@ -386,17 +378,17 @@ public class pagotpu1 extends javax.swing.JPanel {
 //            System.out.println("folio "+folio);
             Formateodedatos fd = new Formateodedatos();
             daofactura df = new daofactura();
-            ArrayList<factura> arr = df.getregspcancelpagotpu(cpt, folio, fd.getbd_tocargo(u.getTurno()));
+            ArrayList<factura> arr = 
+                    df.getregspcancelpagotpu(cpt, folio, fd.getbd_tocargo(u.getTurno()),"PAG");
             if (!arr.isEmpty()) {
                 if (df.execcancelacionPago(cpt, ACobranza, arr)) {
                     JOptionPane.showMessageDialog(null, "Proceso terminado \n ");
                     respcancela(arrfactura.get(row));
+                    cancelacomision(cpt, arr);
                     Buscanotas();
                 }
             }
-
         }
-
     }//GEN-LAST:event_JtCancelarActionPerformed
 
     private void JmCheckcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCheckcancelActionPerformed
@@ -586,6 +578,27 @@ public class pagotpu1 extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             Buscanotas();
         }
+    }
+
+    /**
+     * Funcion que busca la comision generada en su momento si es que termino de
+     * pagar y la cancela, con esto se refiere a que no se podra ver ni tomar su
+     * valor en cuanta
+     *
+     * @param cpt
+     * @param arr
+     */
+    public void cancelacomision(Connection cpt, ArrayList<factura> arr) {
+        dao_comisiones dc = new dao_comisiones();
+        ArrayList<Comision> arrcomi = new ArrayList<>();
+        for (factura arr1 : arr) {
+            Comision com = new Comision();
+            com.setId_cargo(arr1.getIdcargo());
+            com.setSerie("A");
+            com.setReferencia(arr1.getReferenciafac());
+            arrcomi.add(com);
+        }
+        dc.cancelacomision_pagos(cpt, arrcomi);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbXml1;

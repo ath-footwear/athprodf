@@ -18,7 +18,7 @@
 	<queryString>
 		<![CDATA[select id_pedido,pedido,fecha,total,subtotal,impuestos,serie,nombre,observaciones
 from pedido p
-where serie= $P{serie} and id_pedido=$P{id}]]>
+where id_pedido=$P{id}]]>
 	</queryString>
 	<field name="id_pedido" class="java.lang.Integer"/>
 	<field name="pedido" class="java.lang.String"/>

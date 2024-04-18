@@ -14,13 +14,30 @@ import java.util.regex.Pattern;
  *
  * @author GATEWAY1-
  */
-public class Allsingleton implements java.io.Serializable{
+public class Allsingleton implements java.io.Serializable {
+
     private static Connection c;
     private static Usuarios usuario;
     private static Fichas f;
     private static ArrayList<DetFichas> df;
     private static String serie;
     private static DetFichas dff;
+    private static Allsingleton instance;
+
+    private Allsingleton() {
+    }
+
+    /**
+     * Instancia para el singleton y no crear mas de una ves
+     *
+     * @return
+     */
+    public static Allsingleton getAllsingleton() {
+        if (instance == null) {
+            Allsingleton.instance = new Allsingleton();
+        }
+        return instance;
+    }
 
     public static DetFichas getDff() {
         return dff;
@@ -70,8 +87,7 @@ public class Allsingleton implements java.io.Serializable{
         Allsingleton.c = c;
     }
 
-    
-    public boolean vericacaracter(String cad){
+    public boolean vericacaracter(String cad) {
         boolean resp = false;
         String patt = "[a-zA-Z0-9]+";
         Pattern pat = Pattern.compile(patt);
@@ -81,7 +97,8 @@ public class Allsingleton implements java.io.Serializable{
         }
         return resp;
     }
-        public static boolean vericanumero(String cad){
+
+    public static boolean vericanumero(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
         Pattern pat = Pattern.compile(patt);
@@ -91,7 +108,8 @@ public class Allsingleton implements java.io.Serializable{
         }
         return resp;
     }
-        public static boolean vericaflotante(String cad){
+
+    public static boolean vericaflotante(String cad) {
         boolean resp = false;
         String patt = "[0-9]+.[0-9]+";
         Pattern pat = Pattern.compile(patt);

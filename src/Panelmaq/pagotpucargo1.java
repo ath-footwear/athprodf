@@ -5,9 +5,11 @@
  */
 package Panelmaq;
 
+import DAO.dao_comisiones;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
+import Modelo.Comision;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
@@ -39,7 +41,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class pagotpucargo1 extends javax.swing.JPanel {
-    
+
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
@@ -209,7 +211,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         }
         if (!arrfactura.get(row).getFoliofiscal().equals("")) {
             JmCheckcancel.setVisible(true);
-        }else{
+        } else {
             JmCheckcancel.setVisible(false);
         }
         //Veririca que el documento este timbrado
@@ -227,7 +229,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
             JmCheckcancel.setEnabled(false);
         }
     }//GEN-LAST:event_JtDetalleMousePressed
-    
+
 
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
         int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el Pago?");
@@ -254,7 +256,11 @@ public class pagotpucargo1 extends javax.swing.JPanel {
                 arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
         if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
             JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
-            respcancela(arrfactura.get(row));
+            //Funcion para cancelar en el SAT
+            if (!arrfactura.get(row).getFoliofiscal().equals("")) {
+                respcancela(arrfactura.get(row));
+            }
+            cancelacomision(cpt, arrabono);
             Buscanotas();
         } else {
             JOptionPane.showMessageDialog(null,
@@ -269,7 +275,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
         generatabla();
     }
-    
+
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Folio");
@@ -295,7 +301,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         }
         JtDetalle.setModel(model);
     }
-    
+
     private void setreport(int folio, String moneda, double total) {
         try {
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
@@ -327,7 +333,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
             parametros.put("regimencliente", "");
             parametros.put("confo", conformidad);
             parametros.put("bd", "_especial");
-            
+
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -358,6 +364,27 @@ public class pagotpucargo1 extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             Buscanotas();
         }
+    }
+
+    /**
+     * Funcion que busca la comision generada en su momento si es que termino de
+     * pagar y la cancela, con esto se refiere a que no se podra ver ni tomar su
+     * valor en cuanta En esta cuestion Se utiliza abono ya que es el array con
+     * el cual se obtienen los registros del pago
+     *
+     * @param cpt
+     * @param arr
+     */
+    public void cancelacomision(Connection cpt, ArrayList<abono> arr) {
+        dao_comisiones dc = new dao_comisiones();
+        ArrayList<Comision> arrcomi = new ArrayList<>();
+        for (abono arr1 : arr) {
+            Comision com = new Comision();
+            com.setId_cargo(arr1.getId_cargo());
+            com.setSerie("E");
+            arrcomi.add(com);
+        }
+        dc.cancelacomision(cpt, arrcomi);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmCheckcancel;

@@ -234,7 +234,7 @@ public interface Facturas {
 
     public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
 
-    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd);
+    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd, String serie);
 
     public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr);
 

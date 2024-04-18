@@ -5,8 +5,10 @@
  */
 package Paneltpu;
 
+import DAO.dao_comisiones;
 import DAO.daoempresa;
 import DAO.daofactura;
+import Modelo.Comision;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
@@ -19,8 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
@@ -73,7 +74,8 @@ public class pagotpurem1 extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         JtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JtCancelar.setText("Cancelar NCR");
+        JtCancelar.setText("Cancelar Pago");
+        JtCancelar.setToolTipText("");
         JtCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtCancelarActionPerformed(evt);
@@ -173,10 +175,10 @@ public class pagotpurem1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        int row =JtDetalle.getSelectedRow();
-        int folio=arrfactura.get(row).getId();
-        double total=arrfactura.get(row).getTotal();
-        setreport(folio,"MXN",total);
+        int row = JtDetalle.getSelectedRow();
+        int folio = arrfactura.get(row).getId();
+        double total = arrfactura.get(row).getTotal();
+        setreport(folio, "MXN", total);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -186,38 +188,41 @@ public class pagotpurem1 extends javax.swing.JPanel {
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
         if (evt.getButton() == 3) {// activar con clic derecho
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
-        }    
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
 
-    
+
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
-//        int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
-//                + "\n ", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
-//        if (input == 0) {
-////            Obtiene los registros por si las facturas relacionadas tienen algun pago
-//            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-//            daofactura df = new daofactura();
-//            ArrayList<factura> arr = df.getdocvspago(cpt, folio + "");
-//            String fol = "";
-////            Si obtiene registros manda error
-//            if (!arr.isEmpty()) {
-//                for (int i = 0; i < arr.size(); i++) { // solo guarda las 
-//                    fol = arr.get(i).getFolio() + " ";
-//                }
-//                JOptionPane.showMessageDialog(null, "No puedes cancelar una NCR si tienes un pago hecho con las facturas: \n" + fol);
-//            } else {// Si no Si efectua la cancelacion de la NCR
-//                int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-//                arr = df.getdocvspagoall(cpt, id);
-//                if (df.Cancelancr(cpt, ACobranza, arr)) {
-//                    JOptionPane.showMessageDialog(null, "Exito al cancelar NCR, recuerda que solo se cancela en el sistema y no en el SAT");
-//                    Buscanotas();
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Error al cancelar NCR, contacta a sistemas");
-//                }
-//            }
-//        }
+        int input = JOptionPane.showConfirmDialog(null,
+                "Estas seguro que quieres cancelar?", "Advertencia",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (input == 0) {
+//            Obtiene los registros por si las facturas relacionadas tienen algun pago
+            int row = JtDetalle.getSelectedRow();
+            int folio = arrfactura.get(row).getId();
+//            System.out.println("folio "+folio);
+            Formateodedatos fd = new Formateodedatos();
+            daofactura df = new daofactura();
+            ArrayList<factura> arr
+                    = df.getregspcancelpagotpu(cpt, folio,
+                            fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"), "RPAG");
+            if (!arr.isEmpty()) {
+                if (df.execcancelacionPago(cpt, ACobranza, arr)) {
+                    JOptionPane.showMessageDialog(null, "Proceso terminado \n ");
+                    cancelacomision(cpt, arr);
+                    Buscanotas();
+                }
+            }
+        }
     }//GEN-LAST:event_JtCancelarActionPerformed
 
+    /**
+     * DEspliega el reporte del pago
+     *
+     * @param folio
+     * @param moneda
+     * @param total
+     */
     private void setreport(int folio, String moneda, double total) {
         try {
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
@@ -230,7 +235,7 @@ public class pagotpurem1 extends javax.swing.JPanel {
             Formateo_Nempresas fn = new Formateo_Nempresas();
             Formateodedatos fd = new Formateodedatos();
             String n = fn.getEmpresa(u.getTurno(), "");
-            String logo =fd.getimagenreporte(u);
+            String logo = fd.getimagenreporte(u);
             Empresas e = d.getempresarfc(sqlempresa, n);
 //             fin identificar empresa
             Map parametros = new HashMap();
@@ -263,11 +268,12 @@ public class pagotpurem1 extends javax.swing.JPanel {
 
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
-//        daofactura df = new daofactura();
-//        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR");
         generatabla();
     }
-    
+
+    /**
+     * Genera y da valor a cada una de las lineas y columnas de la tabla
+     */
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Pago");
@@ -294,15 +300,25 @@ public class pagotpurem1 extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
+    /**
+     * Funcion que busca la comision generada en su momento si es que termino de
+     * pagar y la cancela, con esto se refiere a que no se podra ver ni tomar su
+     * valor en cuanta
+     *
+     * @param cpt
+     * @param arr
+     */
+    public void cancelacomision(Connection cpt, ArrayList<factura> arr) {
+        dao_comisiones dc = new dao_comisiones();
+        ArrayList<Comision> arrcomi = new ArrayList<>();
+        for (factura arr1 : arr) {
+            Comision com = new Comision();
+            com.setId_cargo(arr1.getIdcargo());
+            com.setSerie("B");
+            com.setReferencia(arr1.getReferenciafac());
+            arrcomi.add(com);
         }
-        return resp;
+        dc.cancelacomision_pagos(cpt, arrcomi);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

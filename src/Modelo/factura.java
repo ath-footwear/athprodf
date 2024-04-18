@@ -25,7 +25,8 @@ public class factura implements java.io.Serializable{
             , foliofiscalorig, seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal
             , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
             cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
-            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno,fechapago;
+            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno,fechapago,
+            referenciafac;
     private String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
     private double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
             baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
@@ -40,6 +41,14 @@ public class factura implements java.io.Serializable{
     private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
     private ArrayList<Poliza> arrpolizas = new ArrayList<>();
     private Date fechap;
+
+    public String getReferenciafac() {
+        return referenciafac;
+    }
+
+    public void setReferenciafac(String referenciafac) {
+        this.referenciafac = referenciafac;
+    }
 
     public Date getFechap() {
         return fechap;

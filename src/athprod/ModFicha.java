@@ -51,7 +51,6 @@ public class ModFicha extends javax.swing.JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         cargacombos();
-        Allsingleton single = new Allsingleton();
         JlEdicion.setVisible(false);
         JlEd.setVisible(false);
 

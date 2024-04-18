@@ -105,7 +105,7 @@ public class Log extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void entrar() {
-        Allsingleton singleton = new Allsingleton();
+        Allsingleton singleton = Allsingleton.getAllsingleton();
         String usuario = JtUsuario.getText().toUpperCase();
         String pass = JtContraseña.getText();
         daoserver server = new daoserver();

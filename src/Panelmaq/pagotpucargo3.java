@@ -26,7 +26,6 @@ import Modelo.Usuarios;
 import Modelo.cargo;
 import Modelo.convertnum;
 import Modelo.factura;
-import Paneles.fac1;
 import Paneltpu.Buscacliente_Pago;
 import Server.Serverprod;
 import java.math.BigDecimal;
@@ -940,7 +939,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(pagotpucargo3.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1050,6 +1049,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Vacia cada una de las variables y campos de la interfaz
+     */
     private void vaciarcampos() {
         arrcargoseleccion.clear();
         JtTCambio.setText("");
@@ -1066,6 +1068,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         cargacombos();
     }
 
+    /**
+     * Actualiza los improtes de la tabla y los label de la interfaz
+     */
     private void actualizaimportes() {
         Formateodedatos fd = new Formateodedatos();
         DefaultTableModel model = new DefaultTableModel();
@@ -1108,6 +1113,13 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
+    /**
+     * Cantidades formateadas para el pago
+     *
+     * @param a
+     * @param tipo
+     * @return
+     */
     private double getnewcantidades(double a, String tipo) {
         double cant = 0;
         switch (tipo) {
@@ -1124,6 +1136,12 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         return cant;
     }
 
+    /**
+     * Verifica/valida el campo como flotante o decimal
+     *
+     * @param cad
+     * @return
+     */
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1155,7 +1173,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         //Verifica que el cliente no sea cero o menor a el
         if (cliente != 0) {
             daoCargos dca = new daoCargos();
-            arrcargo = dca.getcargos_especial_CompPagos(cpt, cliente+"",
+            arrcargo = dca.getcargos_especial_CompPagos(cpt, cliente + "",
                     fd.getbd_tocargo(u.getTurno()));
 //            daofactura df = new daofactura();
 //            arrcargo = df.getcargos_especialwithcliente(ACobranza, JtCliente.getText());

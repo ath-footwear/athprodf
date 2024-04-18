@@ -580,9 +580,9 @@ public class daofactura implements Facturas {
      * @return
      */
     @Override
-    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd) {
+    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd, String serie) {
         sqlfactura s = new sqlfactura();
-        return s.getcancelapago(c, id, bd);
+        return s.getcancelapago(c, id, bd, serie);
     }
 
     /**

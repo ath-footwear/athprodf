@@ -47,7 +47,7 @@ public class Fichatecnica extends javax.swing.JInternalFrame {
 
     private JFileChooser filechooser = new JFileChooser();
     DefaultTableModel modeltabla;
-    Allsingleton single = new Allsingleton();
+    Allsingleton single = Allsingleton.getAllsingleton();
     String imagen1 = "";
     String imagen2 = "";
     String imagen3 = "";
