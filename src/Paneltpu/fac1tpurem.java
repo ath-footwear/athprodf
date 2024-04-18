@@ -249,21 +249,12 @@ public class fac1tpurem extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        int row = JtDetalle.getSelectedRow();
-        int folio = arrfactura.get(row).getId_pedido();
-        String ser = arrfactura.get(row).getSerie();
-        double total = Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
-        String ped = arrfactura.get(row).getPedido();
-        if (u.getTurno().equals("6") || u.getTurno().equals("7")) {
-            String name = JOptionPane.showInputDialog("Introduzca el nombre del cliente:");
-            if (name.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo ningun valor, intentelo de nuevo");
-            } else {
-                setreportcliente(folio, "MXN", ser, total, ped, name.toUpperCase());
-            }
+        String tipoc = JOptionPane.showInputDialog("Ingrese Tipo de cambio: ");
+        if (tipoc.isEmpty()) {
+            tipoc = "1";
         }
-        setreport(folio, "MXN", ser, total, ped);
+        String moneda = (tipoc.equals("1")) ? "MXN" : "USD";
+        setprereport(moneda, tipoc);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
@@ -278,8 +269,8 @@ public class fac1tpurem extends javax.swing.JPanel {
             Cancelamiento.setVisible(false);
         }
         //Maquinaria
-        if ((u.getTurno().equals("6") || u.getTurno().equals("7")) &&
-                arrfactura.get(row).getSerie().equals("B")) {
+        if ((u.getTurno().equals("6") || u.getTurno().equals("7"))
+                && arrfactura.get(row).getSerie().equals("B")) {
             JmAddprecios.setVisible(true);
         } else {
             JmAddprecios.setVisible(false);
@@ -428,8 +419,8 @@ public class fac1tpurem extends javax.swing.JPanel {
         if (u.getTurno().equals("7")) {
             //Confirmar si es quiere refacturar
             int input = JOptionPane.showConfirmDialog(null,
-                     "Estas seguro que quieres Refacturar?",
-                     "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
+                    "Estas seguro que quieres Refacturar?",
+                    "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
             if (input == 0) {
                 int row = JtDetalle.getSelectedRow();
                 refacturacion(row);
@@ -483,7 +474,8 @@ public class fac1tpurem extends javax.swing.JPanel {
      * @param serie
      * @param total
      */
-    private void setreport(int folio, String moneda, String serie, double total, String pedido) {
+    private void setreport(int folio, String moneda, String serie, double total,
+            String pedido, String tipoc) {
         try {
             String dir = (u.getTurno().equals("5")) ? "Reportestpu" : "ReportesMaq";
 //             fin identificar empresa
@@ -496,7 +488,7 @@ public class fac1tpurem extends javax.swing.JPanel {
 //            Agregar parametros al reporte
             parametros.put("id", folio);
             parametros.put("totalletra", letratotal);
-            parametros.put("serie", serie);
+            parametros.put("tipoc", tipoc);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/" + dir + "/Pedidos.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -581,7 +573,28 @@ public class fac1tpurem extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-
+    /**
+     * Validacion y seleccion de reporte adecuado al turno
+     *
+     * @param moneda
+     */
+    private void setprereport(String moneda, String tipo) {
+        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+        int row = JtDetalle.getSelectedRow();
+        int folio = arrfactura.get(row).getId_pedido();
+        String ser = arrfactura.get(row).getSerie();
+        double total = Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
+        String ped = arrfactura.get(row).getPedido();
+        if (u.getTurno().equals("6") || u.getTurno().equals("7")) {
+            String name = JOptionPane.showInputDialog("Introduzca el nombre del cliente:");
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo ningun valor, intentelo de nuevo");
+            } else {
+                setreportcliente(folio, "MXN", ser, total, ped, name.toUpperCase());
+            }
+        }
+        setreport(folio, moneda, ser, total, ped, tipo);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Cancelamiento;
     private javax.swing.JMenuItem JbCancelar1;
