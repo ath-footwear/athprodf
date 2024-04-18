@@ -884,6 +884,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setClaveusuario(u.getUsuario());
                 f.setSerie("PAG");
                 f.setFecha(sdf.format(date));
+                f.setFechap(JtFecha.getDate());
                 f.setDescuento(0);
                 f.setPedido("");
                 f.setFechasolicitado(sdf.format(date));
