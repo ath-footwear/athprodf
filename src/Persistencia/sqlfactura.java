@@ -2634,8 +2634,8 @@ public class sqlfactura {
                 sql = "insert into Ddoctospagotpu(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
                         + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
                         + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
-                        + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
-                        + uuid + "','" + fo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                        + "values(" + resp + "," + cant + ",'" + de + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
+                        + uuid + "','" + fo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
 //                System.out.println("d pagos " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
@@ -3402,7 +3402,11 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
-                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago\n"
+                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago,"
+                    + " (select count(1)\n"
+                    + "from ddoctospagotpu dd\n"
+                    + "join doctospagotpu d on dd.id_doctopago=d.id_doctopago\n"
+                    + "where foliorel=c.referencia and d.estatus='1') as parcialidad\n"
                     + "from " + bd + ".dbo.cargo c\n"
                     + "join " + bd + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
@@ -3433,6 +3437,7 @@ public class sqlfactura {
                 c.setSaldomx(rs.getDouble("saldomx"));
                 c.setRenglon(ren);
                 c.setMetodopago(rs.getString("metodopago"));
+                c.setParcialidad(rs.getInt("parcialidad")+1);
                 arr.add(c);
                 ren++;
             }
@@ -4143,7 +4148,7 @@ public class sqlfactura {
                     + "from doctospagotpu d\n"
                     + "join " + bd + ".dbo.abono a on d.folio=a.referenciac\n"
                     + "join " + bd + ".dbo.cargo c on a.id_cargo=c.id_cargo\n"
-                    + "where serie='"+serie+"' and a.referencia like '%PAG%' and id_doctopago=" + idpago;
+                    + "where serie='" + serie + "' and a.referencia like '%PAG%' and id_doctopago=" + idpago;
 //            System.out.println("get pagos "+sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();

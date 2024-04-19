@@ -198,7 +198,9 @@ public class Cargosncrtpu extends javax.swing.JDialog {
 
     private void JlIniciarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlIniciarMousePressed
         try {
-            setearfacs();
+            if (checkmpago()) {
+                setearfacs();
+            }
         } catch (ParseException ex) {
             Logger.getLogger(Cargosncrtpu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -224,17 +226,17 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         } else {
             JtCargo.setValueAt("", JtCargo.getSelectedRow(), 7);
             for (int i = 0; i < arrcargoseleccion.size(); i++) {// busca el elemento deacuerdo a la seleccion
-                String ref = arrcargo.get(row).getReferencia();
-                if (arrcargoseleccion.get(i).getReferencia().equals(ref)) {
-                    arrcargoseleccion.remove(i);// Remueve el elemento de la lista
-                    i = arrcargoseleccion.size();
-                }
+                // String ref = arrcargo.get(row).getReferencia();
+                //if (arrcargoseleccion.get(i).getReferencia().equals(ref)) {
+                arrcargoseleccion.remove(i);// Remueve el elemento de la lista
+                break;
+                // }
             }
         }
 //        System.out.println("---------");
-        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//            System.out.println(arrcargoseleccion1.getReferencia());
-        }
+//        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+//            System.out.println("referencia "+arrcargoseleccion1.getReferencia());
+//        }
 //        System.out.println("---------");
     }//GEN-LAST:event_JtCargoMousePressed
 
@@ -263,14 +265,13 @@ public class Cargosncrtpu extends javax.swing.JDialog {
             model.setValueAt(arrcargo.get(i).getSaldo(), i, 6);
             model.setValueAt("", i, 7);
             model.setValueAt(arrcargo.get(i).getSaldomx(), i, 8);
-            model.setValueAt("1", i, 9);
+            model.setValueAt(arrcargo.get(i).getParcialidad(), i, 9);
             model.setValueAt(arrcargo.get(i).getMetodopago(), i, 10);
         }
         JtCargo.setModel(model);
     }
 
     private void setearfacs() throws ParseException {
-
         boolean reset = true;
         if (!arrcargoseleccion.isEmpty()) {
             //Verificar renglon por renglon el dato del descuento y asignarselo al arreglo
@@ -279,7 +280,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 String saldomx = JtCargo.getValueAt(renglon, 8).toString();
                 String parci = JtCargo.getValueAt(renglon, 9).toString();
-                double saldo=arrcargoseleccion.get(i).getSaldo();
+                double saldo = arrcargoseleccion.get(i).getSaldo();
 
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
@@ -288,23 +289,23 @@ public class Cargosncrtpu extends javax.swing.JDialog {
 //                  El descuento no tiene que ser mayor o igual al saldo
 //                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
 //                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
-                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
-                            Double.parseDouble(desc) > saldo) {
+                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx)
+                            && Double.parseDouble(desc) > saldo) {
                         JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
                         reset = false;
                         break;
                     } else {
-                        modarrDesc(i, desc, parci);
+                        modarrDesc(i, desc);
                     }
 ////                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
-                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
-                            Double.parseDouble(desc) > (saldo)) {
+                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx)
+                            && Double.parseDouble(desc) > (saldo)) {
                         JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
                         reset = false;
                         break;
                     } else {
-                        modarrDesc(i, desc, parci);
+                        modarrDesc(i, desc);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Alguno de los valores que introdujo no es valido");
@@ -320,10 +321,12 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         }
     }
 
-    private void modarrDesc(int i, String desc, String parci) {
+    /*
+    Cambia el valor del objeto para cada linea seleccionada
+     */
+    private void modarrDesc(int i, String desc) {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
         car.setDescuento(Double.parseDouble(desc));
-        car.setParcialidad(Integer.parseInt(parci));
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
 //        System.out.println("descuento " + desc);
     }
@@ -370,15 +373,30 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         return resp;
     }
 
-    private boolean verificap(String cad) {
-        boolean resp = false;
-        String patt = "[p]||[s]";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
+    /**
+     * Verifica que el pago no sea con dos o mas metodos de pago distintos
+     *
+     * @return
+     */
+    private boolean checkmpago() {
+        String aux = "";
+        boolean flag = true;
+        for (int i = 0; i < arrcargoseleccion.size(); i++) {
+            if (i == 0) {
+                aux = arrcargoseleccion.get(i).getMetodopago();
+            } else {
+                if (!aux.equals(arrcargoseleccion.get(i).getMetodopago())) {
+                    JOptionPane.showMessageDialog(null,
+                            "NO PUEDES TENER UN PAGO CON PPD Y PUE JUNTOS",
+                            "ERROR EN METODOS DE PAGO", JOptionPane.ERROR_MESSAGE);
+                    arrcargoseleccion.clear();
+                    desplieguecargos();
+                    flag = false;
+                    break;
+                }
+            }
         }
-        return resp;
+        return flag;
     }
 
     /**

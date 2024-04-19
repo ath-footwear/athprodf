@@ -520,11 +520,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(268, 268, 268)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 279, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(0, 11, Short.MAX_VALUE)
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
@@ -533,7 +531,8 @@ public class pagotpu2 extends javax.swing.JPanel {
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2))))
+                                .addComponent(jLabel2))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -745,8 +744,8 @@ public class pagotpu2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     /**
-     * Busca y despliega los clientes con cargos, ademas despliega una lista 
-     * de los mismo y realizar su seleccion
+     * Busca y despliega los clientes con cargos, ademas despliega una lista de
+     * los mismo y realizar su seleccion
      */
     private void getcargos() {
         String r = JtCliente.getText();
@@ -900,7 +899,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setTotalcajas(0);
                 f.setTiposerie("PAGO");
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                f.setMetodopago("PUE");
+                f.setMetodopago("PPD");
                 f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
                 f.setUsocfdi("CP01");
                 f.setCondicion("Contado");
@@ -925,7 +924,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     Detpagos d = new Detpagos();
                     d.setIddocumento(f.getFolio());
                     d.setCantidad(1);
-                    d.setDescripcion("SERVICIOS DE FACTURACION");
+                    d.setDescripcion("Pago");
                     d.setCodigo("84111506");
                     d.setUmedida("ACT");
                     d.setPrecio(0);
@@ -938,7 +937,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setUuid(arrcargoseleccion.get(i).getFoliofiscal());
                     d.setFolio(arrcargoseleccion.get(i).getReferencia());
                     d.setFormadedpago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                    d.setMetodopago("PUE");
+                    d.setMetodopago(arrcargoseleccion.get(i).getMetodopago());
                     d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
                     if (i == 0) {
@@ -1030,48 +1029,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
     }
 
-//    private double formatdecimal(double cant) {
-//        int dato = 0;
-//        int punto = 0;
-//        boolean band = false;
-//        double resp;
-//        //String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
-//        String c=cant+"";
-//        String r="";
-////        String cadena = "";
-//        for (int i = 0; i < c.length(); i++) {
-//            r=r+c.charAt(i)+"";
-////            Empieza a tomar datos despues del punto
-//            if (c.charAt(i) == '.') {
-//                band = true;
-//            }
-//            if (band) {
-////                3 digitos de decimal para saber qe hacer con los decimales
-//                if (punto == 3) {
-//                    dato = Integer.parseInt(c.charAt(i) + "");
-////                    i = c.length();
-//                    break;
-//                }
-////                Para un cuarto decimal, si es mayor a
-////                if (punto == 4) {
-////                    int datoaux = Integer.parseInt(c.charAt(i) + "");
-////                    if (datoaux > 5) {
-////                        dato += 1;
-////                    }
-////                    i = c.length();
-////                    break;
-////                }
-////                cadena += c.charAt(i);
-//                punto++;
-//            }
-//        }
-//        if ((dato <= 5)) {
-//            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
-//        } else {
-//            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-//        }
-//        return resp;
-//    }
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
         Formateodedatos fd = new Formateodedatos();
