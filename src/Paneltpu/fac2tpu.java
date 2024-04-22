@@ -984,11 +984,13 @@ public class fac2tpu extends javax.swing.JPanel {
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
+                            String marca=(u.getTurno().equals("5"))?"":
+                                    " MARCA: " + k2.get(i).getDp().getNfamilia();
                             df.setDescripcion(k2.get(i).getDp().getMatped()
                                     + " (PEDIMENTO: " + k2.get(i).getReferencia()
                                     + ", ADUANA: 160 MANZANILLO COLIMA,"
                                     + k2.get(i).getFechapedimento() + ")"
-                                    + " MARCA: " + k2.get(i).getDp().getNfamilia());
+                                    + marca);
                         }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
