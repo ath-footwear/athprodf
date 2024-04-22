@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74142ab1-d435-4b5d-a967-4b6a23d0f251">
-	<property name="ireport.zoom" value="3.1384283767210057"/>
+	<property name="ireport.zoom" value="2.5937424601000045"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,d.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto 
+		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,d.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto,formapago
 from doctospagotpu d join ddoctospagotpu dd on dd.id_doctopago=d.id_doctopago
 where dd.id_doctopago=$P{id}
 order by noparcialidad]]>
@@ -25,6 +25,7 @@ order by noparcialidad]]>
 	<field name="importesdoant" class="java.lang.Double"/>
 	<field name="importepagado" class="java.lang.Double"/>
 	<field name="impsaldoinsoluto" class="java.lang.Double"/>
+	<field name="formapago" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -181,21 +182,21 @@ order by noparcialidad]]>
 				<text><![CDATA[#Parc]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="279" y="29" width="70" height="12" uuid="30a5b137-c460-4acd-a3ed-89d6abb46841"/>
+				<reportElement x="316" y="29" width="70" height="12" uuid="30a5b137-c460-4acd-a3ed-89d6abb46841"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo Ant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="29" width="83" height="12" uuid="5f591631-5a4b-41ab-abb4-ed9cb189d3b3"/>
+				<reportElement x="386" y="29" width="65" height="12" uuid="5f591631-5a4b-41ab-abb4-ed9cb189d3b3"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Pago]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="433" y="29" width="100" height="12" uuid="f1443374-3833-480a-b7ee-5d37ae6ea66e"/>
+				<reportElement x="451" y="29" width="82" height="12" uuid="f1443374-3833-480a-b7ee-5d37ae6ea66e"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -204,6 +205,13 @@ order by noparcialidad]]>
 			<line>
 				<reportElement x="17" y="40" width="516" height="1" uuid="421a0cb6-25f6-4e10-b647-477f16166083"/>
 			</line>
+			<staticText>
+				<reportElement x="279" y="29" width="37" height="12" uuid="6d0da8e0-375d-40f9-a5ec-075f59e53ad9"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.P]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -244,25 +252,32 @@ order by noparcialidad]]>
 				<textFieldExpression><![CDATA[$F{noparcialidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="279" y="1" width="70" height="11" uuid="72e6f565-d602-465c-8294-8fa0c799234f"/>
+				<reportElement x="316" y="1" width="70" height="11" uuid="72e6f565-d602-465c-8294-8fa0c799234f"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importesdoant}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="349" y="1" width="84" height="11" uuid="29262a49-9c0c-45b8-9b86-92b231a29bb5"/>
+				<reportElement x="386" y="1" width="66" height="11" uuid="29262a49-9c0c-45b8-9b86-92b231a29bb5"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importepagado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="433" y="1" width="100" height="11" uuid="95f93f6f-4b8f-4e44-b9fc-8dba3adc79e7"/>
+				<reportElement x="451" y="1" width="82" height="11" uuid="95f93f6f-4b8f-4e44-b9fc-8dba3adc79e7"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{impsaldoinsoluto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="1" width="37" height="11" uuid="c883f212-b6c7-42d6-84f4-ed441e03f08b"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formapago}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
