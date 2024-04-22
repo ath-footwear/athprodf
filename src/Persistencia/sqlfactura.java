@@ -3437,7 +3437,7 @@ public class sqlfactura {
                 c.setSaldomx(rs.getDouble("saldomx"));
                 c.setRenglon(ren);
                 c.setMetodopago(rs.getString("metodopago"));
-                c.setParcialidad(rs.getInt("parcialidad")+1);
+                c.setParcialidad(rs.getInt("parcialidad") + 1);
                 arr.add(c);
                 ren++;
             }
@@ -4836,5 +4836,265 @@ public class sqlfactura {
         }
     }
 
+    //Metodos para cancelar
+    /**
+     * Valida si la factura tiene algun pago
+     *
+     * @param cob
+     * @param factura
+     * @return
+     */
+    public int getAbonosByFactura(Connection cob, String factura) {
+        int count = 0;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = cob.prepareCall("{call stp_getAbonosByFactura(?)}");
+            st.setString(1, factura);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt("datos");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+        return count;
+    }
+
+    /**
+     * Obtiene la fecha del cargo
+     *
+     * @param cob
+     * @param factura
+     * @return
+     */
+    public Object getFechaCargo(Connection cob, String factura) {
+        Object fecha = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = cob.prepareCall("{call stp_getFechaCargo(?)}");
+            st.setString(1, factura);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                fecha = rs.getObject("fecha");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return fecha;
+    }
+
+    public ArrayList<Dfactura> getDetalleFactura(Connection cpt, String factura) {
+        ArrayList<Dfactura> lista = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = cpt.prepareCall("{call stp_getDetalleFactura(?)}");
+            st.setString(1, factura);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Dfactura obj = new Dfactura();
+                obj.setAlmacen(rs.getInt("Almacen"));
+                obj.setProducto(rs.getInt("Producto"));
+                obj.setRenglon(rs.getInt("Renglon"));
+                obj.setCantidad(rs.getInt("TotalPares"));
+                obj.setPrecio(rs.getDouble("Precio"));
+                obj.setCosto(rs.getDouble("Costo"));
+                obj.setC1(rs.getInt("Cant1"));
+                obj.setC2(rs.getInt("Cant2"));
+                obj.setC3(rs.getInt("Cant3"));
+                obj.setC4(rs.getInt("Cant4"));
+                obj.setC5(rs.getInt("Cant5"));
+                obj.setC6(rs.getInt("Cant6"));
+                obj.setC7(rs.getInt("Cant7"));
+                obj.setC8(rs.getInt("Cant8"));
+                obj.setC9(rs.getInt("Cant9"));
+                obj.setC10(rs.getInt("Cant10"));
+                obj.setC11(rs.getInt("Cant11"));
+                obj.setC12(rs.getInt("Cant12"));
+                obj.setC13(rs.getInt("Cant13"));
+                obj.setC14(rs.getInt("Cant14"));
+                obj.setStock(rs.getString("StockPedidos"));
+                obj.setFactura(rs.getString("Factura"));
+                obj.setPedido(rs.getString("Pedido"));
+                obj.setSerie(rs.getString("Serie"));
+                lista.add(obj);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return lista;
+    }
+
+    /**
+     * Verificar si es factura especial
+     *
+     * @param cpt
+     * @param factura
+     * @return
+     */
+    public int getTipoFactura(Connection cpt, int factura) {
+        int folio = 0;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = cpt.prepareCall("{call stp_getTipoFactura(?)}");
+            st.setInt(1, factura);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                folio = rs.getInt("Factura");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return folio;
+    }
+
+    /**
+     * Cancela una factura especial
+     *
+     * @param cpt
+     * @param rcpt
+     * @param f
+     * @param a
+     * @return
+     */
+    public boolean cancelarFacturaEspecial(Connection cpt, Connection rcpt, factura f, abono a) {
+        PreparedStatement st = null;
+        try {
+            cpt.setAutoCommit(false);
+            rcpt.setAutoCommit(false);
+
+            st = cpt.prepareCall("{call stp_cancelarFacturaEspecial(?,?,?,?,?,?,?,?,?)}");
+            st.setString(1, String.valueOf(f.getFolio()));
+            st.setObject(2, f.getFechacancel());
+            st.setObject(3, a.getFechap());
+            st.setString(4, a.getReferencia());
+            st.setDouble(5, a.getTotalpago());
+            st.setDouble(6, a.getPago());
+            st.setString(7, a.getReferenciac());
+            st.setInt(8, a.getCliente());
+            st.setObject(9, a.getFechac());
+            st.executeUpdate();
+
+            /*st = rcpt.prepareCall("{call stp_cancelarFacturaEspecial(?,?)}");
+            st.setString(1, String.valueOf(f.getFolio()));
+            st.setObject(2, f.getFechacancel());
+            st.executeUpdate();*/
+            cpt.commit();
+            rcpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            try {
+                cpt.rollback();
+                rcpt.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Cancela una factura normal
+     *
+     * @param cpt
+     * @param rcpt
+     * @param f
+     * @param a
+     * @return
+     */
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a) {
+        PreparedStatement st = null;
+        Connection[] datos = {cpt, rcpt};
+        try {
+            cpt.setAutoCommit(false);
+            rcpt.setAutoCommit(false);
+
+            for (Connection dato : datos) {
+                st = dato.prepareCall("{call stp_cancelarFacturaNormal(?,?,?,?,?,?,?,?,?)}");
+                st.setString(1, String.valueOf(f.getFolio()));
+                st.setObject(2, f.getFechacancel());
+                st.setObject(3, a.getFechap());
+                st.setString(4, a.getReferencia());
+                st.setDouble(5, a.getTotalpago());
+                st.setDouble(6, a.getPago());
+                st.setString(7, a.getReferenciac());
+                st.setInt(8, a.getCliente());
+                st.setObject(9, a.getFechac());
+                st.executeUpdate();
+            }
+            cpt.commit();
+            rcpt.commit();
+            return true;
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            try {
+                cpt.rollback();
+                rcpt.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Obtiene la orden de pago
+     *
+     * @param cpt
+     * @param folio
+     * @return
+     */
+    public ArrayList<String> getOrdenPago(Connection cpt, int folio) {
+        ArrayList<String> orden = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = cpt.prepareCall("{call stp_getOrdenPago(?)}");
+            st.setInt(1, folio);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                orden.add(rs.getString("OrdenPago"));
+                orden.add(rs.getString("IdCliente"));
+                orden.add(rs.getString("FolioFiscal"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return orden;
+    }
+
+    public boolean cancelarPago(Connection cpt, int folio, String referencia, int cliente) {
+        PreparedStatement st = null;
+        try {
+            cpt.setAutoCommit(false);
+            st = cpt.prepareCall("{call stp_cancelar_pago(?,?,?)}");
+            st.setInt(1, folio);
+            st.setString(2, referencia);
+            st.setInt(3, cliente);
+            st.executeUpdate();
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            try {
+                cpt.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
     //metodos externos
 }

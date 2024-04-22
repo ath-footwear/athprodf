@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74142ab1-d435-4b5d-a967-4b6a23d0f251">
-	<property name="ireport.zoom" value="3.1384283767210057"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="267"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -53,13 +53,6 @@ order by noparcialidad]]>
 					<font size="7" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{UMedida}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="192" y="15" width="146" height="13" uuid="0cabb230-7191-4841-a39b-95e0d4e62454"/>
-				<textElement textAlignment="Center">
-					<font size="7" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
 				<reportElement x="338" y="15" width="55" height="12" uuid="ca562e3d-7a35-4dc3-ba77-810db39b8161"/>
@@ -204,6 +197,14 @@ order by noparcialidad]]>
 			<line>
 				<reportElement x="17" y="40" width="516" height="1" uuid="421a0cb6-25f6-4e10-b647-477f16166083"/>
 			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="207" y="15" width="120" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="5280c37f-8f76-4db0-9880-48c9f371e769"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[PAGO]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -228,13 +229,6 @@ order by noparcialidad]]>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="223" y="1" width="33" height="11" uuid="1185d08c-afb9-486c-a419-1832e96c832c"/>
-				<textElement textAlignment="Center">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{metodopago}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="256" y="1" width="23" height="11" uuid="dd175819-3933-4c8d-84dd-e966fa02f04a"/>
@@ -264,6 +258,14 @@ order by noparcialidad]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{impsaldoinsoluto}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="227" y="0" width="25" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="f2e70b0c-6f91-4635-b2a5-9175b8717761"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[PPD]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

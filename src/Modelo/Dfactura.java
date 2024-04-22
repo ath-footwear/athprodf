@@ -17,8 +17,17 @@ public class Dfactura implements java.io.Serializable{
     private String factura,descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza,fecha;
     private double base,  importa, descuento,precio,  cantidadfloat, precioant,costo, cantrestante;
     private int kardex, cargo;
+    private String Serie;
     private String pedido;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public String getSerie() {
+        return Serie;
+    }
+
+    public void setSerie(String Serie) {
+        this.Serie = Serie;
+    }
 
     public double getCantrestante() {
         return cantrestante;

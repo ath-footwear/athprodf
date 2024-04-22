@@ -257,4 +257,20 @@ public interface Facturas {
     public boolean Cancela_cargoespecial(Connection cob, int cargo);
 
     public boolean Cancelafactura_Especial(Connection cpt, Connection cob, factura f);
+    
+    public int getAbonosByFactura(Connection cobranza, String factura);
+
+    public Object getFechaCargo(Connection cobranza, String factura);
+
+    public ArrayList<Dfactura> getDetalleFactura(Connection cpt, String factura);
+
+    public int getTipoFactura(Connection cpt, int factura);
+
+    public boolean cancelarFacturaEspecial(Connection cpt, Connection rcpt, factura f, abono a);
+
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a);
+
+    public boolean cancelarPago(Connection cpt, int folio, String referencia,int cliente);
+    
+    public ArrayList<String>getOrdenPago(Connection cpt, int folio);
 }

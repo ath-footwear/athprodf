@@ -6,6 +6,7 @@
 package Persistencia;
 
 import Modelo.Cliente;
+import Modelo.Kardex;
 import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import Modelo.Producto;
@@ -722,6 +723,103 @@ public class sqlkardex {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Obtener folio de cancelacion
+     *
+     * @param cpt
+     * @return
+     */
+    public int getFolioCancelacion(Connection cpt) {
+        int folio = 0;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = cpt.prepareCall("{call stp_getFolioCancelacion}");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                folio = rs.getInt("folio");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return folio;
+    }
+
+    /**
+     * Insertar kardex por cancelacion
+     *
+     * @param cpt
+     * @param data
+     * @return
+     */
+    public boolean insertarKardexCancelacionAbono(Connection cpt, ArrayList<Kardex> data) {
+        PreparedStatement st = null;
+        try {
+            cpt.setAutoCommit(false);
+
+            int row = 0;
+
+            for (Kardex dt : data) {
+                row++;
+                st = cpt.prepareCall("{call stp_insertarKardexCancelacionAbono"
+                        + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                        + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                st.setInt(1, dt.getAlmacen());
+                st.setInt(2, dt.getProducto());
+                st.setInt(3, dt.getFolio());
+                st.setObject(4, dt.getFmovimiento());
+                st.setInt(5, row);
+                st.setObject(6, null);
+                st.setObject(7, null);
+                st.setInt(8, dt.getCl_prv());
+                st.setString(9, dt.getCuenta());
+                st.setString(10, dt.getSubCuenta());
+                st.setObject(11, null);
+                st.setObject(12, null);
+                st.setObject(13, null);
+                st.setInt(14, dt.getTotalpares());
+                st.setDouble(15, dt.getPcosto());
+                st.setDouble(16, dt.getPventa());
+                st.setDouble(17, dt.getImporte_costo());
+                st.setInt(18, dt.getC1());
+                st.setInt(19, dt.getC2());
+                st.setInt(20, dt.getC3());
+                st.setInt(21, dt.getC4());
+                st.setInt(22, dt.getC5());
+                st.setInt(23, dt.getC6());
+                st.setInt(24, dt.getC7());
+                st.setInt(25, dt.getC8());
+                st.setInt(26, dt.getC9());
+                st.setInt(27, dt.getC10());
+                st.setInt(28, dt.getC11());
+                st.setInt(29, dt.getC12());
+                st.setInt(30, dt.getC13());
+                st.setInt(31, dt.getC14());
+                st.setString(32, dt.getStock_pedidos());
+                st.setObject(33, null);
+                st.setObject(34, null);
+                st.setObject(35, null);
+                st.setString(36, dt.getPedido());
+                st.setInt(37, dt.getRenglon_p());
+                st.setObject(38, null);
+                st.setObject(39, null);
+                st.setObject(40, null);
+                st.setObject(41, null);
+                st.setString(42, dt.getFactura());
+                st.setString(43, dt.getSerie());
+                st.setString(44, dt.getUsuario());
+                st.setObject(45, dt.getRegistro());
+                st.execute();
+            }
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return false;
     }
 
 }

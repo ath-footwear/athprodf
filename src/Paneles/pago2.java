@@ -11,12 +11,14 @@ import DAO.daofactura;
 import Modelo.ConceptosES;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
+import Persistencia.sqlfactura;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -28,8 +30,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -81,6 +85,7 @@ public class pago2 extends javax.swing.JPanel {
 
         pop = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -96,6 +101,15 @@ public class pago2 extends javax.swing.JPanel {
             }
         });
         pop.add(jMenuItem1);
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/crosscircleregular_106260.png"))); // NOI18N
+        jMenuItem2.setText("Cancelar pago");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        pop.add(jMenuItem2);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -194,8 +208,68 @@ public class pago2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        setreport(arrfacturas.get(JtDetalle.getSelectedRow()).getFolio(),arrfacturas.get(JtDetalle.getSelectedRow()).getRegimen());
+        setreport(arrfacturas.get(JtDetalle.getSelectedRow()).getFolio(), arrfacturas.get(JtDetalle.getSelectedRow()).getRegimen());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+
+        int validar = arrfacturas.get(JtDetalle.getSelectedRow()).getEstatus();
+
+        if (validar == 1) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Quieres cancelar esta orden?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+            Formateo_Nempresas fd = new Formateo_Nempresas();
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                daofactura fac = new daofactura();
+                int folio = arrfacturas.get(JtDetalle.getSelectedRow()).getFolio();
+                String orden, cliente, folioFiscal;
+
+                ArrayList<String> lista = fac.getOrdenPago(cpt, folio);
+                orden = lista.get(0);
+                cliente = lista.get(1);
+                folioFiscal = lista.get(2);
+
+                if (!orden.equals("") && !orden.equals("NULL") && !cliente.equals("")) {
+                    if (!folioFiscal.equals("NULL")) {
+
+                        String n = fd.getEmpresa(u.getTurno(), empresa);
+                        timbrarXML t = new timbrarXML();
+                        t.cancelarfolio(sqlempresa, n, folioFiscal);
+
+                        String status = t.status();
+
+                        if (status.equals("200")) {
+                            if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
+                                JOptionPane.showMessageDialog(null, t.response());
+                                JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
+                                generatabla();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
+                                generatabla();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
+                            generatabla();
+                        }
+                    } else {
+                        if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
+                            JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
+                            generatabla();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
+                            generatabla();
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Algun dato de la orden no se encuentra", "Mensaje de sistema", JOptionPane.INFORMATION_MESSAGE);
+                    generatabla();
+                }
+            }
+        } else if (validar == 0) {
+            JOptionPane.showMessageDialog(null, "Este pago ya se encuentra cancelado", "Mensaje de sistema", JOptionPane.INFORMATION_MESSAGE);
+            generatabla();
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private double formatdecimal(double cant) {
         int dato = 0;
@@ -263,7 +337,7 @@ public class pago2 extends javax.swing.JPanel {
             model.setValueAt(a, i, 5);
             model.setValueAt(a1, i, 6);
             model.setValueAt(arrfacturas.get(i).getRegimen(), i, 6);
-            
+
         }
         JtDetalle.setModel(model);
     }
@@ -340,6 +414,7 @@ public class pago2 extends javax.swing.JPanel {
     private javax.swing.JTable JtDetalle;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu pop;

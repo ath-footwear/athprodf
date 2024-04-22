@@ -36,13 +36,12 @@ public class timbrarXML {
     private String literal = "";
     private String estado = "";
     private String estatustim = "";
+    private String response, mensaje;
     Sellofiscal s = new Sellofiscal();
-    boolean produccion = false;
+    boolean produccion = true;
     String user = "testing@solucionfactible.com";
     String pass = "timbrado.SF.16672";
 
-//    String user = "facturacion.ath.sfb@hotmail.com";
-//    String pass = "Y9#w2U&D1j";
     /**
      *
      * @param factura numero de factura en este formato FAC_12345
@@ -110,7 +109,6 @@ public class timbrarXML {
                             crearXML(factura, new String(r.getCfdiTimbrado()), e.getXml());
 //                            System.out.println("UUID: " + uuid);
                         }
-//                        System.out.println();
                     }
                 }
             }
@@ -229,66 +227,8 @@ public class timbrarXML {
         return produccion;
     }
 
-//    private void generarQR(String cadena) throws FileNotFoundException, IOException {
-//
-//        final int qrAncho = 180;
-//        final int qrAlto = 180;
-//        final String formato = "png";
-//        final String ruta = "C:/CFDI/CFDI40/QR/facturaQR.png";
-//
-//        BitMatrix matrix = null;
-//        Writer wr = new QRCodeWriter();
-//        
-//        try {
-//            matrix = wr.encode(cadena, BarcodeFormat.QR_CODE, qrAlto, qrAncho);
-//        } catch (WriterException ex) {
-//            ex.printStackTrace();
-//        }
-//        
-//        BufferedImage imagen = new BufferedImage(qrAlto, qrAncho, BufferedImage.TYPE_INT_RGB);
-//
-//        for (int i = 0; i < qrAlto; i++) {
-//            for (int j = 0; j < qrAncho; j++) {
-//                int valor = (matrix.get(i, j) ? 0 : 1) & 0xff;
-//                imagen.setRGB(i, j, (valor == 0 ? 0 : 0xFFFFFF));
-//            }
-//        }
-//        
-//        FileOutputStream codigo = new FileOutputStream(ruta);
-//        ImageIO.write(imagen, formato, codigo);
-//
-//    }
-//    private void cargarPDF(String factura, String total) {
-//        try {
-//            JasperReport reporte;
-//            
-//            reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/RPT/factura.jasper"));
-//            try {
-//                Map par = new HashMap();
-//                par.put("factura", factura);
-//                par.put("cadenaOr", cadenaOriginal);
-//                par.put("folioFiscal", uuid);
-//                par.put("rfcPAC", PAC);
-//                par.put("selloDigital", selloCFD);
-//                par.put("selloSAT", selloSAT);
-//                par.put("fecha", fechaCer);
-//                par.put("cer", noCertificado);
-//                par.put("letra", literal);
-//
-//                JasperPrint jprint = JasperFillManager.fillReport(reporte, par, conexion);
-//                JasperViewer view = new JasperViewer(jprint, false);
-//
-//                view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//                view.setVisible(true);
-//                view.setTitle("TOP-SUELAS");
-//
-//            } catch (JRException ex) {
-//            }
-//        } catch (JRException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
     /**
+     * SOLO PARA TPU Y MAQS, TEMPORALMENTE
      *
      * @param factura factura en este forrmato FAC_123456
      * @param c Conexion empresa
@@ -319,5 +259,43 @@ public class timbrarXML {
             Logger.getLogger(timbrarXML.class.getName()).log(Level.SEVERE, null, ex);
         }
         return l;
+    }
+
+    /**
+     *
+     * @param c Conexion empresa
+     * @param nempresa Numero de empresa
+     * @param uuidd uuid de la factura
+     * @return
+     */
+    public String cancelarfolio(Connection c, String nempresa, String uuidd) {
+        String l = "";
+        try {
+            //Bd de empresas y directorios
+            daoempresa d = new daoempresa();
+            Empresas e = d.getempresarfc(c, nempresa);
+            Timbrado timbrado = new Timbrado();
+            String[] arruuid = {uuidd + "|03|"};
+            CFDICancelacion a = timbrado.cancelar(user, pass, arruuid, e.getCertificado(), e.getKey(), e.getPass(), produccion);
+            CFDIResultadoCancelacion[] re = a.getResultados();
+            if (re != null) {
+                for (CFDIResultadoCancelacion cfd : re) {
+                    l = cfd.getMensaje() + ", Estatus: " + cfd.getStatus() + ", " + cfd.getStatusUUID();
+                    response = String.valueOf(cfd.getStatus());
+                    mensaje = cfd.getMensaje();
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(timbrarXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return l;
+    }
+
+    public String response() {
+        return response + ", " + mensaje;
+    }
+
+    public String status() {
+        return response;
     }
 }

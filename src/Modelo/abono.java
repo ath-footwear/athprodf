@@ -10,10 +10,35 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class abono {
-    private String ref, referencia,ordenpago, nombre, folio,fechapago;
+    private String ref, referencia,ordenpago, nombre, folio,fechapago, Referenciac;
+    private Object Fechap, Fechac;
     private int cliente, cuenta, subcuenta, parcialidad, id_cargo, id_abono, id_docto;
     private double total,totalpago, pago, saldo, anterior;
     private Cliente c;
+
+    public Object getFechap() {
+        return Fechap;
+    }
+
+    public void setFechap(Object Fechap) {
+        this.Fechap = Fechap;
+    }
+
+    public Object getFechac() {
+        return Fechac;
+    }
+
+    public void setFechac(Object Fechac) {
+        this.Fechac = Fechac;
+    }
+
+    public String getReferenciac() {
+        return Referenciac;
+    }
+
+    public void setReferenciac(String Referenciac) {
+        this.Referenciac = Referenciac;
+    }
 
     public int getId_cargo() {
         return id_cargo;

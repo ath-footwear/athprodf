@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Kardex;
 import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import Persistencia.sqlkardex;
@@ -99,16 +100,40 @@ public class daokardexrcpt implements kardexrcpt {
 
     /**
      * Funcion para la cencalacion de una salida
+     *
      * @param c
      * @param k
      * @param concepto
      * @param fecha
-     * @return 
+     * @return
      */
     @Override
     public boolean deleterow(Connection c, KardexCmp k) {
         sqlkardex s = new sqlkardex();
         return s.deleterow(c, k);
+    }
+
+    /**
+     * Insertar kardex por cancelacion
+     *
+     * @param cpt
+     * @param data
+     * @return
+     */
+    public boolean insertarKardexCancelacionAbono(Connection cpt, ArrayList<Kardex> data) {
+        sqlkardex s = new sqlkardex();
+        return s.insertarKardexCancelacionAbono(cpt, data);
+    }
+
+    /**
+     * Obtener folio de cancelacio
+     *
+     * @param cpt
+     * @return
+     */
+    public int getFolioCancelacion(Connection cpt) {
+        sqlkardex s = new sqlkardex();
+        return s.getFolioCancelacion(cpt);
     }
 
 }
