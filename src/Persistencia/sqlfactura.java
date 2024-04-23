@@ -3410,8 +3410,10 @@ public class sqlfactura {
                     + "from " + bd + ".dbo.cargo c\n"
                     + "join " + bd + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
-                    + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' "
-                    + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
+                    + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' "
+                    + "and (saldo!=0 or saldomx!=0) and d.Serie='fac' "
+                    + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' "
+                    + "order by c.fecha";
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
