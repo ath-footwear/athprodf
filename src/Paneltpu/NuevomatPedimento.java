@@ -165,7 +165,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
                         .addComponent(jLabel8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 657, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 913, Short.MAX_VALUE)
                                 .addComponent(jLabel2))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
@@ -192,7 +192,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(JcSat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(346, 346, 346)
+                .addGap(477, 477, 477)
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -230,9 +230,8 @@ public class NuevomatPedimento extends javax.swing.JDialog {
                             .addComponent(jLabel10))
                         .addGap(11, 11, 11)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(65, 65, 65)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addGap(76, 76, 76)
+                .addComponent(jLabel1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -319,24 +318,26 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         }
         if (band && band1) {
             mat = new Materiales();
-            mat.setId_material(arrmat.get(JcSat.getSelectedIndex()).getId_material());
+            int row = JcSat.getSelectedIndex();
+            int row1 = JcDureza.getSelectedIndex();
+            mat.setId_material(arrmat.get(row).getId_material());
             mat.setCosto(Double.parseDouble(JtPrecio.getText()));
-            mat.setPrecio(arrmat.get(JcSat.getSelectedIndex()).getPrecio());
+            mat.setPrecio(arrmat.get(row).getPrecio());
             mat.setCantidad(Double.parseDouble(JtCantidad.getText()));
-            mat.setDureza(arrdur.get(JcDureza.getSelectedIndex()).getDureza());
-            mat.setDescripcion(arrmat.get(JcSat.getSelectedIndex()).getDescripcion());
+            mat.setDureza(arrdur.get(row1).getDureza());
+            mat.setDescripcion(arrmat.get(row).getDescripcion());
             mat.setId_almacen(arralm.get(JcAlmacen.getSelectedIndex()).getAlmacen());
-            mat.setUnidad(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
-            if(u.getTurno().equals("5")){
-                mat.setMaterialpedimento(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
-            }else{
-                mat.setMaterialpedimento(arrmat.get(JcSat.getSelectedIndex()).getTipo_maquina() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
+            mat.setUnidad(arrmat.get(row).getUnidad());
+            if (u.getTurno().equals("5")) {
+                mat.setMaterialpedimento(arrmat.get(row).getDescripcion() + " " + arrdur.get(row1).getDureza());
+            } else {
+                mat.setMaterialpedimento(arrmat.get(row).getTipo_maquina() + " " + arrdur.get(row1).getDureza());
+                mat.setNoserie(arrmat.get(row).getNoserie());
             }
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Error al capturar alguno de los datos, intentalo de nuevo");
         }
-
     }
 
     public Materiales getmaterial() {

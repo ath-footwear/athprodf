@@ -288,14 +288,14 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         daoalmacenes da = new daoalmacenes();
         daodurezas dd = new daodurezas();
 //        Ejecuta la consulta adecuada al turno
-        if(u.getTurno().equals("5")){
+        if (u.getTurno().equals("5")) {
             arrmat = am.getmateriales(c.getCpttpu(), "", "5");
-        }else{
-            arrmat=am.getmaterialesmaq(c.getCpttpu(), "");
+        } else {
+            arrmat = am.getmaterialesmaq(c.getCpttpu(), "");
         }
         arralm = da.getalmacenescpt(c.getCpttpu());
         arrdur = dd.getdurezas(c.getCpttpu());
-        n.u=u;
+        n.u = u;
         n.arrmat = arrmat;
         n.arralm = arralm;
         n.arrdur = arrdur;
@@ -324,25 +324,25 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     }//GEN-LAST:event_JmBorrarActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Formateodedatos fdato= new Formateodedatos();
+        Formateodedatos fdato = new Formateodedatos();
 //        Es importante hacer esta validacion y que no se nos vaya algun caracter especial y nos truene algo que no deberia
-        boolean flag=fdato.verificaStringsSC(JtPedimento.getText());
-        boolean flag1=fdato.verificaStringsSC(JtObservaciones.getText());
-        boolean flag2=(JtPedimento.getText().equals("0"));
-        if(!flag){
+        boolean flag = fdato.verificaStringsSC(JtPedimento.getText());
+        boolean flag1 = fdato.verificaStringsSC(JtObservaciones.getText());
+        boolean flag2 = (JtPedimento.getText().equals("0"));
+        if (!flag) {
             JtPedimento.requestFocus();
         }
-        if(!flag1){
+        if (!flag1) {
             JtObservaciones.requestFocus();
         }
-        if(flag2){
+        if (flag2) {
             JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
             JtPedimento.requestFocus();
             JtPedimento.setText("");
         }
-        if(flag && flag1 && !flag2){
+        if (flag && flag1 && !flag2) {
             setpedimento();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -453,12 +453,14 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         model.addColumn("Costo");
         model.addColumn("cantidad");
         model.addColumn("Unidad");
+        Formateodedatos fd = new Formateodedatos();
         model.setNumRows(arrmatseleccion.size());
         for (int i = 0; i < arrmatseleccion.size(); i++) {
             double cant = arrmatseleccion.get(i).getCantidad();
             double precio = arrmatseleccion.get(i).getPrecio();
             double costo = arrmatseleccion.get(i).getCosto();
-            model.setValueAt(arrmatseleccion.get(i).getDescripcion(), i, 0);
+            model.setValueAt(fd.getmatdescripcion_withturno(
+                    u.getTurno(), arrmatseleccion.get(i)), i, 0);
             model.setValueAt(arrmatseleccion.get(i).getMaterialpedimento(), i, 1);
             model.setValueAt(precio, i, 2);
             model.setValueAt(costo, i, 3);

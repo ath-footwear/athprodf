@@ -198,7 +198,9 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
 
     private void JlIniciarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlIniciarMousePressed
         try {
-            setearfacs();
+            if (checkmpago()) {
+                setearfacs();
+            }
         } catch (ParseException ex) {
             Logger.getLogger(Cargos_especialtpu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -250,6 +252,7 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
         model.addColumn("Plazo");
         model.addColumn("Saldo");
         model.addColumn("");
+        model.addColumn("Parcialidad");
         model.setNumRows(arrcargo.size());
         //Carga las facturas registyradas en cargos
         for (int i = 0; i < arrcargo.size(); i++) {
@@ -261,10 +264,15 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
             model.setValueAt(arrcargo.get(i).getPlazo(), i, 5);
             model.setValueAt(arrcargo.get(i).getSaldo(), i, 6);
             model.setValueAt("", i, 7);
+            model.setValueAt(arrcargo.get(i).getParcialidad(), i, 8);
         }
         JtCargo.setModel(model);
     }
 
+    /**
+     * 
+     * @throws ParseException 
+     */
     private void setearfacs() throws ParseException {
         boolean reset = true;
         if (!arrcargoseleccion.isEmpty()) {
@@ -315,7 +323,7 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
     private void modarrDesc(int i, String desc, String parci) {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
         car.setDescuento(Double.parseDouble(desc));
-        car.setParcialidad(Integer.parseInt(parci));
+        car.setParcialidad(car.getParcialidad());
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
 //        System.out.println("descuento " + desc);
     }
@@ -351,26 +359,29 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
         return resp;
     }
 
-    private boolean verificastring(String cad) {
-        boolean resp = false;
-        String patt = "[azAZ ]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
+    /**
+     * Verifica que el pago no sea con dos o mas metodos de pago distintos
+     *
+     * @return
+     */
+    private boolean checkmpago() {
+        String aux = "";
+        boolean flag = true;
+        for (int i = 0; i < arrcargoseleccion.size(); i++) {
+            if (i == 0) {
+                aux = arrcargoseleccion.get(i).getMetodopago();
+            } else {
+                if (!aux.equals(arrcargoseleccion.get(i).getMetodopago())) {
+                    JOptionPane.showMessageDialog(null,
+                            "NO PUEDES TENER UN PAGO CON PPD Y PUE JUNTOS",
+                            "ERROR EN METODOS DE PAGO", JOptionPane.ERROR_MESSAGE);
+                    arrcargoseleccion.clear();
+                    desplieguecargos();
+                    flag = false;
+                }
+            }
         }
-        return resp;
-    }
-
-    private boolean verificap(String cad) {
-        boolean resp = false;
-        String patt = "[p]||[s]";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
+        return flag;
     }
 
     /**

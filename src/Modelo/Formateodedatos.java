@@ -663,4 +663,24 @@ public class Formateodedatos {
         return c;
     }
 
+    /**
+     * Obtiene la descripcion de acuerdo al turno
+     *
+     * @param turno
+     * @param m Objeto tipo materiales
+     * @return String
+     */
+    public String getmatdescripcion_withturno(String turno, Materiales m) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = m.getDescripcion();
+                break;
+            case "6":
+            case "7":
+                resp = m.getDescripcion() + " " + m.getNoserie();
+                break;
+        }
+        return resp;
+    }
 }

@@ -117,7 +117,11 @@ public class sqlcargos {
             ResultSet rs;
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
-                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago\n"
+                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago,\n"
+                    + " (select count(1)\n"
+                    + "from ddoctospagotpu_especial dd\n"
+                    + "join doctospagotpu_especial d on dd.id_doctopago=d.id_doctopago\n"
+                    + "where foliorel=c.id_cargo and d.estatus='1') as parcialidad\n"
                     + "from " + bdcob + ".dbo.cargoespecial c\n"
                     + "join " + bdcob + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on case when SUBSTRING(referencia,0,5)='FAC_' then "
@@ -126,7 +130,7 @@ public class sqlcargos {
                     + "and saldo!=0 and d.Serie='fac' and d.estatus='1' and "
                     + "ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' "
                     + "order by c.fecha";
-//            System.out.println("get clientencr " + sql);
+            System.out.println("get clientencr " + sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             int ren = 0;
@@ -151,6 +155,7 @@ public class sqlcargos {
                 c.setSaldomx(rs.getDouble("saldomx"));
                 c.setRenglon(ren);
                 c.setMetodopago(rs.getString("metodopago"));
+                c.setParcialidad(rs.getInt("parcialidad")+1);
                 arr.add(c);
                 ren++;
             }
