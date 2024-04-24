@@ -7,7 +7,7 @@ package Paneltpu;
 
 import DAO.dao_comisiones;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Comision;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
@@ -202,7 +202,7 @@ public class pagotpurem1 extends javax.swing.JPanel {
             int folio = arrfactura.get(row).getId();
 //            System.out.println("folio "+folio);
             Formateodedatos fd = new Formateodedatos();
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             ArrayList<factura> arr
                     = df.getregspcancelpagotpu(cpt, folio,
                             fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), "B"), "RPAG");
@@ -283,7 +283,7 @@ public class pagotpurem1 extends javax.swing.JPanel {
         model.addColumn("fecha pago");
         model.addColumn("observaciones");
         model.addColumn("Estado sat");
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
         arrfactura = d.getdocspagosremi(cpt, JtCliente.getText());
         int tamaño = arrfactura.size();
         model.setRowCount(tamaño);

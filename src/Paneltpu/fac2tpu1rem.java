@@ -7,10 +7,9 @@ package Paneltpu;
 
 import DAO.daoCargos;
 import DAO.daoConceptos;
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Dao.Dao_Agente;
@@ -622,7 +621,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Calendar fecha = Calendar.getInstance();
         int mes = fecha.get(Calendar.MONTH) + 1;
-        daofactura dfac = new daofactura();
+        daofactura_tpu dfac = new daofactura_tpu();
         ArrayList<Dfactura> arrf = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         f.setFolio(dfac.getmaxfoliotpu(cpt, "REM"));//Obtiene y setea el foliomaximo de *documentos
@@ -779,7 +778,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac2tpu1rem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -10,7 +10,7 @@ import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import DAO.daoxmltpu;
@@ -882,7 +882,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 //Prueba de Locale en la fecha para cambios de horario
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",
                         Locale.getDefault());
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 Formateodedatos fd = new Formateodedatos();
                 if (JcPublico.isSelected()) {//Setear impuestos
@@ -984,13 +984,18 @@ public class fac2tpu extends javax.swing.JPanel {
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
-                            String marca=(u.getTurno().equals("5"))?"":
-                                    " MARCA: " + k2.get(i).getDp().getNfamilia();
-                            df.setDescripcion(k2.get(i).getDp().getMatped()
-                                    + " (PEDIMENTO: " + k2.get(i).getReferencia()
-                                    + ", ADUANA: 160 MANZANILLO COLIMA,"
-                                    + k2.get(i).getFechapedimento() + ")"
-                                    + marca);
+                            String marca = (u.getTurno().equals("5")) ? ""
+                                    : " MARCA: " + k2.get(i).getDp().getNfamilia();
+                            //Diferencia de referencia del pedimento del "1" a los demas       
+                            if (k2.get(i).getReferencia().equals("1")) {
+                                df.setDescripcion(k2.get(i).getDp().getMatped());
+                            } else {
+                                df.setDescripcion(k2.get(i).getDp().getMatped()
+                                        + " (PEDIMENTO: " + k2.get(i).getReferencia()
+                                        + ", ADUANA: 160 MANZANILLO COLIMA,"
+                                        + k2.get(i).getFechapedimento() + ")"
+                                        + marca);
+                            }
                         }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
@@ -1249,7 +1254,7 @@ public class fac2tpu extends javax.swing.JPanel {
         } else {
             Formateodedatos fd = new Formateodedatos();
             FactsReltpu f = new FactsReltpu(null, true);
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
             f.arrcargo = arrcargo;
             f.setVisible(true);
@@ -1281,8 +1286,9 @@ public class fac2tpu extends javax.swing.JPanel {
     private void JlCliente1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlCliente1MousePressed
         int ind[] = JlCliente1.getSelectedIndices();
         String folios = "";
+        int row = JlCliente1.getSelectedIndex();
         if (ind.length == 1) {
-            folios = "referencia ='" + k1.get(JlCliente1.getSelectedIndex()).getReferencia() + "'";
+            folios = "referencia ='" + k1.get(row).getReferencia() + "'";
         } else {
             for (int i = 0; i < ind.length; i++) {
 //                System.out.println(ind[i]);
@@ -1292,6 +1298,11 @@ public class fac2tpu extends javax.swing.JPanel {
                     folios += " or referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                 }
             }
+        }
+        if (k1.get(row).getReferencia().equals("1")) {
+            JOptionPane.showMessageDialog(null,
+                    "Estas usando el pedimento nacional, recuerdo que saldra "
+                    + "sin la leyenda del pedimento");
         }
         seleccionfolio(folios);
     }//GEN-LAST:event_JlCliente1MousePressed
@@ -1408,11 +1419,6 @@ public class fac2tpu extends javax.swing.JPanel {
                 k2 = dk1.getpedimentoaadvMAQ(cpt, folios);
                 break;
         }
-        //k2 = dk1.getpedimentoaadv(cpt, folios);
-//        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
-//        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
-//        k = dk.getkardexfacMulti(rcpt, empresacob, folios);
-//        System.out.println(k.size());
         generatabla();
     }
 

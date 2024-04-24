@@ -977,7 +977,6 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setArr(arrdet);
                 f.setArrpagos(arrdetpago);
                 //f.setArrpagos17(arrdetpago17);
-
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setFoliofiscalorig(folios);
@@ -1021,11 +1020,8 @@ public class pagotpu2 extends javax.swing.JPanel {
                             }
                         }
                     }
-
                 }
-
             }
-
         }
     }
 

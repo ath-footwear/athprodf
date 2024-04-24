@@ -456,7 +456,7 @@ public class sqlclientes {
                     + "from cargo c\n"
                     + "join cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "where cli.nombre like '%" + nombre + "%' and c.referencia NOT Like '%NCR%' "
-                    + "and saldo!=0 and c.estatus='1' \n"
+                    + "and (saldo!=0 or saldomx!=0) and c.estatus='1' \n"
                     + "order by cli.nombre";
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);

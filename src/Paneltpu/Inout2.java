@@ -6,8 +6,6 @@
 package Paneltpu;
 
 import DAO.daoConceptos;
-import Paneles.*;
-import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
@@ -20,10 +18,6 @@ import Modelo.KardexCmp;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.pedimento;
-import Server.Serverprod;
-import Server.Serverylite;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -57,14 +51,11 @@ public class Inout2 extends javax.swing.JPanel {
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection ACobranza, rcpt, cpt, cobB;
-    Serverylite slite = new Serverylite();
-    Serverprod prod = new Serverprod();
     public ArrayList<Agentes> arragente = new ArrayList<>();
     public ArrayList<Cliente> arrcliente = new ArrayList<>();
     public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
     public ArrayList<KardexCmp> arrk = new ArrayList<>();
 
-    daocfdi dcfdi = new daocfdi();
     double descuentos;
     double impuestos;
     double subtotal;
@@ -553,7 +544,7 @@ public class Inout2 extends javax.swing.JPanel {
             ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Inout2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -825,17 +816,6 @@ public class Inout2 extends javax.swing.JPanel {
      */
     private boolean verificacant_precio(String var) {
         return (var.isEmpty() || var.equals("") || var.equals(" ") || var.equals("0"));
-    }
-
-    private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
-        daocfdi df = new daocfdi();
-        boolean a = true;
-        String resp = df.getRegimenxuso(cfdi, regimen, uso);
-        if (resp.equals("")) {
-            JOptionPane.showMessageDialog(null, "Error, El regimen del cliente no se puede usar con este uso cfdi");
-            a = false;
-        }
-        return a;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

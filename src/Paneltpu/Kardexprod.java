@@ -8,7 +8,6 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneles.fac1;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -320,7 +319,7 @@ public class Kardexprod extends javax.swing.JDialog {
             ver.setTitle("Kardex Producto");
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Kardexprod.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

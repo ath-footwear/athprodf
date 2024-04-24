@@ -5,10 +5,8 @@
  */
 package Paneltpu;
 
-import DAO.daoProveedores;
 import Dao.Dao_Agente;
 import Modelo.Agentes;
-import Modelo.ProveedorMPrima;
 import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

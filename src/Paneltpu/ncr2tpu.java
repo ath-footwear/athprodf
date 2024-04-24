@@ -5,10 +5,9 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlncrtpu;
 import Modelo.ConceptosES;
 import Modelo.Dfactura;
@@ -672,7 +671,7 @@ public class ncr2tpu extends javax.swing.JPanel {
         JcUso.setModel(uso);
         JtRelacion.setModel(relacion);
         // Cuentas
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
 //        Busca las cuentas que sean tipo '60' y tambien las asigna a un combo para su uso
         arrcuentas = d.getalcuentastpu(ACobranza, "60");
         for (ConceptosES arruso1 : arrcuentas) {
@@ -689,7 +688,7 @@ public class ncr2tpu extends javax.swing.JPanel {
 //    Carga datos del cliente para el uso de ncr
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd= new Formateodedatos();
 //        Obtiene los cargos pendientes y utiliza el nombre de la bd formateada
         arrcargo = df.getfactsoncrtpu(cpt, r, fd.getbd_tocargo(u.getTurno()));// cpt a usar
@@ -914,7 +913,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                 String condicion;
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "NCR"));//Obtiene y setea el foliomaximo de *documentos
@@ -1243,7 +1242,7 @@ public class ncr2tpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\NCR_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ncr2tpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

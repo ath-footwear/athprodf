@@ -6,29 +6,22 @@
 package Paneltpu;
 
 import DAO.dao_comisiones;
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlncr;
-import Modelo.Ciudades;
 import Modelo.Comision;
-import Modelo.Devolucion;
 import Modelo.Dfactura;
 import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
-import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
-import Server.Serverprod;
-import Server.Serverylite;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -228,9 +221,9 @@ public class pagotpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JbXml1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbXml1MousePressed
-        daofactura dfac = new daofactura();
+        daofactura_tpu dfac = new daofactura_tpu();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-        arrfacturaxml = dfac.getdocxml(cpt, id + "", "NCR", empresacob);
+        arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "PAG", empresacob);
 
         factura f = new factura();
         String condicion;
@@ -377,7 +370,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             int folio = arrfactura.get(row).getId();
 //            System.out.println("folio "+folio);
             Formateodedatos fd = new Formateodedatos();
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             ArrayList<factura> arr = 
                     df.getregspcancelpagotpu(cpt, folio, fd.getbd_tocargo(u.getTurno()),"PAG");
             if (!arr.isEmpty()) {
@@ -434,7 +427,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             ver.setTitle("NCR " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(pagotpu1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -462,7 +455,7 @@ public class pagotpu1 extends javax.swing.JPanel {
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
 
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
 //        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
         arrfactura = df.getdocpagostpu(cpt, JtCliente.getText(), "PAG", fd.getbd_tocargo(u.getTurno()));

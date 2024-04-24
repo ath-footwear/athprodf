@@ -9,6 +9,7 @@ import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Conexiones;
 import Modelo.Dfactura;
+import Modelo.Kardex;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -265,12 +266,16 @@ public interface Facturas {
     public ArrayList<Dfactura> getDetalleFactura(Connection cpt, String factura);
 
     public int getTipoFactura(Connection cpt, int factura);
-
+    
     public boolean cancelarFacturaEspecial(Connection cpt, Connection rcpt, factura f, abono a);
-
+    
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a, ArrayList<Kardex> data);
+    
     public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a);
-
+    
     public boolean cancelarPago(Connection cpt, int folio, String referencia,int cliente);
     
-    public ArrayList<String>getOrdenPago(Connection cpt, int folio);
+    public ArrayList<String> getOrdenPago(Connection cpt, int folio);
+    
+    public ArrayList<String>getClienteCargo(Connection cobranza, String factura);
 }

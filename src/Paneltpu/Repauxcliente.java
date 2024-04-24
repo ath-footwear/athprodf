@@ -8,12 +8,10 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneles.fac1;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -229,7 +227,6 @@ public class Repauxcliente extends javax.swing.JDialog {
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        java.util.Date date = new Date();
         String f1 = sdf.format(Fecha.getDate());
         String f2 = sdf.format(Fecha1.getDate());
         String cliente = JtNombre.getText();
@@ -258,7 +255,7 @@ public class Repauxcliente extends javax.swing.JDialog {
             ver.setVisible(true);
             regresarventana(ver);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Repauxcliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

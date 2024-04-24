@@ -11,6 +11,7 @@ import Modelo.Conexiones;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
 import Modelo.Formateodedatos;
+import Modelo.Kardex;
 import Modelo.Kardexrcpt;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
@@ -1404,6 +1405,7 @@ public class sqlfactura {
         int pedido = 0;
         try {
             con.setAutoCommit(false);
+            cobranza.setAutoCommit(false);
             String sql;
             String nombre = f.getNombre();
             int fkardex = f.getFoliokardex();
@@ -1493,18 +1495,17 @@ public class sqlfactura {
 //            System.out.println("sfolios " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
+            cobranza.commit();
             con.commit();
-//            con.rollback();
-//            cobranza.rollback();
-//            rcpt.rollback();
         } catch (Exception ex) {
             try {
                 pedido = 0;
                 con.rollback();
-                JOptionPane.showMessageDialog(null, "insertar -" + ex);
+                cobranza.rollback();
+                JOptionPane.showMessageDialog(null, "insertar rem -" + ex);
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
-                JOptionPane.showMessageDialog(null, "inertar -" + ex1);
+                JOptionPane.showMessageDialog(null, "insertar rem -" + ex1);
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
@@ -2672,8 +2673,8 @@ public class sqlfactura {
 //            System.out.println("series folios " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
-            con.commit();
             cob.commit();
+            con.commit();
 //            cobranza.commit();
 //            con.rollback();
 //            cobranza.rollback();
@@ -2683,7 +2684,7 @@ public class sqlfactura {
                 con.rollback();
                 cob.rollback();
 //                cobranza.rollback();
-                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                JOptionPane.showMessageDialog(null, "pagorem fac -" + ex);
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
@@ -5051,6 +5052,92 @@ public class sqlfactura {
     }
 
     /**
+     * Cancela una factura normal
+     *
+     * @param cpt
+     * @param rcpt
+     * @param f
+     * @param a
+     * @param data
+     * @return
+     */
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a, ArrayList<Kardex> data) {
+        PreparedStatement st = null;
+        int row = 0;
+        try {
+            cpt.setAutoCommit(false);
+            rcpt.setAutoCommit(false);
+
+            st = cpt.prepareCall("{call stp_cancelarFacturaNormal(?,?,?,?,?,?,?,?,?)}");
+            st.setString(1, String.valueOf(f.getFolio()));
+            st.setObject(2, f.getFechacancel());
+            st.setObject(3, a.getFechap());
+            st.setString(4, a.getReferencia());
+            st.setDouble(5, a.getTotalpago());
+            st.setDouble(6, a.getPago());
+            st.setString(7, a.getReferenciac());
+            st.setInt(8, a.getCliente());
+            st.setObject(9, a.getFechac());
+            st.executeUpdate();
+
+            st = rcpt.prepareCall("{call stp_cancelarFacturaNormal(?,?)}");
+            st.setString(1, String.valueOf(f.getFolio()));
+            st.setObject(2, f.getFechacancel());
+            st.executeUpdate();
+
+            for (Kardex dt : data) {
+                row++;
+                st = cpt.prepareCall("{call stp_insertarKardexCancelacionAbono(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                st.setInt(1, dt.getAlmacen());
+                st.setInt(2, dt.getProducto());
+                st.setInt(3, dt.getFolio());
+                st.setInt(4, row);
+                st.setInt(5, dt.getCl_prv());
+                st.setString(6, dt.getCuenta());
+                st.setString(7, dt.getSubCuenta());
+                st.setInt(8, dt.getTotalpares());
+                st.setDouble(9, dt.getPcosto());
+                st.setDouble(10, dt.getPventa());
+                st.setDouble(11, dt.getImporte_costo());
+                st.setInt(12, dt.getC1());
+                st.setInt(13, dt.getC2());
+                st.setInt(14, dt.getC3());
+                st.setInt(15, dt.getC4());
+                st.setInt(16, dt.getC5());
+                st.setInt(17, dt.getC6());
+                st.setInt(18, dt.getC7());
+                st.setInt(19, dt.getC8());
+                st.setInt(20, dt.getC9());
+                st.setInt(21, dt.getC10());
+                st.setInt(22, dt.getC11());
+                st.setInt(23, dt.getC12());
+                st.setInt(24, dt.getC13());
+                st.setInt(25, dt.getC14());
+                st.setString(26, dt.getStock_pedidos());
+                st.setString(27, dt.getPedido());
+                st.setInt(28, dt.getRenglon_p());
+                st.setString(29, dt.getFactura());
+                st.setString(30, dt.getSerie());
+                st.setString(31, dt.getUsuario());
+                st.execute();
+            }
+            cpt.commit();
+            rcpt.commit();
+            return true;
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            try {
+                cpt.rollback();
+                rcpt.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    /**
      * Obtiene la orden de pago
      *
      * @param cpt
@@ -5097,6 +5184,33 @@ public class sqlfactura {
             }
         }
         return false;
+    }
+
+    /**
+     * Obtiene la fecha del cargo
+     *
+     * @param cob
+     * @param factura
+     * @return
+     */
+    public ArrayList<String> getClienteCargo(Connection cob, String factura) {
+        ArrayList<String> lista = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = cob.prepareCall("{call stp_getClienteC(?)}");
+            st.setString(1, factura);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                lista.add(rs.getString("fecha"));
+                lista.add(rs.getString("NumCliente"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return lista;
     }
     //metodos externos
 }
