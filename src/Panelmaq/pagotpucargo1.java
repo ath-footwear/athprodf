@@ -8,7 +8,7 @@ package Panelmaq;
 import DAO.dao_comisiones;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Comision;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
@@ -247,7 +247,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
      * Cancelacion de pago
      */
     private void respcancela() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
         int row = JtDetalle.getSelectedRow();
         //Se obtienen los registro del pago con sus Id´s pertenecientes
@@ -271,7 +271,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
 
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
         generatabla();
     }

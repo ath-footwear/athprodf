@@ -6,15 +6,13 @@
 package Panelmaq;
 
 import DAO.daoClientes;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Dao.Dao_Agente;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.factura;
-import Server.Serverprod;
-import Server.Serverylite;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +28,6 @@ import javax.swing.JOptionPane;
 public class Cargos_especial extends javax.swing.JPanel {
 
     public Connection ACobranza, cobB;
-    Serverylite slite = new Serverylite();
-    Serverprod prod = new Serverprod();
     public ArrayList<Agentes> arragente = new ArrayList<>();
     public ArrayList<Cliente> arrcliente = new ArrayList<>();
     public Usuarios u;
@@ -292,7 +288,7 @@ public class Cargos_especial extends javax.swing.JPanel {
         factura f = new factura();
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        daofactura dfac = new daofactura();
+        daofactura_tpu dfac = new daofactura_tpu();
         // fin setear impuestos
         int rowc = JcCliente.getSelectedIndex();
         int rowa = JcAgente.getSelectedIndex();

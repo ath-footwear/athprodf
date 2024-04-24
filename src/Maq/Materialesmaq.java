@@ -72,6 +72,7 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Maquinas");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/material_colors_macos_bigsur_icon_189995.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1280, 720));

@@ -7,7 +7,6 @@ package Panelmaq;
 
 import DAO.daoPedidos;
 import Modelo.Dfactura;
-import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.factura;

@@ -8,8 +8,6 @@ package Panelmaq;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneles.fac1;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -45,7 +43,7 @@ public class ReporteInventario {
             ver.setTitle("Saldos vencidos");
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReporteInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

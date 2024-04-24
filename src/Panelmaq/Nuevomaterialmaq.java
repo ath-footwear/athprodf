@@ -13,7 +13,6 @@ import Modelo.Familia;
 import Modelo.Formateodedatos;
 import Modelo.Materiales;
 import Modelo.Unidades;
-import athprod.Fichatecnica;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -631,7 +630,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
                 }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex);
-                Logger.getLogger(Fichatecnica.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Nuevomaterialmaq.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
         }
@@ -662,7 +661,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error al copiar archivo: " + ex.getMessage());
-            Logger.getLogger(Fichatecnica.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Nuevomaterialmaq.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

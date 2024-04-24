@@ -112,7 +112,7 @@ public class Pagostpurem extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
+        setMaximizable(true);
         setTitle("Pagos remision");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332B.png"))); // NOI18N
 

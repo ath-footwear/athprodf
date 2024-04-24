@@ -7,7 +7,7 @@ package Panelmaq;
 
 import DAO.daoClientes;
 import DAO.dao_comisiones;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
@@ -18,7 +18,6 @@ import Modelo.Usuarios;
 import Modelo.cargo;
 import Modelo.factura;
 import Paneltpu.Buscacliente_Pago;
-import Server.Serverprod;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
     public String nombre, empresa;
 //    ACobranza es la conexion a la bd interna, no hay fiscal
     public Connection ACobranza, cpt;
-    Serverprod prod = new Serverprod();
     public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
@@ -494,7 +492,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
     public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
         // Cuentas
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
         arrcuentas = d.getalcuentastpu(ACobranza, "50");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
@@ -636,7 +634,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
 //            int row = JtFolio1.getSelectedIndex();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 if (JcUsd.isSelected()) {
                     f.setMoneda("USD");
                     f.setTipocambio(Float.parseFloat(JtTCambio.getText()));
@@ -913,7 +911,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         int cliente = bp.getCliente();
         //Verifica que el cliente no sea cero o menor a el
         if (cliente != 0) {
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             arrcargo = df.getcargos_especialwithcliente(ACobranza, cliente+"");
             if (arrcargo.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");

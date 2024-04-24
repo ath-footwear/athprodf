@@ -10,7 +10,7 @@ import DAO.daoCargos;
 import DAO.daoClientes;
 import DAO.dao_comisiones;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlpagostpu;
 import Modelo.Cliente;
 import Modelo.Comision;
@@ -552,7 +552,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         }
         JcForma.setModel(forma);
         // Cuentas
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
         arrcuentas = d.getalcuentastpu(ACobranza, "50");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
@@ -715,7 +715,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
 //            int row = JtFolio1.getSelectedIndex();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "PAG"));//Obtiene y setea el foliomaximo de *documentos
                 if (JcUsd.isSelected()) {
                     f.setMoneda("USD");
