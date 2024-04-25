@@ -1,7 +1,7 @@
 package mx.sat.cfd40;
 
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
@@ -182,7 +182,7 @@ public class generarXML40tpu {
         String COMPROBANTE_XML = salidaxml + "\\" + encabezado.getSerie() + "_" + encabezado.getFolio() + ".xml";
 
 //Actualizar datos en la Base de datos para despliegue de factura
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         factura f = new factura();
         f.setCertificado(noCertificado);
         f.setSello(selloDigital);
