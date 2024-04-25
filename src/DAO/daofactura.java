@@ -9,6 +9,7 @@ import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Conexiones;
 import Modelo.Dfactura;
+import Modelo.Kardex;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -375,107 +376,10 @@ public class daofactura implements Facturas {
         return s.insertfacturaEcon(c, f, cob, rcpt);
     }
 
-    /**
-     * Obtiene el maximmo folio de acuerdo a la serie
-     *
-     * @param c
-     * @param serie
-     * @return
-     */
-    @Override
-    public int getmaxfoliotpu(Connection c, String serie) {
-        sqlfactura s = new sqlfactura();
-        return s.getmaxfactpu(c, serie);
-    }
-
-    @Override
-    public int getbuscafoliotpu(Connection c, String serie, String folio) {
-        sqlfactura s = new sqlfactura();
-        return s.buscafoliotpu(c, serie, folio);
-    }
-
-    @Override
-    public int nuevafactpu(Connection cpt, factura f, Connection cob) {
-        sqlfactura s = new sqlfactura();
-        return s.insertfacturatpu(cpt, f, cob);
-    }
-
-    @Override
-    public boolean actualizacadenatpu(Connection c, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.actualizafacturatpu(c, f);
-    }
-
-    @Override
-    public boolean Updatesellofiscaltpu(Connection cpt, Sellofiscal s, int id) {
-        sqlfactura f = new sqlfactura();
-        return f.actualizasellostpu(cpt, s, id);
-    }
-
-    @Override
-    public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd) {
-        sqlfactura f = new sqlfactura();
-        return f.getfoliotoFACReltpu(c, r, bd);
-    }
-
-    @Override
-    public int nuevaremtpu(Connection cpt, factura f, Connection cob) {
-        sqlfactura s = new sqlfactura();
-        return s.insertremtpu(cpt, f, cob);
-    }
-
-    @Override
-    public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie) {
-        sqlfactura s = new sqlfactura();
-        return s.getpedidos(cpt, folio, serie);
-    }
-
-    @Override
-    public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.getdocstpu(cpt, folio, serie, bd);
-    }
-
-    @Override
-    public ArrayList<cargo> getfactsoncrtpu(Connection c, String r, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.getfoliotoNCRtpu(c, r, bd);
-    }
-
     @Override
     public ArrayList<ConceptosES> getalcuentastpu(Connection c, String cuenta) {
         sqlfactura s = new sqlfactura();
         return s.getcuentastpu(c, cuenta);
-    }
-
-    @Override
-    public int nuevancrtpu(Connection c, factura f, Connection cob, Connection rcpt) {
-        sqlfactura s = new sqlfactura();
-        return s.insertncrtpu(c, f, cob, rcpt);
-    }
-
-    @Override
-    public ArrayList<factura> getdocvspago(Connection cpt, String folio) {
-        sqlfactura s = new sqlfactura();
-        return s.getfoliovspago(cpt, Integer.parseInt(folio));
-    }
-
-    @Override
-    public ArrayList<factura> getdocvspagoall(Connection cpt, int id) {
-        sqlfactura s = new sqlfactura();
-        return s.getfoliovspagoall(cpt, id);
-    }
-
-    @Override
-    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f, String fecha, String usuario) {
-        sqlfactura s = new sqlfactura();
-        return s.deletencr(cpt, cob, f, fecha, usuario);
-    }
-
-    @Override
-    public int insertpagotpu(Connection cpt, Connection cob, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.insertpagostpu(cpt, f, cob);
     }
 
     @Override
@@ -491,18 +395,6 @@ public class daofactura implements Facturas {
     }
 
     @Override
-    public void actualizacadenapagotpu(Connection c, factura f) {
-        sqlfactura s = new sqlfactura();
-        s.actualizapagotpu(c, f);
-    }
-
-    @Override
-    public boolean Updatesellofiscalpagotpu(Connection cpt, Sellofiscal s, int id) {
-        sqlfactura sw = new sqlfactura();
-        return sw.actualizasellotpupago(cpt, s, id);
-    }
-
-    @Override
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento) {
         sqlfactura s = new sqlfactura();
         return s.updateclientedoc(con, c, id_documento);
@@ -513,371 +405,77 @@ public class daofactura implements Facturas {
         sqlfactura s = new sqlfactura();
         return s.getdocspagos(cpt, fol, serie, empcobranza);
     }
-
-    @Override
-    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.getdocspagostpu(cpt, fol, serie, bd);
-    }
-
-    /**
-     * Busca una nota de credito o pago de acuerdo al id de la factura
-     *
-     * @param c
-     * @param iddoc
-     * @param serie
-     * @param bd
-     * @return
-     */
-    @Override
-    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.searchPagncrtofac(c, iddoc, serie, bd);
-    }
-
-    @Override
-    public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob) {
-        sqlfactura s = new sqlfactura();
-        return s.getcargosrem(cobB, var, ncob);
-    }
-
-    @Override
-    public ArrayList<factura> getdocspagosremi(Connection con, String folio) {
-        sqlfactura s = new sqlfactura();
-        return s.getdocspagosremi(con, folio);
-    }
-
+    
     @Override
     public int nuevafactpuATH(Connection cpt, factura f, Connection cob, Connection cpttpu, Connection rcpt) {
         sqlfactura s = new sqlfactura();
         return s.insertfacturatpuATH(cpt, f, cob, cpttpu, rcpt);
     }
-
-    @Override
-    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie, String bd) {
-        sqlfactura f = new sqlfactura();
-        return f.getdocsxmltpu(cpt, fol, serie, bd);
-    }
-
-    @Override
-    public ArrayList<cargo> getfactopagotpu(Connection c, String r, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.getfoliotopagotpu(c, r, bd);
-    }
-
-    @Override
-    public int insertpagotpuPUE(Connection cpt, Connection cob, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.insertpagostpu(cpt, f, cob);
-    }
-
-    /**
-     * Obtiene registros del pago de acuerdo al id del documento de pago
-     *
-     * @param c
-     * @param id
-     * @param bd
-     * @return
-     */
-    @Override
-    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id, String bd, String serie) {
-        sqlfactura s = new sqlfactura();
-        return s.getcancelapago(c, id, bd, serie);
-    }
-
-    /**
-     * Ejecuta modificacion de registros para cancelacion de un pago en tpu
-     *
-     * @param c
-     * @param cob
-     * @param arr
-     * @return
-     */
-    @Override
-    public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr) {
-        sqlfactura s = new sqlfactura();
-        return s.execcancelPago(c, cob, arr);
-    }
-
-    /**
-     * Ingresa un nuevo cargo especial a la bd
-     *
-     * @param cob conexion de cobranza fiscal
-     * @param f objeto de factura con sus datos necesarios
-     * @return boolean
-     */
-    @Override
-    public boolean nuevocargoespecial(Connection cob, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.new_Cargoespecial(cob, f);
-    }
-
-    /**
-     * Obtiene todos los cargos especiales mediante la conexion de cobranza
-     * fiscal y una vaariable que es la del nombre del cliente
-     *
-     * @param cob conexion cobranza
-     * @param var nombre del cliente
-     * @return lista de cargo
-     */
-    @Override
-    public ArrayList<cargo> getcargosespecial(Connection cob, String var) {
-        sqlfactura s = new sqlfactura();
-        return s.getcargosespecial(cob, var);
-    }
-
-    /**
-     * Trae los cargos especiales de acuerdo al cliente
-     *
-     * @param cob conexion a cobranza
-     * @param cliente id del cliente
-     * @return Lista de cargos
-     */
-    @Override
-    public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente) {
-        sqlfactura s = new sqlfactura();
-        return s.getcargos_especialwithcliente(cob, cliente);
-    }
-
-    /**
-     * Agrega un nuevo pago a la bd, esto inserta campos en doctospago, abonos y
-     * afecto el saldo del cargo
-     *
-     * @param cpt conexion hacia cpt ya que necesita hacer consultos a doctos
-     * @param cob conexion a cobranza
-     * @param f El pago
-     * @return int
-     */
-    @Override
-    public int insertpagotpu_especial(Connection cpt, Connection cob, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.insertpagostpu_especial(cpt, f, cob);
-    }
-
-    /**
-     * Busca los pagos realizados de acuerdo al nombre del cliente
-     *
-     * @param cpt conexion a cpt
-     * @param cliente nombre del cliente
-     * @return Lista de pagos realizados
-     */
-    @Override
-    public ArrayList<factura> getpagostpu_especial(Connection cpt, String cliente) {
-        sqlfactura s = new sqlfactura();
-        return s.getpagos_especial(cpt, cliente);
-    }
-
-    /**
-     * Obtiene los registros del cargo y abono para poder darlos de baja y
-     * ademas regresar el saldo del pago a cada cargo
-     *
-     * @param con conexion de cpt
-     * @param pago id del documento de pago
-     * @param bd String de la bd de cobranza
-     * @return lista de abonos
-     */
-    @Override
-    public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.getpagos_especial_tocancel(con, pago, bd);
-    }
-
-    /**
-     * Cancela el documento y abonos ademas de regresar los saldos pertinentes
-     * tras la cancelacion de dicho movimiento
-     *
-     * @param cpt Conexion de cpt
-     * @param cob COnexion de cobranza
-     * @param arr Lista de abonos con cargos y saldos
-     * @return booleano
-     */
-    @Override
-    public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr) {
-        sqlfactura s = new sqlfactura();
-        return s.Cancela_pagoespecial(cpt, cob, arr);
-    }
-
-    /**
-     * Verifica que el cargo no tenga abonos realizados
-     *
-     * @param cob conexion de cobranza
-     * @param cargo id del cargo
-     * @return booelano
-     */
-    @Override
-    public boolean checkcargoespecial_tocancel(Connection cob, int cargo) {
-        sqlfactura s = new sqlfactura();
-        return s.checkcargoespecial_tocancel(cob, cargo);
-    }
-
-    /**
-     * Cancela el cargo especial seleccionado
-     *
-     * @param cob conexion de cobranza
-     * @param cargo id del cargo
-     * @return booelano
-     */
-    @Override
-    public boolean Cancela_cargoespecial(Connection cob, int cargo) {
-        sqlfactura s = new sqlfactura();
-        return s.Cancela_cargoespecial(cob, cargo);
-    }
-
-    /**
-     * Ingresa al sistema una nueva factura pero especial, significa que no
-     * afecta a stock pero si genera un cargo en cargoespecial, por lo tanto su
-     * pago seria en abonos especiales
-     *
-     * @param cpt conexion de cpt
-     * @param f factura
-     * @param cob conexion de cobranza
-     * @return Id del documento
-     */
-    @Override
-    public int nuevafactpu_Especial(Connection cpt, factura f, Connection cob) {
-        sqlfactura s = new sqlfactura();
-        return s.insertfacturatpu_Especial(cpt, f, cob);
-    }
-
-    /**
-     * Actualiza la cadena original, el sello y certificado
-     *
-     * @param c
-     * @param f
-     */
-    @Override
-    public void actualizacadenapagotpu_E(Connection c, factura f) {
-        sqlfactura s = new sqlfactura();
-        s.actualizapagotpuE(c, f);
-    }
-
-    /**
-     * Actualiza datos del pago de los datos recibidos del timbrado
-     *
-     * @param cpt conexion cpt
-     * @param s Objeto Sellofiscal
-     * @param id id del pago
-     * @return
-     */
-    @Override
-    public boolean Updatesellofiscalpagotpu_E(Connection cpt, Sellofiscal s, int id) {
-        sqlfactura sw = new sqlfactura();
-        return sw.actualizasellotpupago_E(cpt, s, id);
-    }
-
-    /**
-     * Valida que no haya Documentos dependientes de la factura, solo aplica en
-     * la cancelacio especial
-     *
-     * @param c
-     * @param iddoc
-     * @param serie
-     * @param bd
-     * @return
-     */
-    @Override
-    public ArrayList<factura> searchPagncrtofac_Especial(Connection c, int iddoc, String serie, String bd) {
-        sqlfactura s = new sqlfactura();
-        return s.searchPagncrtofac_Especial(c, iddoc, serie, bd);
-    }
-
-    /**
-     * Realiza la cancelacion de los registros sobre la factura, solo aplica en
-     * la cancelacion especial
-     *
-     * @param cpt
-     * @param cob
-     * @param f
-     * @return
-     */
-    @Override
-    public boolean Cancelafactura_Especial(Connection cpt, Connection cob, factura f) {
-        sqlfactura s = new sqlfactura();
-        return s.Cancelafactura_Especial(cpt, cob, f);
-    }
-
-    /**
-     * Actualiza los datos de la tabla de documento por si el cliente durante el
-     * proceso de facturacion o desconocimiento sufrio algun cambio fiscal
-     *
-     * @param con
-     * @param c
-     * @param id_documento
-     * @return
-     */
-    @Override
-    public boolean updateclientefacv2_TPU(Connection con, Cliente c, int id_documento) {
-        sqlfactura s = new sqlfactura();
-        return s.updateclientedoc_TPU(con, c, id_documento);
-    }
-
+    
     /**
      * Valida si el cargo tiene abonos
-     * 
+     *
      * @param cobranza
      * @param factura
-     * @return 
+     * @return
      */
     @Override
-    public int getAbonosByFactura(Connection cobranza, String factura){
+    public int getAbonosByFactura(Connection cobranza, String factura) {
         sqlfactura fac = new sqlfactura();
         return fac.getAbonosByFactura(cobranza, factura);
     }
 
-
     /**
      * Obtiene la fecha del cargo
-     * 
+     *
      * @param cobranza
      * @param factura
-     * @return 
+     * @return
      */
     @Override
-    public Object getFechaCargo(Connection cobranza, String factura){
+    public Object getFechaCargo(Connection cobranza, String factura) {
         sqlfactura fac = new sqlfactura();
         return fac.getFechaCargo(cobranza, factura);
     }
 
     /**
      * Obtiene el detalle de la factura a cancelar
-     * 
+     *
      * @param cpt
      * @param factura
-     * @return 
+     * @return
      */
     @Override
-    public ArrayList<Dfactura> getDetalleFactura(Connection cpt, String factura){
+    public ArrayList<Dfactura> getDetalleFactura(Connection cpt, String factura) {
         sqlfactura fac = new sqlfactura();
         return fac.getDetalleFactura(cpt, factura);
     }
 
-
     /**
      * Valida si es una factura especial
-     * 
+     *
      * @param cpt
      * @param factura
-     * @return 
+     * @return
      */
     @Override
-    public int getTipoFactura(Connection cpt, int factura){
+    public int getTipoFactura(Connection cpt, int factura) {
         sqlfactura fac = new sqlfactura();
         return fac.getTipoFactura(cpt, factura);
     }
 
     /**
      * Obtiene la orden de pago
-     * 
+     *
      * @param cpt
      * @param folio
-     * @return 
+     * @return
      */
     @Override
-    public ArrayList<String>getOrdenPago(Connection cpt, int folio){
+    public ArrayList<String> getOrdenPago(Connection cpt, int folio) {
         sqlfactura fac = new sqlfactura();
         return fac.getOrdenPago(cpt, folio);
     }
-
 
     /**
      * Cancela una factura especial
@@ -886,7 +484,7 @@ public class daofactura implements Facturas {
      * @param rcpt
      * @param f
      * @param a
-     * @return 
+     * @return
      */
     @Override
     public boolean cancelarFacturaEspecial(Connection cpt, Connection rcpt, factura f, abono a) {
@@ -901,28 +499,46 @@ public class daofactura implements Facturas {
      * @param rcpt
      * @param f
      * @param a
-     * @return 
+     * @param data
+     * @return
      */
     @Override
-    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a) {
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a, ArrayList<Kardex> data) {
         sqlfactura fac = new sqlfactura();
-        return fac.cancelarFacturaNormal(cpt, rcpt, f, a);
+        return fac.cancelarFacturaNormal(cpt, rcpt, f, a, data);
     }
 
-     /**
+    /**
      * Cancela un pago
      *
      * @param cpt
      * @param folio
      * @param referencia
      * @param cliente
-     * @return 
+     * @return
      */
     @Override
-    public boolean cancelarPago(Connection cpt, int folio, String referencia,int cliente){
+    public boolean cancelarPago(Connection cpt, int folio, String referencia, int cliente) {
         sqlfactura fac = new sqlfactura();
         return fac.cancelarPago(cpt, folio, referencia, cliente);
     }
 
+    @Override
+    public boolean cancelarFacturaNormal(Connection cpt, Connection rcpt, factura f, abono a) {
+        sqlfactura fac = new sqlfactura();
+        return fac.cancelarFacturaNormal(cpt, rcpt, f, a);
+    }
 
+    /**
+     * Obtiene la fecha del cargo
+     *
+     * @param cobranza
+     * @param factura
+     * @return
+     */
+    @Override
+    public ArrayList<String> getClienteCargo(Connection cobranza, String factura) {
+        sqlfactura fac = new sqlfactura();
+        return fac.getClienteCargo(cobranza, factura);
+    }
 }

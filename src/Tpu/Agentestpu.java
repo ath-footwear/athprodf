@@ -5,13 +5,11 @@
  */
 package Tpu;
 
-import DAO.daofamilias;
 import Dao.Dao_Agente;
 import Modelo.Agentes;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneltpu.Nuevafamilia;
 import Paneltpu.Nuevoagente;
 import java.sql.Connection;
 import java.util.ArrayList;

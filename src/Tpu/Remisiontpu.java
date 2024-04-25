@@ -134,6 +134,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Pedidos");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
 

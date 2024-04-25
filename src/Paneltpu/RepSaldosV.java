@@ -8,7 +8,6 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneles.fac1;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -18,8 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -253,7 +250,7 @@ public class RepSaldosV extends javax.swing.JDialog {
             ver.setVisible(true);
             regresarventana(ver);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RepSaldosV.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

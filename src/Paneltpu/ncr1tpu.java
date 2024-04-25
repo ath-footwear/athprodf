@@ -5,10 +5,9 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlncr;
 import Modelo.Ciudades;
 import Modelo.Dfactura;
@@ -223,9 +222,9 @@ public class ncr1tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JbXml1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbXml1MousePressed
-        daofactura dfac = new daofactura();
+        daofactura_tpu dfac = new daofactura_tpu();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-        arrfacturaxml = dfac.getdocxml(cpt, id + "", "NCR", empresacob);
+        arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "PAG", empresacob);
 
         factura f = new factura();
         String condicion;
@@ -360,7 +359,7 @@ public class ncr1tpu extends javax.swing.JPanel {
         if (input == 0) {
 //            Obtiene los registros por si las facturas relacionadas tienen algun pago
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             ArrayList<factura> arr = df.getdocvspago(cpt, folio + "");
             String fol = "";
 //            Si obtiene registros manda error
@@ -423,7 +422,7 @@ public class ncr1tpu extends javax.swing.JPanel {
             ver.setTitle("NCR " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ncr1tpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -450,7 +449,7 @@ public class ncr1tpu extends javax.swing.JPanel {
     }
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
         arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR", fd.getbd_tocargo(u.getTurno()));
         generatabla();

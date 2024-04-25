@@ -83,7 +83,6 @@ public class Pantavance extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setResizable(true);
         setTitle("Durezas");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_Meter4_37237.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1280, 720));

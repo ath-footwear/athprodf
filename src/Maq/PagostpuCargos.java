@@ -113,7 +113,7 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
+        setMaximizable(true);
         setTitle("Pagos Cargos especiales");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/labelprint.png"))); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {

@@ -7,10 +7,9 @@ package Paneltpu;
 
 import DAO.daoClientes;
 import DAO.dao_comisiones;
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Cliente;
 import Modelo.Comision;
 import Modelo.ConceptosES;
@@ -534,13 +533,12 @@ public class pagotpurem2 extends javax.swing.JPanel {
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
 //        JtRelacion.setModel(relacion);
         // Cuentas
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
         arrcuentas = d.getalcuentastpu(ACobranza, "50");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
         }
         JcCuenta.setModel(cuentas);
-
     }
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
@@ -667,7 +665,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
 //            int row = JtFolio1.getSelectedIndex();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "RPAG"));//Obtiene y setea el foliomaximo de *documentos
                 if (JcUsd.isSelected()) {
@@ -972,7 +970,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             ver.setTitle("RPAG " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(pagotpurem2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1130,7 +1128,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         int cliente = bp.getCliente();
         //Verifica que el cliente no sea cero o menor a el
         if (cliente != 0) {
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             arrcargo = df.getfactrem(cpt, cliente + "", bdcob);
             if (arrcargo.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");

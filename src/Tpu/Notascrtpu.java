@@ -119,7 +119,7 @@ public class Notascrtpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
+        setMaximizable(true);
         setTitle("Notas de credito");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
 

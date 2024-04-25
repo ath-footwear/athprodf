@@ -83,7 +83,7 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
+        setMaximizable(true);
         setTitle("Cargos especiales");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cutomer.png"))); // NOI18N
 

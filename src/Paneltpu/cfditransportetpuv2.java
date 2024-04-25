@@ -5,11 +5,10 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlTraslado;
 import Modelo.Agentes;
 import Modelo.Cliente;
@@ -319,7 +318,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
             String condicion;
             java.util.Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            daofactura dfac = new daofactura();
+            daofactura_tpu dfac = new daofactura_tpu();
             ArrayList<Dfactura> arrf = new ArrayList<>();
             f.setImpuestos(0);
             f.setFolio(dfac.getmaxfolio(cpt, "TR"));
@@ -392,7 +391,8 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
                 Sellofiscal s = new Sellofiscal();
 //                    int nfolio = dfac.getmaxtraslado(cpt) + 1;
 //                    f.setFolio(nfolio);
-                int id = dfac.nuevafacTraslado(cpt, rcpt, f);
+                int id = 0;
+//                        dfac.nuevafacTraslado(cpt, rcpt, f);
                 if (id != 0) {
 //                    System.out.println("Exito traslado");
                     daoxmlTraslado dx = new daoxmlTraslado();
@@ -400,7 +400,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
                     dx.generarfac(f, cpt, sqlempresa);
                     timbrarXML tim = new timbrarXML();
                     s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                    dfac.Updatesellofiscal(cpt, s, id);
+                    //dfac.Updatesellofiscal(cpt, s, id);
                     setreport(f.getFolio(), f.getRegimen(), "XXX", "TR");
                     JOptionPane.showMessageDialog(null, "Proceso de facturacion y traslado terminado: \n " + s.getEstado());
                     vaciarcampos();
@@ -452,7 +452,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(cfditransportetpuv2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -507,7 +507,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
 
     private void JlFacturasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlFacturasMousePressed
         int row = JlFacturas.getSelectedIndex();
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         
         int ind[] = JlFacturas.getSelectedIndices();
         String folios = "";
@@ -528,7 +528,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
         }
         
 //        arrd = df.getfactwithseriedetallado(rcpt, arrfactura.get(row).getReferencia(), arrfactura.get(row).getYear());
-        arrd = df.getfactwithseriedetallado(rcpt,  folios, arrfactura.get(row).getYear());
+//        arrd = df.getfactwithseriedetallado(rcpt,  folios, arrfactura.get(row).getYear());
         if (!arrd.isEmpty()) {
             generatabla();
         }
@@ -537,8 +537,8 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JlFacturasMousePressed
     
     private void llenalista(String serie) {
-        daofactura df = new daofactura();
-        arrfactura = df.getfactwithserie(rcpt, empresacob, serie);
+        daofactura_tpu df = new daofactura_tpu();
+//        arrfactura = df.getfactwithserie(rcpt, empresacob, serie);
         DefaultListModel<String> models = new DefaultListModel<>();
         for (factura arrs : arrfactura) {
             models.addElement(arrs.getReferencia() + " - " + arrs.getNombrecliente());

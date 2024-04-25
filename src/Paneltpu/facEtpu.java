@@ -5,12 +5,10 @@
  */
 package Paneltpu;
 
-import Paneles.*;
-import DAO.daoAgentes;
 import DAO.daoCargos;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmltpu;
 import Dao.Dao_Agente;
 import Dao.Dao_Catalogo;
@@ -762,7 +760,7 @@ public class facEtpu extends javax.swing.JPanel {
                 String condicion;
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 Formateodedatos fd = new Formateodedatos();
                 if (JcPublico.isSelected()) {//Setear impuestos
@@ -1035,7 +1033,7 @@ public class facEtpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(facEtpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1057,7 +1055,7 @@ public class facEtpu extends javax.swing.JPanel {
         int row = JcCliente.getSelectedIndex();
         Formateodedatos fd = new Formateodedatos();
         FactsReltpu f = new FactsReltpu(null, true);
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         //Busca las facturas disponibles con el cliente y turno
         arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
         f.arrcargo = arrcargo;

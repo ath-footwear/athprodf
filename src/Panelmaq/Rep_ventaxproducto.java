@@ -9,7 +9,6 @@ import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Paneles.fac1;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,7 +233,7 @@ public class Rep_ventaxproducto extends javax.swing.JDialog {
             ver.setTitle("Ventas x producto");
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Rep_ventaxproducto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

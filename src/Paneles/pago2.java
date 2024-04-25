@@ -220,49 +220,79 @@ public class pago2 extends javax.swing.JPanel {
             Formateo_Nempresas fd = new Formateo_Nempresas();
 
             if (opcion == JOptionPane.YES_OPTION) {
-                daofactura fac = new daofactura();
-                int folio = arrfacturas.get(JtDetalle.getSelectedRow()).getFolio();
-                String orden, cliente, folioFiscal;
 
-                ArrayList<String> lista = fac.getOrdenPago(cpt, folio);
-                orden = lista.get(0);
-                cliente = lista.get(1);
-                folioFiscal = lista.get(2);
+                Object[] opciones = {"Cancelar solo en Sat", "Cancelar en Sistema y Sat"};
 
-                if (!orden.equals("") && !orden.equals("NULL") && !cliente.equals("")) {
-                    if (!folioFiscal.equals("NULL")) {
+                int opcionElegida = JOptionPane.showOptionDialog(this, "¿Quieres continuar con?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-                        String n = fd.getEmpresa(u.getTurno(), empresa);
-                        timbrarXML t = new timbrarXML();
-                        t.cancelarfolio(sqlempresa, n, folioFiscal);
+                if (opcionElegida != JOptionPane.CLOSED_OPTION) {
+                    daofactura fac = new daofactura();
+                    int folio = arrfacturas.get(JtDetalle.getSelectedRow()).getFolio();
+                    String orden, cliente, folioFiscal;
+                    ArrayList<String> lista = fac.getOrdenPago(cpt, folio);
+                    orden = lista.get(0);
+                    cliente = lista.get(1);
+                    folioFiscal = lista.get(2);
+                    String opcionSeleccionada = (String) opciones[opcionElegida];
+                    String n = fd.getEmpresa(u.getTurno(), empresa);
+                    timbrarXML t = new timbrarXML();
 
-                        String status = t.status();
+                    //Verifica que los datos de la orden esten correctos y existan
+                    if (orden!=null && !orden.equals("") && !cliente.equals("")) {
 
-                        if (status.equals("200")) {
-                            if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
-                                JOptionPane.showMessageDialog(null, t.response());
-                                JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
-                                generatabla();
+                        //Hace la cancelacion solo en el sat siempre y cuando el complemento este timbrado
+                        if (opcionSeleccionada.equals("Cancelar solo en Sat")) {
+                            if (folioFiscal!=null && !folioFiscal.equals("")) {
+                                t.cancelarfolio(sqlempresa, n, folioFiscal);
+                                String status = t.status();
+
+                                if (status.equals("200")) {
+                                    JOptionPane.showMessageDialog(null, t.response());
+                                    JOptionPane.showMessageDialog(null, "Proceso terminado", "", JOptionPane.INFORMATION_MESSAGE);
+                                    generatabla();
+                                } else {
+                                    generatabla();
+                                }
                             } else {
-                                JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
-                                generatabla();
+                                JOptionPane.showMessageDialog(null, "Esta orden no se encuentra timbrada verifica!", "", JOptionPane.INFORMATION_MESSAGE);
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
-                            generatabla();
+                        } //Hace la cancelacion en el sistema y en el sat
+                        else if (opcionSeleccionada.equals("Cancelar en Sistema y Sat")) {
+                             if (folioFiscal!=null && !folioFiscal.equals("")) {
+                                t.cancelarfolio(sqlempresa, n, folioFiscal);
+                                String status = t.status();
+
+                                if (status.equals("200")) {
+                                    if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
+                                        JOptionPane.showMessageDialog(null, t.response());
+                                        JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
+                                        generatabla();
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
+                                        generatabla();
+                                    }
+                                } else {
+                                    generatabla();
+                                }
+                            } //Si el complemento no esta timbrado pregunta si desea continuar solo con sistema
+                            else {
+                                int opcion2 = JOptionPane.showConfirmDialog(this, "¿Esta orden no esta timbrada desea continuar solo en sistema?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                                if (opcion2 == JOptionPane.YES_OPTION) {
+                                    if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
+                                        JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
+                                        generatabla();
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
+                                        generatabla();
+                                    }
+                                }
+                            }
                         }
                     } else {
-                        if (fac.cancelarPago(cpt, folio, orden, Integer.parseInt(cliente))) {
-                            JOptionPane.showMessageDialog(null, "Pago eliminado", "", JOptionPane.INFORMATION_MESSAGE);
-                            generatabla();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Ocurrio un error", "", JOptionPane.ERROR);
-                            generatabla();
-                        }
+                        JOptionPane.showMessageDialog(null, "Algun dato de la orden no se encuentra", "Mensaje de sistema", JOptionPane.INFORMATION_MESSAGE);
+                        generatabla();
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Algun dato de la orden no se encuentra", "Mensaje de sistema", JOptionPane.INFORMATION_MESSAGE);
-                    generatabla();
                 }
             }
         } else if (validar == 0) {
@@ -383,6 +413,7 @@ public class pago2 extends javax.swing.JPanel {
             parametros.put("totalletra", "");
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
+            System.out.println(e.getRfc());
             parametros.put("regimen", e.getRegimen());
             parametros.put("lugar", e.getCp());
             parametros.put("comprobante", e.getNumcertificado());

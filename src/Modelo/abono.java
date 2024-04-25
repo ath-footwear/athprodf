@@ -5,12 +5,15 @@
  */
 package Modelo;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author GATEWAY1-
  */
 public class abono {
     private String ref, referencia,ordenpago, nombre, folio,fechapago, Referenciac;
+    Timestamp fechac;
     private Object Fechap, Fechac;
     private int cliente, cuenta, subcuenta, parcialidad, id_cargo, id_abono, id_docto;
     private double total,totalpago, pago, saldo, anterior;

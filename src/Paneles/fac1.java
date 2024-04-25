@@ -21,6 +21,7 @@ import Modelo.Empresas;
 import Modelo.Formadepago;
 import Modelo.Formateo_Nempresas;
 import Modelo.Kardex;
+import Modelo.Kardexrcpt;
 import Modelo.NAddenda;
 import Modelo.Sellofiscal;
 import Modelo.Setaddenda;
@@ -38,6 +39,7 @@ import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,7 +97,7 @@ public class fac1 extends javax.swing.JPanel {
         initComponents();
         JtCliente.requestFocus();
         JbXml.setEnabled(false);
-        JbCancelar.setEnabled(false);
+        //JbCancelar.setEnabled(false);
         JbAddenda.setEnabled(false);
         JmNombre.setVisible(false);
     }
@@ -273,7 +275,7 @@ public class fac1 extends javax.swing.JPanel {
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1174, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -441,6 +443,14 @@ public class fac1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
+        try {
+            cancelarFactura();
+        } catch (ParseException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JbCancelarActionPerformed
+
+    private void cancelarFactura() throws ParseException {
         if (!arrfactura.isEmpty()) {
             Formateo_Nempresas fd = new Formateo_Nempresas();
             String botones[] = {"Aceptar", ""
@@ -453,24 +463,23 @@ public class fac1 extends javax.swing.JPanel {
                 int row = JtDetalle.getSelectedRow();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
                 factura fac = new factura();
+                abono ab = new abono();
                 daofactura df = new daofactura();
 //                Asigna valores de folio y fecha de cancelacion
                 fac.setFolio(arrfactura.get(row).getFolio());
                 fac.setFechacancel(sdf.format(date));
 
-                java.util.Date dateFecha = new java.util.Date();
-                Timestamp fechapago = new Timestamp(dateFecha.getTime());
-                abono ab = new abono();
-                ab.setFechap(fechapago);
-                ab.setReferencia(String.valueOf(fac.getFolio()) + " BX");
+                ArrayList<String> clienteCargo = df.getClienteCargo(ACobranza, String.valueOf(fac.getFolio() + " O"));
+                ab.setReferencia("OP " + String.valueOf(fac.getFolio()));
                 ab.setTotalpago(arrfactura.get(row).getTotal());
                 ab.setPago(arrfactura.get(row).getTotal());
                 ab.setReferenciac(String.valueOf(fac.getFolio() + " O"));
-                ab.setCliente(arrfactura.get(row).getCvecliente());
-                ab.setFechac(df.getFechaCargo(ACobranza, String.valueOf(fac.getFolio() + " O")));
-//                MOvimientos en la bd para cancelacion de la factura
-                df.cancelafac(cpt, rcpt, ACobranza, fac);
+                ab.setCliente(Integer.parseInt(clienteCargo.get(1)));
+                Date parsedDate = dateFormat.parse(clienteCargo.get(0));
+                Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                ab.setFechac(timestamp);
                 String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
 
                 //Validaciones notas de credito y pagos, si es especial o normal
@@ -489,44 +498,102 @@ public class fac1 extends javax.swing.JPanel {
                         String status = t.status();
 
                         if (status.equals("200")) {
+
+                            JOptionPane.showMessageDialog(null, t.response());
+
                             if (tipo == 0) {
                                 //Especial
-                                df.cancelarFacturaEspecial(cpt, rcpt, fac, ab);
-                                JOptionPane.showMessageDialog(null, t.response());
+                                if (df.cancelarFacturaEspecial(cpt, rcpt, fac, ab)) {
+                                    JOptionPane.showMessageDialog(null, "Proceso terminado");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                                }
                             } else {
                                 //Normal
-                                df.cancelarFacturaNormal(cpt, rcpt, fac, ab);
-                                //InsertarKardex
-                                actualizarDatosCancelacion(fac.getFolio());
+                                if (df.cancelarFacturaEspecial(cpt, rcpt, fac, ab)) {
+                                    JOptionPane.showMessageDialog(null, "Proceso terminado");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                                }
                             }
                         }
                     } else {
 
                         if (tipo == 0) {
                             //Especial
-                            df.cancelarFacturaEspecial(cpt, rcpt, fac, ab);
-                            JOptionPane.showMessageDialog(null, "Proceso terminado");
+                            if (df.cancelarFacturaEspecial(cpt, rcpt, fac, ab)) {
+                                JOptionPane.showMessageDialog(null, "Proceso terminado");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                            }
                         } else {
                             //Normal
-                            df.cancelarFacturaNormal(cpt, rcpt, fac, ab);
-                            //InsertarKardex
-                            actualizarDatosCancelacion(fac.getFolio());
+                            if (df.cancelarFacturaNormal(cpt, rcpt, fac, ab, getKardex(fac.getFolio()))) {
+                                JOptionPane.showMessageDialog(null, "Proceso terminado");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                            }
                         }
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Esta factura tiene movimientos");
                 }
-//                Aplica solo si esta timbrada sino solo se da de baja en la bd
-                if (tim.equals("T")) {
-                    String n = fd.getEmpresa(u.getTurno(), empresa);
-                    timbrarXML t = new timbrarXML();
-                    resp = t.cancelarfolio("FAC_" + arrfactura.get(row).getFolio(), sqlempresa, n, arrfactura.get(row).getFoliofiscal());
-                }
                 Buscanotas();
-                JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + resp);
             }
         }
-    }//GEN-LAST:event_JbCancelarActionPerformed
+    }
+
+    private ArrayList<Kardex> getKardex(int folio) {
+
+        daofactura df = new daofactura();
+        daokardexrcpt dk = new daokardexrcpt();
+
+        ArrayList<Dfactura> list = df.getDetalleFactura(cpt, String.valueOf(folio));
+        ArrayList<Kardex> dtKardex = new ArrayList<>();
+        int folioc = dk.getFolioCancelacion(cpt);
+
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Dfactura model = list.get(i);
+                Kardex kardex = new Kardex();
+                kardex.setAlmacen(model.getAlmacen());
+                kardex.setProducto(model.getProducto());
+                kardex.setFolio(folioc);
+                kardex.setRengon(model.getRenglon());
+                kardex.setDocumentoRef("");
+                kardex.setCl_prv(9999);
+                kardex.setCuenta("20");
+                kardex.setSubCuenta("01");
+                kardex.setTotalpares(model.getCantidad());
+                kardex.setPcosto(model.getCosto());
+                kardex.setPventa(model.getPrecio());
+                double importe = model.getCosto() * model.getCantidad();
+                kardex.setImporte_costo(importe);
+                kardex.setC1(model.getC1());
+                kardex.setC2(model.getC2());
+                kardex.setC3(model.getC3());
+                kardex.setC4(model.getC4());
+                kardex.setC5(model.getC5());
+                kardex.setC6(model.getC6());
+                kardex.setC7(model.getC7());
+                kardex.setC8(model.getC8());
+                kardex.setC9(model.getC9());
+                kardex.setC10(model.getC10());
+                kardex.setC11(model.getC11());
+                kardex.setC12(model.getC12());
+                kardex.setC13(model.getC13());
+                kardex.setC14(model.getC14());
+                kardex.setStock_pedidos(model.getStock());
+                kardex.setPedido(model.getPedido());
+                kardex.setRenglon_p(model.getRenglon());
+                kardex.setFactura(model.getFactura());
+                kardex.setSerie(model.getSerie());
+                kardex.setUsuario("Michel");
+                dtKardex.add(kardex);
+            }
+        }
+        return dtKardex;
+    }
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 
@@ -812,64 +879,15 @@ public class fac1 extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    /**
-     *
-     * @param folio
-     */
-    private void actualizarDatosCancelacion(int folio) {
-        daofactura df = new daofactura();
-        daokardexrcpt dk = new daokardexrcpt();
-        java.util.Date dateFecha = new java.util.Date();
-        Timestamp fecha = new Timestamp(dateFecha.getTime());
-        ArrayList<Dfactura> list = df.getDetalleFactura(cpt, String.valueOf(folio));
-        ArrayList<Kardex> dtKardex = new ArrayList<>();
-        int folioc = dk.getFolioCancelacion(cpt);
-
-        if (list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                Dfactura model = list.get(i);
-                Kardex kardex = new Kardex();
-                kardex.setAlmacen(model.getAlmacen());
-                kardex.setProducto(model.getProducto());
-                kardex.setFolio(folioc);
-                kardex.setFmovimiento(fecha);
-                kardex.setRengon(model.getRenglon());
-                kardex.setDocumentoRef("");
-                kardex.setCl_prv(9999);
-                kardex.setCuenta("20");
-                kardex.setSubCuenta("01");
-                kardex.setTotalpares(model.getCantidad());
-                kardex.setPcosto(model.getCosto());
-                kardex.setPventa(model.getPrecio());
-                double importe = model.getCosto() * model.getCantidad();
-                kardex.setImporte_costo(importe);
-                kardex.setC1(model.getC1());
-                kardex.setC2(model.getC2());
-                kardex.setC3(model.getC3());
-                kardex.setC4(model.getC4());
-                kardex.setC5(model.getC5());
-                kardex.setC6(model.getC6());
-                kardex.setC7(model.getC7());
-                kardex.setC8(model.getC8());
-                kardex.setC9(model.getC9());
-                kardex.setC10(model.getC10());
-                kardex.setC11(model.getC11());
-                kardex.setC12(model.getC12());
-                kardex.setC13(model.getC13());
-                kardex.setC14(model.getC14());
-                kardex.setStock_pedidos(model.getStock());
-                kardex.setPedido(model.getPedido());
-                kardex.setRenglon_p(model.getRenglon());
-                kardex.setFactura(model.getFactura());
-                kardex.setSerie(model.getSerie());
-                kardex.setUsuario("Michel");
-                kardex.setRegistro(fecha);
-                dtKardex.add(kardex);
-            }
-            if (dk.insertarKardexCancelacionAbono(cpt, dtKardex)) {
-                JOptionPane.showMessageDialog(null, "Proceso terminado");
-            }
+    private boolean verificaint(String cad) {
+        boolean resp = false;
+        String patt = "[0-9]+";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
         }
+        return resp;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

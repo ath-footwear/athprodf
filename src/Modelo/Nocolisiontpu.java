@@ -5,7 +5,7 @@
  */
 package Modelo;
 
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.util.Random;
@@ -49,7 +49,7 @@ public class Nocolisiontpu extends Thread {
                 int na = r1.nextInt(200);
                 System.out.println(na + " --- " + n);
                 sleep((1000 + na) * n);//1000 x 1200(segundos)
-                daofactura d = new daofactura();
+                daofactura_tpu d = new daofactura_tpu();
                 if (d.getbuscafoliotpu(rcpt, serie, folio + "") == 0) {
                     foliofinal = folio;
 //                    JOptionPane.showMessageDialog(null, "Folio asignado!");

@@ -330,7 +330,7 @@ public class Formateodedatos {
      */
     public boolean verificaStringsSC(String cad) {
         boolean resp = false;
-        String patt = "[\\s\\w@#.,ñ-]*";
+        String patt = "[\\s\\w@#.,ñÑ-]*";
         Pattern pat = Pattern.compile(patt);
         Matcher match = pat.matcher(cad);
         if (match.matches()) {

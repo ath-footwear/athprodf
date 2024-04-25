@@ -5,11 +5,10 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlTraslado;
 import Modelo.Agentes;
 import Modelo.Cliente;
@@ -273,10 +272,10 @@ public class cfditransportetpu extends javax.swing.JPanel {
 //        seleccionfolio();
     }//GEN-LAST:event_JtFolio1ActionPerformed
 
-    private void setcobb(){
+    private void setcobb() {
         try {
             Serverprod s = new Serverprod();
-            CobranzaB=s.getconexionB("RACobranza");
+            CobranzaB = s.getconexionB("RACobranza");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(cfditransportetpu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -285,7 +284,7 @@ public class cfditransportetpu extends javax.swing.JPanel {
             Logger.getLogger(cfditransportetpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         boolean a1 = checkclaveprod();
         boolean a2 = checkunidad();
@@ -293,12 +292,12 @@ public class cfditransportetpu extends javax.swing.JPanel {
         if (!a1 || !a2) {
             JOptionPane.showMessageDialog(null, "Error: Verifica que las claves de prod o Unidad. esten bien");
         } else {
-            Formateo_Nempresas fn= new Formateo_Nempresas();
+            Formateo_Nempresas fn = new Formateo_Nempresas();
             factura f = new factura();
             String condicion;
             java.util.Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            daofactura dfac = new daofactura();
+            daofactura_tpu dfac = new daofactura_tpu();
             ArrayList<Dfactura> arrf = new ArrayList<>();
             f.setImpuestos(0);
             f.setFolio(dfac.getmaxfolio(cpt, "TR"));
@@ -371,7 +370,8 @@ public class cfditransportetpu extends javax.swing.JPanel {
                 Sellofiscal s = new Sellofiscal();
 //                    int nfolio = dfac.getmaxtraslado(cpt) + 1;
 //                    f.setFolio(nfolio);
-                int id = dfac.nuevafacTraslado(cpt, rcpt, f);
+                int id = 0;
+                //dfac.nuevafacTraslado(cpt, rcpt, f);
                 if (id != 0) {
 //                    System.out.println("Exito traslado");
                     daoxmlTraslado dx = new daoxmlTraslado();
@@ -379,7 +379,7 @@ public class cfditransportetpu extends javax.swing.JPanel {
                     dx.generarfac(f, cpt, sqlempresa);
                     timbrarXML tim = new timbrarXML();
                     s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                    dfac.Updatesellofiscal(cpt, s, id);
+                    //dfac.Updatesellofiscal(cpt, s, id);
                     setreport(f.getFolio(), f.getRegimen(), "XXX", "TR");
                     JOptionPane.showMessageDialog(null, "Proceso de facturacion y traslado terminado: \n " + s.getEstado());
                     vaciarcampos();
@@ -389,7 +389,7 @@ public class cfditransportetpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setreport(int folio, String regimen, String moneda, String serie) {
-        Formateo_Nempresas fn= new Formateo_Nempresas();
+        Formateo_Nempresas fn = new Formateo_Nempresas();
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
@@ -428,7 +428,7 @@ public class cfditransportetpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(cfditransportetpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

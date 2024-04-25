@@ -173,7 +173,7 @@ public class Pedimento1 extends javax.swing.JPanel {
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
         String p = arr.get(JtDetalle.getSelectedRow()).getReferencia();
-        if (p.equals("0") || u.getTurno().equals("7") || u.getTurno().equals("6")) {
+        if (p.equals("0") || p.equals("1") || u.getTurno().equals("7") || u.getTurno().equals("6")) {
             JmAddmaterial.setVisible(true);
         } else {
             JmAddmaterial.setVisible(false);
@@ -181,7 +181,7 @@ public class Pedimento1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JmImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmImprimirActionPerformed
-        try { 
+        try {
             Map parametros = new HashMap();
             int ped = arr.get(JtDetalle.getSelectedRow()).getId_pedimento();
 //            System.out.println(ped);
@@ -199,13 +199,13 @@ public class Pedimento1 extends javax.swing.JPanel {
 
     private void JmAddmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddmaterialActionPerformed
         int row = JtDetalle.getSelectedRow();
-        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1") 
+        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1")
                 || u.getTurno().equals("7") || u.getTurno().equals("6")) {
             NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
             daomateriales am = new daomateriales();
             daoalmacenes da = new daoalmacenes();
             daodurezas dd = new daodurezas();
-            n.u=u;
+            n.u = u;
             n.cpt = c.getCpttpu();
             n.ped = arr.get(row);
             n.arrmat = am.getmateriales(c.getCpttpu(), "", u.getTurno());
@@ -213,8 +213,9 @@ public class Pedimento1 extends javax.swing.JPanel {
             n.arrdur = dd.getdurezas(c.getCpttpu());
             n.setcombos();
             n.setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(null, "No se pueden agregar materiales extra a un pedimento que no sea el cero");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No se pueden agregar materiales extra a un pedimento que no sea el cero o uno");
         }
     }//GEN-LAST:event_JmAddmaterialActionPerformed
 

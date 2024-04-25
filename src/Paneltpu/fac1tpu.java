@@ -12,7 +12,7 @@ import DAO.daoConceptos;
 import DAO.daoDevolucion;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
 import DAO.daoxmltpu;
 import Modelo.Addenda;
@@ -33,7 +33,6 @@ import Modelo.convertirNumeros;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
-import Server.Serverprod;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,8 +45,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -285,7 +282,7 @@ public class fac1tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JbXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbXmlActionPerformed
-        daofactura dfac = new daofactura();
+        daofactura_tpu dfac = new daofactura_tpu();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
         Formateodedatos fd = new Formateodedatos();
         arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "FAC", fd.getbd_tocargo(u.getTurno()));
@@ -559,7 +556,7 @@ public class fac1tpu extends javax.swing.JPanel {
      */
     private boolean getdoccancel(int id, String serie) {
         boolean resp = true;
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
         //Necesario, ya que por si hay mas de un turno, manejar distintas bd de acuerdo a ese parametro
         ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie, fd.getbd_tocargo(u.getTurno()));
@@ -585,7 +582,7 @@ public class fac1tpu extends javax.swing.JPanel {
      */
     private boolean getdoccancel_Especial(int id, String serie) {
         boolean resp = true;
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
         //Necesario, ya que por si hay mas de un turno, manejar distintas bd de acuerdo a ese parametro
         ArrayList<factura> arrf = df.searchPagncrtofac_Especial(cpt, id, serie, fd.getbd_tocargo(u.getTurno()));
@@ -713,7 +710,7 @@ public class fac1tpu extends javax.swing.JPanel {
 
 //    Busca las facturas que encuentre
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         Formateodedatos fd = new Formateodedatos();
         arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC", fd.getbd_tocargo(u.getTurno()));
         generatabla();
@@ -839,7 +836,7 @@ public class fac1tpu extends javax.swing.JPanel {
         boolean ncr = getdoccancel_Especial(arrfactura.get(row).getId(), "NCR");
         boolean pag = getdoccancel_Especial(arrfactura.get(row).getId(), "PAG");
         if (!ncr && !pag) {
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             if (df.Cancelafactura_Especial(cpt, ACobranza, arrfactura.get(row))) {
                 respcancela(arrfactura.get(row));
             }
@@ -852,7 +849,7 @@ public class fac1tpu extends javax.swing.JPanel {
      */
     private void setmod() {
         int row = JtDetalle.getSelectedRow();
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         daoClientes dc = new daoClientes();
         Cliente c = dc.getClientetpu(ACobranza, arrfactura.get(row).getIdcliente());
         if (df.updateclientefacv2_TPU(cpt, c, arrfactura.get(row).getId())) {

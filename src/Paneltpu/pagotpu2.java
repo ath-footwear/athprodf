@@ -7,10 +7,9 @@ package Paneltpu;
 
 import DAO.daoClientes;
 import DAO.dao_comisiones;
-import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daoxmlpagostpu;
 import Modelo.Cliente;
 import Modelo.Comision;
@@ -35,7 +34,6 @@ import Server.Serverylite;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -646,7 +644,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         JcUso.setModel(uso);
 //        JtRelacion.setModel(relacion);
         // Cuentas
-        daofactura d = new daofactura();
+        daofactura_tpu d = new daofactura_tpu();
         arrcuentas = d.getalcuentastpu(ACobranza, "50");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
@@ -762,7 +760,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         int cliente = bp.getCliente();
         //Verifica que el cliente no sea cero o menor a el
         if (cliente != 0) {
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             arrcargo = df.getfactopagotpu(cpt, cliente + "", fd.getbd_tocargo(u.getTurno()));
             if (arrcargo.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
@@ -847,7 +845,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //            int row = JtFolio1.getSelectedIndex();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "PAG"));//Obtiene y setea el foliomaximo de *documentos
 //                n.setConnecxiones(rcpt, f.getFolio());
@@ -977,7 +975,6 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setArr(arrdet);
                 f.setArrpagos(arrdetpago);
                 //f.setArrpagos17(arrdetpago17);
-
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setFoliofiscalorig(folios);
@@ -1021,11 +1018,8 @@ public class pagotpu2 extends javax.swing.JPanel {
                             }
                         }
                     }
-
                 }
-
             }
-
         }
     }
 
@@ -1182,7 +1176,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(pagotpu2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

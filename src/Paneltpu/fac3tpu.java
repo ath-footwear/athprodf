@@ -5,12 +5,11 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daoAgentes;
 import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import DAO.daoxmlE;
@@ -793,7 +792,7 @@ public class fac3tpu extends javax.swing.JPanel {
                 String condicion;
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura dfac = new daofactura();
+                daofactura_tpu dfac = new daofactura_tpu();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 Formateo_Nempresas fn= new Formateo_Nempresas();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
@@ -1135,7 +1134,7 @@ public class fac3tpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac3tpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1161,7 +1160,7 @@ public class fac3tpu extends javax.swing.JPanel {
 
         } else {
             FactsReltpu f = new FactsReltpu(null, true);
-            daofactura df = new daofactura();
+            daofactura_tpu df = new daofactura_tpu();
             arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", empresacob);
             f.arrcargo = arrcargo;
             f.setVisible(true);

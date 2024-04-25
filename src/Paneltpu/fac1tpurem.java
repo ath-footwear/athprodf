@@ -9,9 +9,8 @@ import DAO.daoAbonos;
 import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
-import Paneles.*;
 import DAO.daocfdi;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
 import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
@@ -496,7 +495,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac1tpurem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -531,13 +530,13 @@ public class fac1tpurem extends javax.swing.JPanel {
             ver.setTitle("Pedido cliente " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac1tpurem.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
     }
 
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         arrfactura = df.getpedidos(cpt, JtCliente.getText(), serie);
         generatabla();
     }

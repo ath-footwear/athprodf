@@ -95,6 +95,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Clientes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensauser.png"))); // NOI18N
 

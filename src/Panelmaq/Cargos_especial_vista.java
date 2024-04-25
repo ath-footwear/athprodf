@@ -7,7 +7,7 @@ package Panelmaq;
 
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
+import DAO.daofactura_tpu;
 import Modelo.Empresas;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
@@ -198,7 +198,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
      * @return boolean
      */
     private boolean checkcargos(int row) {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         return df.checkcargoespecial_tocancel(ACobranza, arrfactura.get(row).getId_cargo());
     }
 
@@ -208,7 +208,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
      * @param row
      */
     private void cancelacargo(int row) {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         if (df.Cancela_cargoespecial(ACobranza, arrfactura.get(row).getId_cargo())) {
             JOptionPane.showMessageDialog(null, "Cargo cancelado con exito");
             Buscanotas();
@@ -219,7 +219,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
 
 //    Busca las facturas que encuentre
     private void Buscanotas() {
-        daofactura df = new daofactura();
+        daofactura_tpu df = new daofactura_tpu();
         arrfactura = df.getcargosespecial(ACobranza, JtCliente.getText());
         generatabla();
     }

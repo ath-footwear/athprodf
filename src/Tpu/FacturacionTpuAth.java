@@ -132,7 +132,7 @@ public class FacturacionTpuAth extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setResizable(true);
+        setMaximizable(true);
         setTitle("Facturacion TPU Athletic");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirP0.png"))); // NOI18N
 
