@@ -1301,8 +1301,9 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         if (k1.get(row).getReferencia().equals("1")) {
             JOptionPane.showMessageDialog(null,
-                    "Estas usando el pedimento nacional, recuerdo que saldra "
-                    + "sin la leyenda del pedimento");
+                    "Estas usando el pedimento nacional, recuerda que saldrá "
+                    + "sin la leyenda del pedimento", "",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
         seleccionfolio(folios);
     }//GEN-LAST:event_JlCliente1MousePressed

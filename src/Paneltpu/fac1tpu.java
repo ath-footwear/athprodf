@@ -9,6 +9,7 @@ import Paneles.*;
 import DAO.daoAddenda;
 import DAO.daoClientes;
 import DAO.daoConceptos;
+import DAO.daoControlinventarios;
 import DAO.daoDevolucion;
 import DAO.daocfdi;
 import DAO.daoempresa;
@@ -18,6 +19,7 @@ import DAO.daoxmltpu;
 import Modelo.Addenda;
 import Modelo.Cliente;
 import Modelo.ConceptosES;
+import Modelo.Controlinventario;
 import Modelo.Corridaaddenda;
 import Modelo.Ddevolucion;
 import Modelo.Destinoscoppel;
@@ -529,10 +531,16 @@ public class fac1tpu extends javax.swing.JPanel {
                 0, 0, null, botones, this);
         if (opcion == JOptionPane.YES_OPTION) {
             int row = JtDetalle.getSelectedRow();
-            if (arrfactura.get(row).getTipofac().equals("N")) {
-                ejecutacancelacionnormal();
+            if (check_diaspasados(arrfactura.get(row))) {
+                if (arrfactura.get(row).getTipofac().equals("N")) {
+                    ejecutacancelacionnormal();
+                } else {
+                    ejecutacancelacionespecial();
+                }
             } else {
-                ejecutacancelacionespecial();
+                JOptionPane.showMessageDialog(null,
+                        "No puedes cancelar una factura fuera del mes, llama a sistemas",
+                        "Error al cancelar", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_JmPedfacActionPerformed
@@ -859,6 +867,28 @@ public class fac1tpu extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
         }
+    }
+
+    /**
+     * Verifica que este dentro del mes, sino no activa la opcion de cancelacion
+     *
+     * @param f
+     * @return
+     */
+    private boolean check_diaspasados(factura f) {
+        boolean flag = false;
+        daoControlinventarios dc = new daoControlinventarios();
+        Controlinventario ci = dc.getarrinv(cpt);
+        int mes = ci.getMes() - f.getMes();
+        int year = ci.getYears() - f.getYear();
+        //la primer condicional es solo para el mismo año y dentro del mismo mes o inventario
+        //La segunda solo si cambia de año y es diciembre con enero, ya que si no
+        //los calculos estarian erroneos
+        if ((-1 >= mes && mes <= 0)
+                || (year != 0 && (ci.getMes() == 12 && f.getMes() == 1))) {
+            flag = true;
+        }
+        return flag;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbAddenda;

@@ -8,7 +8,6 @@ package DAO;
 import Modelo.Controlinventario;
 import Persistencia.sqlcontrolinventarios;
 import java.sql.Connection;
-import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +15,11 @@ import java.util.ArrayList;
  */
 public class daoControlinventarios implements ControlInventarios{
 
+    /**
+     * Obtiene el inventario actual refiriendose al mes y año
+     * @param c
+     * @return 
+     */
     @Override
     public Controlinventario getarrinv(Connection c) {
         sqlcontrolinventarios s = new sqlcontrolinventarios();

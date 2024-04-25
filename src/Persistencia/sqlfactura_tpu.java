@@ -296,10 +296,12 @@ public class sqlfactura_tpu {
             ResultSet rs;
             String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,"
                     + "formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,"
-                    + "cadenaoriginal,descmetodopago,c.id_cliente,tipodoc\n"
+                    + "cadenaoriginal,descmetodopago,c.id_cliente,tipodoc, "
+                    + "month(fecha) as mes, year(fecha) as year\n"
                     + "from documento d\n"
                     + "join " + bd + ".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
-                    + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' order by id_documento desc";
+                    + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' "
+                    + "order by id_documento desc";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
@@ -323,6 +325,8 @@ public class sqlfactura_tpu {
                 f.setDescmetodop(rs.getString("descmetodopago"));
                 f.setIdcliente(rs.getInt("id_cliente"));
                 f.setTipofac(rs.getString("tipodoc"));
+                f.setYear(rs.getInt("year"));
+                f.setMes(rs.getInt("mes"));
                 arr.add(f);
             }
             rs.close();
