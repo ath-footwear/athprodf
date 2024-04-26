@@ -620,21 +620,25 @@ public class Formateodedatos {
 
     /**
      * Obtiene el nombre integro de la bd con respecto al turno, solo de CPT
+     * Tambien utilizado por si en B es necesario usar el 6.8 para consulta de
+     * datos
      *
      * @param turno
+     * @param serie
      * @return
      */
-    public String getbdto_respinv_orig(String turno) {
+    public String getbdto_respinv_orig(String turno, String serie) {
         String resp = "";
+        String svr="[192.168.6.8\\Datos65]";
         switch (turno) {
             case "5":
-                resp = "Tpucpt";
+                resp = (serie.equals("A")) ? "Tpucpt" : svr+".Tpucpt";
                 break;
             case "6":
-                resp = "Maqcpt";
+                resp = (serie.equals("A")) ? "Maqcpt" : svr+".Maqcpt";
                 break;
             case "7":
-                resp = "CPTMaquinaria2";
+                resp = (serie.equals("A")) ? "CPTMaquinaria2" : svr+".CPTMaquinaria2";
                 break;
         }
         return resp;

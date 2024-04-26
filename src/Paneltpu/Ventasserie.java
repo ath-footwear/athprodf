@@ -8,6 +8,8 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -33,7 +35,7 @@ public class Ventasserie extends javax.swing.JDialog {
 
     public Conexiones u;
     public Connection litecfdi;
-    String serie="A";
+    String serie = "A";
     private Usuarios user;
 
     /**
@@ -47,10 +49,10 @@ public class Ventasserie extends javax.swing.JDialog {
 
     }
 
-    public void setconexiones(Usuarios user){
-        this.user=user;
+    public void setconexiones(Usuarios user) {
+        this.user = user;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -218,7 +220,7 @@ public class Ventasserie extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombreMousePressed
 
     private void JtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombreActionPerformed
-
+        despliegareporte();
     }//GEN-LAST:event_JtNombreActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -226,34 +228,40 @@ public class Ventasserie extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            String f1 = sdf.format(Fecha.getDate());
-            String f2 = sdf.format(Fecha1.getDate());
-            setreport(f1,f2);
+        despliegareporte();
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
-                if (serie.equals("A")) {
-                    serie = "B";
-                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054B.png")));// carga de logo
-                } else {
-                    serie = "A";
-                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png")));// carga de logo
-                }
+        if (serie.equals("A")) {
+            serie = "B";
+            JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054B.png")));// carga de logo
+        } else {
+            serie = "A";
+            JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png")));// carga de logo
+        }
     }//GEN-LAST:event_JlSerieMousePressed
 
     private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
-        private void setreport(String f1, String f2) {
+    private void despliegareporte() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String f1 = sdf.format(Fecha.getDate());
+        String f2 = sdf.format(Fecha1.getDate());
+        setreport(f1, f2);
+    }
+
+    private void setreport(String f1, String f2) {
         try {
+            String nombre = JtNombre.getText();
             Map parametros = new HashMap();
             Formateodedatos fd = new Formateodedatos();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("serie", serie);
+            parametros.put("nombre", nombre);
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesrep/VentasxSerie.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCpttpu());
@@ -262,42 +270,62 @@ public class Ventasserie extends javax.swing.JDialog {
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             ver.setTitle("Ventas");
             ver.setVisible(true);
+            regresarventana(ver);
         } catch (JRException ex) {
             Logger.getLogger(Ventasserie.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void vaciarcampos() {
-        JtNombre.setText("");
-        JtNombre.requestFocus();
+
+    /**
+     * Vuelve visible la interfaz
+     */
+    private void verrep() {
+        this.setVisible(true);
     }
 
     /**
-     * Formatear para que no tome en cuenta los espacios
+     * Usamos Windows listener para que cuando cierre el reporte regrese de
+     * nuevo a la ventana del reporte
      *
-     * @param mat
-     * @return
+     * @param ver
      */
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
-    }
+    private void regresarventana(JasperViewer ver) {
+        ver.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
 
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                verrep();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     /**

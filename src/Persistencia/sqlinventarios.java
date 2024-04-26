@@ -196,7 +196,7 @@ public class sqlinventarios {
             String yres = f.formateayearrespaldo(String.valueOf(year));
             //Se trae el nombre integro de la bd con respecto al turno y
             //El nombre que tendra el archivo
-            String bd=f.getbdto_respinv_orig(turno);
+            String bd=f.getbdto_respinv_orig(turno,"A");
             sql = "BACKUP DATABASE ["+bd+"]\n"
                     + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res"+bd+"" + mres + "" + yres + ".bak'\n"
                     + "WITH CHECKSUM;";

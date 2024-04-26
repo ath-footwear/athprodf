@@ -22,7 +22,7 @@
 		<![CDATA[select distinct c.id_agente,a.nombre
 from cargo c 
 join agente a on c.id_agente=a.id_agente
-where id_cliente like '%$P!{cliente}%' and (fechavencimiento<=$P{f2} or fecha<=$P{f2})  and (saldo!=0 and saldomx!=0)]]>
+where nombre like '%$P!{cliente}%' and (fechavencimiento<=$P{f2} or fecha<=$P{f2})  and (saldo!=0 and saldomx!=0)]]>
 	</queryString>
 	<field name="id_agente" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>

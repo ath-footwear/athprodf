@@ -8,6 +8,8 @@ package Panelmaq;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -230,26 +232,28 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String f1 = sdf.format(Fecha.getDate());
         String f2 = sdf.format(Fecha1.getDate());
-
         setreport(f1, f2);
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void setreport(String f1, String f2) {
         try {
+            String nombre =JtNombre.getText();
             Map parametros = new HashMap();
             Formateodedatos fd = new Formateodedatos();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("serie", getserie());
+            parametros.put("nombre", nombre);
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesMaq/CargosAbonosespeciales.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCobranzatpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Ventas");
+            ver.setTitle("Cargos Especiales");
             ver.setVisible(true);
+            regresarventana(ver);
         } catch (JRException ex) {
             Logger.getLogger(Rep_Cargosespeciales.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -273,31 +277,55 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
     }
 
     /**
-     * Formatear para que no tome en cuenta los espacios
-     *
-     * @param mat
-     * @return
+     * Vuelve visible la interfaz
      */
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
+    private void verrep() {
+        this.setVisible(true);
     }
 
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
+    /**
+     * Usamos Windows listener para que cuando cierre el reporte regrese de
+     * nuevo a la ventana del reporte
+     *
+     * @param ver
+     */
+    private void regresarventana(JasperViewer ver) {
+        ver.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                verrep();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     /**

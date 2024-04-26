@@ -15,10 +15,13 @@
 	<parameter name="serie" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="nombre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select distinct id_cliente, ncliente, sum(importe) as importe, sum(saldo) as saldo
 from cargoespecial
-where convert(date,fechacargo) between $P{f1} and $P{f2} and serie like '%$P!{serie}%' and estatus='1'
+where convert(date,fechacargo) between $P{f1} and $P{f2} and serie like '%$P!{serie}%' and estatus='1' and ncliente like '%$P!{nombre}%'
 group by id_cliente,ncliente
 order by ncliente]]>
 	</queryString>

@@ -15,12 +15,15 @@
 	<parameter name="imag" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="nombre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select id_pedido,pedido,p.serie,convert(date,p.fecha) as fecha,p.nombre,p.subtotal,p.impuestos,p.total,p.descuento,
 case when p.estatus='1' then 'A' else 'C' end as 'estado'
 from pedido p
 left join documento d on d.pedidos=p.id_pedido
-where convert(date,p.fecha) between $P{f1} and $P{f2} and p.serie=$P{serie}
+where convert(date,p.fecha) between $P{f1} and $P{f2} and p.serie=$P{serie} and p.nombre like '%$P!{nombre}%'
 order by p.serie]]>
 	</queryString>
 	<field name="id_pedido" class="java.lang.Integer"/>
