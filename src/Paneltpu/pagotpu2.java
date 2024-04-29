@@ -698,6 +698,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
+        jLabel2.setVisible(false);
         if (!fd.verficafechanula(JtFecha)) {
             setfactura();
         }
@@ -1021,6 +1022,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 }
             }
         }
+        jLabel2.setVisible(true);
     }
 
     public ArrayList<cargo> getcargosfacs() {
