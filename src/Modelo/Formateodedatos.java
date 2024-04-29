@@ -682,7 +682,7 @@ public class Formateodedatos {
                 break;
             case "6":
             case "7":
-                resp = m.getDescripcion() + " " + m.getNoserie();
+                resp =m.getTipo_maquina();
                 break;
         }
         return resp;

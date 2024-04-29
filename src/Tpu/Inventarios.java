@@ -410,7 +410,11 @@ public class Inventarios extends javax.swing.JInternalFrame {
         try {
 //            Se selecciona el tipo de conexion
             Connection con = (reporte.equals("Invsiscap")) ? liteusuario : cpt;
+            String campo= (u.getTurno().equals("7"))?",noserie":"";
             Map parametros = new HashMap();
+            Formateodedatos fd = new Formateodedatos();
+            parametros.put("imagen", fd.getimagenreporte(u));
+            parametros.put("campo", campo);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + reporte + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte

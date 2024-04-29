@@ -167,7 +167,7 @@ public class sqlmaterial {
                     + "where m.descripcion like '%" + mat + "%' and m.estatus='1' "
                     + "order by m.descripcion";
             st = con.prepareStatement(sql);
-//            System.out.println(sql);
+            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Materiales m = new Materiales();

@@ -3,6 +3,9 @@
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select * from inventariado]]>
 	</queryString>
@@ -35,7 +38,6 @@
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="247" height="40" uuid="ff04cdc9-9e20-4e26-a128-4fbbc679527d"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>

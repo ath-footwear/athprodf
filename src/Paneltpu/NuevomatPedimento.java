@@ -331,7 +331,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
             if (u.getTurno().equals("5")) {
                 mat.setMaterialpedimento(arrmat.get(row).getDescripcion() + " " + arrdur.get(row1).getDureza());
             } else {
-                mat.setMaterialpedimento(arrmat.get(row).getTipo_maquina() + " " + arrdur.get(row1).getDureza());
+                mat.setMaterialpedimento(arrmat.get(row).getDescripcion()+" "+arrmat.get(row).getTipo_maquina());
                 mat.setNoserie(arrmat.get(row).getNoserie());
             }
             this.dispose();

@@ -162,7 +162,7 @@
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{folio}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="477" y="79" width="95" height="10" uuid="e17cad3f-487f-4249-9c20-f5219504cf2d"/>

@@ -6,6 +6,12 @@
 	<parameter name="id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="campo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select * from pedimentos p]]>
 	</queryString>
@@ -28,7 +34,7 @@
 		<band height="87" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="133" height="42" uuid="051dea46-5a85-4d5c-8cc0-359b196fbbc2"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="472" y="67" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>
@@ -62,7 +68,7 @@
 		<band height="3" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="60" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<rectangle radius="3">
 				<reportElement x="1" y="0" width="571" height="20" backcolor="#1451F5" uuid="e0156d76-d4cb-4fdc-9674-b8e364bf57dc"/>
 				<graphicElement>
@@ -70,9 +76,12 @@
 				</graphicElement>
 			</rectangle>
 			<subreport>
-				<reportElement x="163" y="43" width="251" height="10" uuid="30ab1e8c-26fd-4f07-a299-57178522e715"/>
+				<reportElement x="5" y="43" width="309" height="10" uuid="30ab1e8c-26fd-4f07-a299-57178522e715"/>
 				<subreportParameter name="id">
 					<subreportParameterExpression><![CDATA[$F{id_pedimento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="campo">
+					<subreportParameterExpression><![CDATA[$P{campo}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\Dpedimento_inventario.jasper"]]></subreportExpression>
@@ -92,14 +101,14 @@
 				<text><![CDATA[Pedimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="163" y="24" width="151" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
+				<reportElement x="5" y="24" width="309" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Material]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="314" y="24" width="100" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
+				<reportElement x="314" y="24" width="77" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
