@@ -901,7 +901,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         Formateodedatos fd = new Formateodedatos();
         daoClientes dc = new daoClientes();
         ArrayList<Cliente> arrcliente = dc.getfoliotopagotpu_Clientes_ESPECIAL(ACobranza,
-                r, fd.getbd_tocargo(u.getTurno()));
+                r, fd.getbd_tocargo_REM(u.getTurno()));
         Buscacliente_Pago bp = new Buscacliente_Pago(null, true);
         bp.setarrcliente(arrcliente);
         //llena de informacion la lista

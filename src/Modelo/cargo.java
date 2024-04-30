@@ -15,6 +15,24 @@ public class cargo {
     private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
             colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones,
             serie, fechacargo, usuario;
+    private String formapago;
+    private double tipoc;
+
+    public String getFormapago() {
+        return formapago;
+    }
+
+    public void setFormapago(String formapago) {
+        this.formapago = formapago;
+    }
+
+    public double getTipoc() {
+        return tipoc;
+    }
+
+    public void setTipoc(double tipoc) {
+        this.tipoc = tipoc;
+    }
 
     public String getUsuario() {
         return usuario;

@@ -186,6 +186,9 @@ public class Buscacliente_Pago extends javax.swing.JDialog {
             model.addElement(arr2.getCvecliente() + " - " + arr2.getNombre());
         }
         JlClientes.setModel(model);
+        if(!arrc.isEmpty()){
+            JlClientes.setSelectedIndex(0);
+        }
     }
 
     /**

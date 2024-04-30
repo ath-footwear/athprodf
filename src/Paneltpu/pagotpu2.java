@@ -22,6 +22,7 @@ import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Sellofiscal;
+import Modelo.Tipo_pagos;
 import Modelo.Usuarios;
 import Modelo.cargo;
 import Modelo.convertnum;
@@ -78,6 +79,8 @@ public class pagotpu2 extends javax.swing.JPanel {
     public ArrayList<relacion> arrrelacion = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
+    ArrayList<Tipo_pagos> arrnpagos = new ArrayList<>();//cargos seleccionados v2
+
     daocfdi dcfdi = new daocfdi();
 
     double descuentos;
@@ -142,7 +145,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         JcUsd = new javax.swing.JCheckBox();
         JtTCambio = new javax.swing.JTextField();
         JlTcambio = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         Jlcargofac = new javax.swing.JList<>();
         jLabel21 = new javax.swing.JLabel();
@@ -158,6 +160,10 @@ public class pagotpu2 extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         JtFecha = new com.toedter.calendar.JDateChooser();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         pop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -288,7 +294,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JcCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JcCuenta, 0, 405, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -354,6 +360,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        JcUsd.setBackground(new java.awt.Color(255, 255, 255));
         JcUsd.setText("USD - Dolares");
         JcUsd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,16 +401,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/flat-style-circle-save_icon-icons.com_66942.png"))); // NOI18N
-        jLabel4.setToolTipText("Actualiza datos");
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel4MousePressed(evt);
-            }
-        });
-
+        Jlcargofac.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         Jlcargofac.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(Jlcargofac);
 
@@ -498,77 +496,125 @@ public class pagotpu2 extends javax.swing.JPanel {
             }
         });
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/Recursos/bordemorado4x4.png")))); // NOI18N
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/flat-style-circle-save_icon-icons.com_66942.png"))); // NOI18N
+        jLabel4.setToolTipText("Actualiza datos");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486506257-interface-layout-multi-column-design-column-website_81457.png"))); // NOI18N
+        jLabel5.setToolTipText("Ver formas de pago capturadas");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel5MousePressed(evt);
+            }
+        });
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Clear_37294.png"))); // NOI18N
+        jLabel13.setToolTipText("Limpiar");
+        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel13MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jLabel13))
+        );
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 279, Short.MAX_VALUE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(JtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(JtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3))
-                            .addComponent(jScrollPane1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(12, 12, 12)))
-                .addContainerGap())
+                                .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel21)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGap(49, 49, 49)
-                                        .addComponent(jLabel2))))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(jLabel21)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addGap(49, 49, 49)
+                                    .addComponent(jLabel2))
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -579,7 +625,12 @@ public class pagotpu2 extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(4, 4, 4)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -608,7 +659,9 @@ public class pagotpu2 extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -651,17 +704,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
         JcCuenta.setModel(cuentas);
 
-    }
-
-    private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
-        daocfdi df = new daocfdi();
-        boolean a = true;
-        String resp = df.getRegimenxuso(cfdi, regimen, uso);
-        if (resp.equals("")) {
-            JOptionPane.showMessageDialog(null, "Error, El regimen del cliente no se puede usar con este uso cfdi");
-            a = false;
-        }
-        return a;
     }
 
     private void popMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_popMousePressed
@@ -735,12 +777,30 @@ public class pagotpu2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcMetodoActionPerformed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-        getcargos();
+        if (arrnpagos.isEmpty()) {
+            getcargos();
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No puedes seleccionar un cliente nuevo teniendo cargos capturados");
+            int a = JOptionPane.showConfirmDialog(null,
+                    "Quieres limpiar todo el proceso actual?");
+            if (a == 0) {
+                vaciarcampos();
+            }
+        }
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
         JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
+
+    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel5MousePressed
+
+    private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
+        vaciarcampos();
+    }//GEN-LAST:event_jLabel13MousePressed
 
     /**
      * Busca y despliega los clientes con cargos, ademas despliega una lista de
@@ -786,38 +846,38 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
     }
 
-    private void actualizaempresa() {
-        arrcargoseleccion.clear();
-        JtCliente.setText("");
-        JtCliente.requestFocus();
-        llenalistafac();
-    }
-
+    /**
+     * Carga formulario de cargos
+     */
     private void cargacargos() {
         if (!arrcargo.isEmpty()) {
-            Cargosncrtpu p = new Cargosncrtpu(null, true);
+            Cargosncrtpu_npagos p = new Cargosncrtpu_npagos(null, true);
 //        p.setAlwaysOnTop(true);
 //            p.relacion = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
             p.arrcargo = arrcargo;
+            p.getArrpagos(arrnpagos);
             p.desplieguecargos();
+            p.arrfp = arrfpago;
+            p.cargacombos();
             p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             p.setVisible(true);
-            arrcargoseleccion = p.arrcargoseleccion;
+            //arrcargoseleccion = p.arrcargoseleccion;
+            //Obtiene la lista de facturas con su forma de pago
+            if (p.getEstado().equals("1")) {
+                arrnpagos.add(p.getTipo_pagos());
+                arrcargo=p.getcargos();
+            }
             llenalistafac();
             actualizaimportes();
-//            if (!p.prod.getDesccombinacion().equals("")) {
-//                System.out.println("");
-//                System.out.println("aqui");
-//            }
         }
-
     }
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
         Formateodedatos fd = new Formateodedatos();
-        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            model.addElement("FAC " + arrcargoseleccion1.getReferencia() + " - " + fd.formatdecimal(arrcargoseleccion1.getDescuento()));
+        for (Tipo_pagos arrp : arrnpagos) {
+            model.addElement("Forma pago " + arrp.getFp() + ", " + arrp.getImporte()
+                    + ", Facs: " + arrp.getArrcargos().size());
         }
         Jlcargofac.setModel(model);
     }
@@ -855,7 +915,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                do {//ciclo hasta que termine la busqueda y asignacion, no es lo ideal pero es temporal y reduce colisiones
 //
 //                } while (n.isAlive());
-                if (JcUsd.isSelected()) {
+                if (arrnpagos.get(0).getTipocambio()!=1) {
                     f.setMoneda("USD");
                     f.setTipocambio(Double.parseDouble(JtTCambio.getText()));
                 } else {
@@ -890,11 +950,11 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setFechapago(sdf.format(JtFecha.getDate()));
                 f.setSubtotal(0);
                 f.setTotal(total);
-                f.setIdcliente(arrcargoseleccion.get(0).getCliente());
-                f.setNombre(arrcargoseleccion.get(0).getNombre());
-                f.setRfc(arrcargoseleccion.get(0).getRfc());
-                f.setCp(arrcargoseleccion.get(0).getCp());
-                f.setRegimen(arrcargoseleccion.get(0).getRegimen());
+                f.setIdcliente(arrnpagos.get(0).getArrcargos().get(0).getCliente());
+                f.setNombre(arrnpagos.get(0).getArrcargos().get(0).getNombre());
+                f.setRfc(arrnpagos.get(0).getArrcargos().get(0).getRfc());
+                f.setCp(arrnpagos.get(0).getArrcargos().get(0).getCp());
+                f.setRegimen(arrnpagos.get(0).getArrcargos().get(0).getRegimen());
                 f.setTotalcajas(0);
                 f.setTiposerie("PAGO");
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
@@ -902,9 +962,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
                 f.setUsocfdi("CP01");
                 f.setCondicion("Contado");
-                f.setAgente(arrcargoseleccion.get(0).getAgente());
-                f.setPlazo(arrcargoseleccion.get(0).getPlazo());
-                f.setMarca(arrcargoseleccion.get(0).getRef());
+                f.setAgente(arrnpagos.get(0).getArrcargos().get(0).getAgente());
+                f.setPlazo(arrnpagos.get(0).getArrcargos().get(0).getPlazo());
+                f.setMarca(arrnpagos.get(0).getArrcargos().get(0).getRef());
                 f.setLugarexpedicion(fn.getLugar_exp());
                 //concepto
                 f.setCuentaabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getId_concepto() + "");
@@ -1184,6 +1244,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     private void vaciarcampos() {
         arrcargoseleccion.clear();
+        arrnpagos.clear();
         JtTCambio.setText("");
         JlDesc.setText("0");
         Jlsub.setText("0");
@@ -1194,9 +1255,9 @@ public class pagotpu2 extends javax.swing.JPanel {
         JlNombre.setText("");
         JtObs.setText(nombre);
         JcUsd.setSelected(false);
+        JtCliente.requestFocus();
         llenalistafac();
         actualizaimportes();
-        cargacombos();
     }
 
     private void actualizaimportes() {
@@ -1206,52 +1267,56 @@ public class pagotpu2 extends javax.swing.JPanel {
         model.addColumn("Pago");
         model.addColumn("Importe");
         model.addColumn("Iva");
-        int rows = arrcargoseleccion.size();
-        model.setNumRows(rows);
+        model.addColumn("Forma de pago");
+        model.addColumn("Tipo cambio");
+        int rows = nrows();
         subtotal = 0;
         impuestos = 0;
         descuentos = 0;
-        if (!arrcargoseleccion.isEmpty()) {
-            for (int i = 0; i < rows; i++) {
-                String folio = arrcargoseleccion.get(i).getReferencia();
-                double totalcar = arrcargoseleccion.get(i).getDescuento();
-//                double importe = totalcar / 1.16;
-//                double iva = (totalcar / 1.16) * 0.16;
-                double importe = getnewcantidades(totalcar, "importe");
-                double iva = getnewcantidades(totalcar, "iva");
-                model.setValueAt(folio, i, 0);
-                model.setValueAt(totalcar, i, 1);
-                model.setValueAt(importe, i, 2);
-                model.setValueAt(iva, i, 3);
-//                total += totalcar;
-                subtotal += fd.formatdecimalv2(importe);
-                impuestos += fd.formatdecimalv2(iva);
-                System.out.println("a");
+        model.setNumRows(rows);
+        int nrows = 0;
+        for (Tipo_pagos arrpg : arrnpagos) {
+            if (!arrpg.getArrcargos().isEmpty()) {
+                for (int i = 0; i < arrpg.getArrcargos().size(); i++) {
+                    String folio = arrpg.getArrcargos().get(i).getReferencia();
+                    double totalcar = arrpg.getArrcargos().get(i).getDescuento();
+                    double importe = getnewcantidades(totalcar, "importe");
+                    double iva = getnewcantidades(totalcar, "iva");
+                    model.setValueAt(folio, nrows, 0);
+                    model.setValueAt(totalcar, nrows, 1);
+                    model.setValueAt(importe, nrows, 2);
+                    model.setValueAt(iva, nrows, 3);
+                    model.setValueAt(arrpg.getFp(), nrows, 4);
+                    model.setValueAt(arrpg.getTipocambio(), nrows, 5);
+                    subtotal += fd.formatdecimalv2(importe);
+                    impuestos += fd.formatdecimalv2(iva);
+                    nrows++;
+                }
+                JtDetalle.setModel(model);
+                total = subtotal + impuestos;
+                //Solo para despliqgue de informacion
+                JlIva.setText(fd.formatdecimalv2(impuestos) + "");
+                Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
+                JlDesc.setText(descuentos + "");
+                JlTotal.setText(fd.formatdecimalv2(total) + "");
+            } else {
+                JtCliente.requestFocus();// regresa al campo inicial del cliente
             }
-            JtDetalle.setModel(model);
-            total = subtotal + impuestos;
-            //Solo para despliqgue de informacion
-            JlIva.setText(fd.formatdecimalv2(impuestos) + "");
-            Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
-            JlDesc.setText(descuentos + "");
-            JlTotal.setText(fd.formatdecimalv2(total) + "");
-        } else {
-            JtCliente.requestFocus();// regresa al campo inicial del cliente
         }
         JtDetalle.setModel(model);
     }
 
-    private double getnewcantidades6(double a, String tipo) {
-        double cant = 0;
-        switch (tipo) {
-            case "importe":
-                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
-                break;
-            case "iva":
-                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
-                break;
+    /**
+     * Obtiene el numero total de las lineas dentro del array Tipo_pagos
+     *
+     * @return
+     */
+    private int nrows() {
+        int row = 0;
+        for (Tipo_pagos arrp : arrnpagos) {
+            row += arrp.getArrcargos().size();
         }
-        return cant;
+        return row;
     }
 
     private double getnewcantidades(double a, String tipo) {
@@ -1275,22 +1340,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         return cant;
     }
 
-    private double getcant(double a) {
-        double cant = BigDecimal.valueOf(a).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        return cant;
-    }
-
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
-
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1300,114 +1349,6 @@ public class pagotpu2 extends javax.swing.JPanel {
             resp = true;
         }
         return resp;
-    }
-
-    private boolean verificaflotante(String cad) {
-        boolean check = true;
-        Character c;
-        int control = 0;
-        String cadena = cad;
-        for (int i = 0; i < cad.length(); i++) {
-            c = cadena.charAt(i);
-            if (!Character.isDigit(c)) {
-                if (c.equals('.') && control == 0) {
-                    control++;
-                } else if (control == 1) {
-                    check = false;
-                    break;
-                }
-                check = false;
-                break;
-            }
-        }
-        return check;
-    }
-
-    private boolean verificadetalle() {
-        boolean resp = true;
-        for (int i = 0; i < k.size(); i++) {
-            String precio = JtDetalle.getValueAt(i, 3).toString();
-            if (!verificafloat(precio)) {
-                resp = false;
-                break;
-            }
-        }
-        return resp;
-    }
-
-    private void respcod() {
-//                                pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-//                        precioantes = Double.parseDouble(formateador.format((pre)));
-//                        pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-//
-//                        precio = Double.parseDouble(formateador.format((pre) * pares));
-//
-//                        //Precio interno para valores enteros y sin desglose de iva
-//                        preciointerno = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()) * pares;
-//                        descripcion = JtDetalle.getValueAt(i, 0).toString();
-//                        codigosat = JtDetalle.getValueAt(i, 1).toString();
-//                        umedida = "PR";
-//                        double dato = Double.parseDouble(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
-//                        double desc = arrcargoseleccion.get(x).getDescuento();
-//                        System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
-//                        //Hacer operaciones con los importes y resetear si aplica la suma total
-//                        if (dato >= desc) {
-//
-//                            car.setFoliofiscal(folios);
-//                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
-//                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
-//                            car.setCliente(arrcargoseleccion.get(x).getCliente());
-//                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
-//                            car.setFecha(arrcargoseleccion.get(x).getFecha());
-//                            car.setDescnota(descripcion);
-//                            car.setCantidad(pares);
-//                            //Condiciones para saber si la suma de importes son igual o distintos al de la factura
-//                            if (dato == desc) {
-////                                car.setDescuento(preciointerno + extra);// importe a descontar de cargos
-//                                car.setDescuento(dato + extra);
-////                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-//                                sumatotal = 0;
-//                                x++;
-//                            } else {
-//                                double flotanteaux = desc - sumatotal;
-//
-//                                // importe inferior menos sumatotal Ej(500-400) considerando 500 como lo introducido y 400 como la suma
-//                                if (flotanteaux < 0) {
-//                                    car.setDescuento(flotanteaux * (-1));
-//                                } else {
-//                                    car.setDescuento(flotanteaux);
-//                                }
-//                                extra = dato - desc;
-////                                if (i + 1 == tamaño || flotanteaux + extra == desc) {
-//                                if (i + 1 == tamaño || dato == desc) {
-////                                    car.setDescuento(flotanteaux + extra);
-//                                    car.setDescuento(dato + extra);
-//                                }
-////                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-//                                sumatotal += preciointerno + (precio * 0.16);
-//                                sumatotal -= desc;
-//                                x++;
-//                            }
-//                            arrayc.add(car);
-//                        } else {
-//                            //Asignar directo ya que no interfiere con el total de una factura seleccionada
-//                            //No aplica en reciclar codigo por el contador interno de la seleccion
-////                            arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-////                            car.setDescuento(preciointerno + extra);// importe a descontar de cargos
-//                            car.setDescuento(dato + extra);
-//                            car.setFoliofiscal(folios);
-//                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
-//                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
-//                            car.setCliente(arrcargoseleccion.get(x).getCliente());
-//                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
-//                            car.setFecha(arrcargoseleccion.get(x).getFecha());
-//                            car.setDescnota(descripcion);
-//                            car.setCantidad(pares);
-////                            sumatotal += preciointerno;
-//                            sumatotal += dato;
-//                            extra = 0;
-//                            arrayc.add(car);
-//                        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1432,6 +1373,7 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1440,6 +1382,7 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1449,6 +1392,7 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
