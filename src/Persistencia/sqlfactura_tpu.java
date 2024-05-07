@@ -13,6 +13,7 @@ import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
+import Modelo.Tipo_pagos;
 import Modelo.abono;
 import Modelo.cargo;
 import Modelo.factura;
@@ -1058,7 +1059,7 @@ public class sqlfactura_tpu {
         ResultSet rs;
         int resp = 0;
         try {
-            DecimalFormat formateador = new DecimalFormat("####.##");
+            Formateodedatos fd = new Formateodedatos();
             con.setAutoCommit(false);
             cob.setAutoCommit(false);
             String sql;
@@ -1068,7 +1069,7 @@ public class sqlfactura_tpu {
             String fecha = f.getFecha();
             String fechap = f.getFechapago();
             String turno = f.getTurno();
-            double Total = Double.parseDouble(formateador.format(getcant(f.getTotal())));
+            double Total = (fd.formatdecimalv2(f.getTotal()));
             //pagos
 //            String rfcctaemi = f.getRfcctaemisora();
 //            String ctaemi = f.getCtaemisora();
@@ -1112,66 +1113,68 @@ public class sqlfactura_tpu {
             rs.close();
 
 //            resp = f.getFolio();
-            for (Detpagos arr : f.getArrpagos()) {
+            for (Tipo_pagos arrp : f.getArrnpagos()) {
+                for (Detpagos arr : arrp.getArrdetpago()) {
 
-                //Inserta en detallado de detallado pago
-                double cant = arr.getCantidad();
-                String de = arr.getDescripcion();
-                String co = arr.getCodigo();
-                String umed = arr.getUmedida();
-                double precio = arr.getPrecio();
-                String fp = arr.getFormadedpago();
-                String moneda = arr.getMoneda();
-                double mo = getcant(arr.getMonto());
-                String rfcce = arr.getRfcctaemisora();
-                String rfccr = arr.getRfcctareceptora();
-                String ctae = arr.getCtaemisora();
-                String ctar = arr.getCtareceptora();
-                String uuid = arr.getUuid();
-                String fo = arr.getFolio();
-                double sald = arr.getSaldo();
-                String mp = arr.getMetodopago();
-                int par = arr.getParcialidad();
-                double salant = getcant(arr.getImportesaldoant());
-                double salpag = getcant(arr.getImportepagado());
-                double salin = getcant(arr.getImpsaldoinsoluto());
-                int idcargo = arr.getIdcargo();
-                sql = "insert into Ddoctospagotpu(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
-                        + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
-                        + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
-                        + "values(" + resp + "," + cant + ",'" + de + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
-                        + uuid + "','" + fo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                    //Inserta en detallado de detallado pago
+                    double cant = arr.getCantidad();
+                    String de = arr.getDescripcion();
+                    String co = arr.getCodigo();
+                    String umed = arr.getUmedida();
+                    double precio = arr.getPrecio();
+                    String fp = arr.getFormadedpago();
+                    String moneda = arr.getMoneda();
+                    double mo = getcant(arr.getMonto());
+                    String rfcce = arr.getRfcctaemisora();
+                    String rfccr = arr.getRfcctareceptora();
+                    String ctae = arr.getCtaemisora();
+                    String ctar = arr.getCtareceptora();
+                    String uuid = arr.getUuid();
+                    String fo = arr.getFolio();
+                    double sald = arr.getSaldo();
+                    String mp = arr.getMetodopago();
+                    int par = arr.getParcialidad();
+                    double salant = getcant(arr.getImportesaldoant());
+                    double salpag = getcant(arr.getImportepagado());
+                    double salin = getcant(arr.getImpsaldoinsoluto());
+                    int idcargo = arr.getIdcargo();
+                    sql = "insert into Ddoctospagotpu(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
+                            + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
+                            + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
+                            + "values(" + resp + "," + cant + ",'" + de + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
+                            + uuid + "','" + fo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
 //                System.out.println("d pagos " + sql);
-                st = con.prepareStatement(sql);
-                st.executeUpdate();
-                String saldo;
-                if (mon.equals("MXN")) {
-                    sql = "update cargo set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldo";
-                } else {
-                    sql = "update cargo set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
-                    saldo = "saldomx";
-                }
+                    st = con.prepareStatement(sql);
+                    st.executeUpdate();
+                    String saldo;
+                    if (mon.equals("MXN")) {
+                        sql = "update cargo set saldomx=" + fd.formatdecimalv3(sald) + " where id_cargo=" + idcargo;
+                        saldo = "saldo";
+                    } else {
+                        sql = "update cargo set saldo=" + fd.formatdecimalv3(sald) + " where id_cargo=" + idcargo;
+                        saldo = "saldomx";
+                    }
 //                System.out.println("cargos " + sql);
-                st = cob.prepareStatement(sql);
-                st.executeUpdate();
+                    st = cob.prepareStatement(sql);
+                    st.executeUpdate();
 
 //                if (salant == mo) {
-                if (sald == 0) {
-                    sql = "update cargo set saldo=0, saldomx=0  where id_cargo=" + idcargo;
+                    if (sald == 0) {
+                        sql = "update cargo set saldo=0, saldomx=0  where id_cargo=" + idcargo;
 //                    System.out.println("cargos0 " + sql);
+                        st = cob.prepareStatement(sql);
+                        st.executeUpdate();
+                    }
+
+                    sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
+                            + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
+                            + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
+//                System.out.println("abonos  " + sql);
                     st = cob.prepareStatement(sql);
                     st.executeUpdate();
                 }
-
-                sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
-                        + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
-                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
-//                System.out.println("abonos  " + sql);
-                st = cob.prepareStatement(sql);
-                st.executeUpdate();
+                // Fin detallado de documento
             }
-            // Fin detallado de documento
 
             sql = "update seriesfolio set ufolio=" + fol + " where serie='" + serie + "'";
 //            System.out.println("series folios " + sql);
@@ -1179,9 +1182,6 @@ public class sqlfactura_tpu {
             st.executeUpdate();
             cob.commit();
             con.commit();
-//            cobranza.commit();
-//            con.rollback();
-//            cobranza.rollback();
         } catch (Exception ex) {
             try {
                 resp = 0;

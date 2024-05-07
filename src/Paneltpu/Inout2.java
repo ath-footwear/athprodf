@@ -7,13 +7,13 @@ package Paneltpu;
 
 import DAO.daoConceptos;
 import DAO.daoempresa;
-import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Empresas;
+import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
@@ -22,7 +22,6 @@ import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -441,17 +440,15 @@ public class Inout2 extends javax.swing.JPanel {
                 daokardexrcpt dk = new daokardexrcpt();
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                Calendar fecha = Calendar.getInstance();
-                daofactura dfac = new daofactura();
-                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+                Formateodedatos fd = new Formateodedatos();
                 int rowc = JcCliente.getSelectedIndex();
                 int folio = dk.maxkardexsincuenta(cpt);
 //                Detallado de productos selecionados
                 for (int i = 0; i < k2.size(); i++) {
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
                         KardexCmp kar = new KardexCmp();
-                        double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
-                        double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
+                        double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
+                        double cant =Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int cue = Integer.parseInt(arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta());
                         double stock;
                         if (cue == 1 || cue == 10) {
@@ -459,7 +456,7 @@ public class Inout2 extends javax.swing.JPanel {
                         } else {
                             stock = k2.get(i).getDp().getCantrestante() - cant;
                         }
-                        kar.setCantrestante(stock);
+                        kar.setCantrestante(fd.formatdecimalv3(stock));
                         kar.setCuenta(arrcuentas.get(JcConceptos.getSelectedIndex()).getId_concepto());
                         kar.setId_cliente(arrcliente.get(rowc).getCvecliente());
                         kar.setId_kardex(folio);
@@ -471,14 +468,13 @@ public class Inout2 extends javax.swing.JPanel {
                         kar.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         kar.setNombreusuario(u.getUsuario());
                         kar.setFechamov(sdf.format(date));
-                        kar.setCosto(precio);
+                        kar.setCosto(fd.formatdecimalv3(precio));
                         kar.setCantidad(cant);
                         kar.setDureza(k2.get(i).getDp().getDureza());
                         kar.setRenglon(i + 1);
                         arrk.add(kar);
                     }
                 }
-
 //                int id = dfac.nuevaremtpu(cpt, f, cobB);
                 if (dk.nuevokardextpu(cpt, arrk)) {
 //                    setreport(id, f.getRegimen(), f.getMoneda(), "B", f.getPedido());
@@ -486,7 +482,6 @@ public class Inout2 extends javax.swing.JPanel {
                     vaciarcampos();
                     JtCliente.requestFocus();
                 }
-
             }
         } else {
             JOptionPane.showMessageDialog(null, "El campo de referencia no puede ir vacio o no se ha seleccionado");
@@ -501,51 +496,6 @@ public class Inout2 extends javax.swing.JPanel {
         }
         JcCliente.setModel(cliente);
         getconceptos();
-    }
-
-    /**
-     *
-     * @param folio Folio de la factura
-     * @param arrmetodo Array que contiene el metodo de pago
-     * @param arruso Array que contiene el uso de cfdi
-     * @see Despliegue y creacion del archivo pdf con los datos previamente
-     * creados El reporte fue previamente creado en un modulo anterior que solo
-     * creaba el pdf el proyecto se llama "Facturas"
-     *
-     */
-    private void setreport(int folio, String regimen, String moneda, String serie, String pedido) {
-        try {
-            daoempresa d = new daoempresa();
-//            Identificar si es de ath o uptown
-            String n = "1";
-            String logo = "AF.png";
-            Empresas e = d.getempresarfc(sqlempresa, n);
-//             fin identificar empresa
-            Map parametros = new HashMap();
-//            Clase que contiene el numero convertido a caracter
-            convertirNumeros cnum = new convertirNumeros();
-            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            String numeros = formateador.format(total);
-            String letratotal = "";
-            letratotal = cnum.Convertir(numeros, true, moneda);
-//            Agregar parametros al reporte
-            parametros.put("id", folio);
-            parametros.put("totalletra", letratotal);
-//            parametros.put("nombre", e.getNombre());
-//            parametros.put("rfc", e.getRfc());
-//            parametros.put("regimen", e.getRegimen());
-//            parametros.put("lugar", e.getCp());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
-            parametros.put("serie", serie);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedidos.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
-            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
-            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido " + pedido);
-            ver.setVisible(true);
-        } catch (JRException ex) {
-            Logger.getLogger(Inout2.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed

@@ -42,8 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -99,8 +97,6 @@ public class pagotpu2 extends javax.swing.JPanel {
     public pagotpu2() {
         initComponents();
 //        cargatabla();
-        JlTcambio.setVisible(false);
-        JtTCambio.setVisible(false);
         JtCliente.requestFocus();
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
@@ -128,9 +124,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         JcMetodo = new javax.swing.JComboBox<>();
-        jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        JcForma = new javax.swing.JComboBox<>();
         JcUso = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         JcCuenta = new javax.swing.JComboBox<>();
@@ -141,10 +135,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         JtObs = new javax.swing.JTextArea();
-        jPanel2 = new javax.swing.JPanel();
-        JcUsd = new javax.swing.JCheckBox();
-        JtTCambio = new javax.swing.JTextField();
-        JlTcambio = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         Jlcargofac = new javax.swing.JList<>();
         jLabel21 = new javax.swing.JLabel();
@@ -218,18 +208,8 @@ public class pagotpu2 extends javax.swing.JPanel {
             }
         });
 
-        jLabel16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel16.setText("Forma de Pago");
-
         jLabel17.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel17.setText("Uso Cfdi");
-
-        JcForma.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
-        JcForma.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JcFormaActionPerformed(evt);
-            }
-        });
 
         JcUso.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         JcUso.addActionListener(new java.awt.event.ActionListener() {
@@ -245,13 +225,9 @@ public class pagotpu2 extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JcForma, 0, 344, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(55, 55, 55)
-                        .addComponent(JcUso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(JcUso, 0, 344, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -264,14 +240,11 @@ public class pagotpu2 extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
                     .addComponent(JcMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -357,49 +330,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         JtObs.setColumns(20);
         JtObs.setRows(5);
         jScrollPane2.setViewportView(JtObs);
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        JcUsd.setBackground(new java.awt.Color(255, 255, 255));
-        JcUsd.setText("USD - Dolares");
-        JcUsd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JcUsdActionPerformed(evt);
-            }
-        });
-
-        JtTCambio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JtTCambioActionPerformed(evt);
-            }
-        });
-
-        JlTcambio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        JlTcambio.setText("Tipo de cambio");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JcUsd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JtTCambio)
-                    .addComponent(JlTcambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JcUsd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(JlTcambio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JtTCambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         Jlcargofac.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         Jlcargofac.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -587,34 +517,35 @@ public class pagotpu2 extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel21)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addGap(49, 49, 49)
-                                    .addComponent(jLabel2))
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
+                                        .addComponent(jLabel2))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,12 +556,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(4, 4, 4)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -646,7 +572,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel6);
@@ -659,9 +585,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -674,13 +598,8 @@ public class pagotpu2 extends javax.swing.JPanel {
 //    }
     public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel metodo = new DefaultComboBoxModel();
-        DefaultComboBoxModel forma = new DefaultComboBoxModel();
         DefaultComboBoxModel uso = new DefaultComboBoxModel();
-        DefaultComboBoxModel relacion = new DefaultComboBoxModel();
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
-        for (Formadepago arrfpago1 : arrfpago) {
-            forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
-        }
 //        for (metodopago arrmetodo1 : arrmetodo) {
 ////            metodo.addElement(arrmetodo1.getMetodopago() + " - " + arrmetodo1.getDescripcion());
 //        }
@@ -692,7 +611,6 @@ public class pagotpu2 extends javax.swing.JPanel {
 //        for (relacion arruso1 : arrrelacion) {
 //            relacion.addElement(arruso1.getRelacion() + " - " + arruso1.getConcepto());
 //        }
-        JcForma.setModel(forma);
         JcMetodo.setModel(metodo);
         JcUso.setModel(uso);
 //        JtRelacion.setModel(relacion);
@@ -721,26 +639,14 @@ public class pagotpu2 extends javax.swing.JPanel {
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
         if (!arrcargo.isEmpty()) {
             cargacargos();
+        } else {
+            getcargos();
         }
     }//GEN-LAST:event_jLabel4MousePressed
 
-    private void JtTCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtTCambioActionPerformed
-        if (!verificafloat(JtTCambio.getText().toUpperCase())) {
-            JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
-            JtTCambio.requestFocus();
-        } else {
-            JtFecha.requestFocus();
-            JtFecha.requestFocusInWindow();
-        }
-    }//GEN-LAST:event_JtTCambioActionPerformed
-
-    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
-        setdolar();
-    }//GEN-LAST:event_JcUsdActionPerformed
-
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Formateodedatos fd = new Formateodedatos();
         jLabel2.setVisible(false);
+        Formateodedatos fd = new Formateodedatos();
         if (!fd.verficafechanula(JtFecha)) {
             setfactura();
         }
@@ -768,15 +674,12 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     }//GEN-LAST:event_JcUsoActionPerformed
 
-    private void JcFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcFormaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JcFormaActionPerformed
-
     private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JcMetodoActionPerformed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
+        jLabel2.setVisible(true);
         if (arrnpagos.isEmpty()) {
             getcargos();
         } else {
@@ -835,17 +738,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
     }
 
-    private void setdolar() {
-        if (JcUsd.isSelected()) {
-            JlTcambio.setVisible(true);
-            JtTCambio.setVisible(true);
-            JtTCambio.requestFocus();
-        } else {
-            JlTcambio.setVisible(false);
-            JtTCambio.setVisible(false);
-        }
-    }
-
     /**
      * Carga formulario de cargos
      */
@@ -865,7 +757,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             //Obtiene la lista de facturas con su forma de pago
             if (p.getEstado().equals("1")) {
                 arrnpagos.add(p.getTipo_pagos());
-                arrcargo=p.getcargos();
+                arrcargo = p.getcargos();
             }
             llenalistafac();
             actualizaimportes();
@@ -883,103 +775,91 @@ public class pagotpu2 extends javax.swing.JPanel {
     }
 
     private void setfactura() {
-        if (arrcargoseleccion.isEmpty()) {
+        if (arrnpagos.isEmpty()) {
             JtCliente.requestFocus();
         } else {
             Formateodedatos fd = new Formateodedatos();
-            double totalrev = 0;
-            //Se obtiene el total de las facturas que anter se capturaron
-            for (int i = 0; i < arrcargoseleccion.size(); i++) {
-//                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
-                totalrev += fd.formatdecimal(arrcargoseleccion.get(i).getDescuento());
-            }
-//            System.out.println(total + " " + totalrev);
-//            System.out.println(total + " " + formateador.format(totalrev));
-//            if (totalrev != total) {
-//            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
-            if (fd.formatdecimalv2(total) != fd.formatdecimalv2(totalrev)) {
-                JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
-                JtDetalle.requestFocus();
-            } else {
-                Formateo_Nempresas fn = new Formateo_Nempresas();
-                factura f = new factura();
+            Formateo_Nempresas fn = new Formateo_Nempresas();
+            factura f = new factura();
 //            int row = JtFolio1.getSelectedIndex();
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                daofactura_tpu dfac = new daofactura_tpu();
+            java.util.Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            daofactura_tpu dfac = new daofactura_tpu();
 //                Nocolisionncr n = new Nocolisionncr();
-                f.setFolio(dfac.getmaxfoliotpu(cpt, "PAG"));//Obtiene y setea el foliomaximo de *documentos
+            f.setFolio(dfac.getmaxfoliotpu(cpt, "PAG"));//Obtiene y setea el foliomaximo de *documentos
 //                n.setConnecxiones(rcpt, f.getFolio());
 //                n.start();
 ////                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
 //                do {//ciclo hasta que termine la busqueda y asignacion, no es lo ideal pero es temporal y reduce colisiones
 //
 //                } while (n.isAlive());
-                if (arrnpagos.get(0).getTipocambio()!=1) {
-                    f.setMoneda("USD");
-                    f.setTipocambio(Double.parseDouble(JtTCambio.getText()));
-                } else {
-                    f.setMoneda("MXN");
-                    f.setTipocambio(1);
-                }
-                // fin setear impuestos
+            if (arrnpagos.get(0).getTipocambio() != 1) {
+                f.setMoneda("USD");
+                f.setTipocambio(arrnpagos.get(0).getTipocambio());
+            } else {
+                f.setMoneda("MXN");
+                f.setTipocambio(1);
+            }
+            // fin setear impuestos
 //                f.setImpiva16(getnewcantidades((total / 1.16) * 0.16, "iva"));// Nodo totales
 //                f.setBaseiva16(getnewcantidades(total / 1.16, "importe"));
 //                f.setTotalpago16(total);
-                double imp16 = impuestos * f.getTipocambio();
-                double base16 = subtotal * f.getTipocambio();
-                Double au = fd.formatdecimalv2(total * f.getTipocambio());
-                f.setImpiva16(fd.formatdecimalv2(imp16));// Nodo totales
-                f.setBaseiva16(fd.formatdecimalv2(base16));
-                f.setTotalpago16(au);
-                fd.formatdecimal(0);
-                //Monto del pago
-                f.setMonto(fd.formatdecimalv2(total));
+            double imp16 = impuestos * f.getTipocambio();
+            double base16 = subtotal * f.getTipocambio();
+            Double au = fd.formatdecimalv3(total * f.getTipocambio());
+            f.setImpiva16(fd.formatdecimalv3(imp16));// Nodo totales
+            f.setBaseiva16(fd.formatdecimalv3(base16));
+            f.setTotalpago16(au);
+            //Monto del pago
+            f.setMonto(fd.formatdecimalv3(total));
 //                Fin nodo totales
-                f.setExportacion("01");
-                f.setTiporelacion("");
-                f.setEmpresa("1");
-                f.setClaveusuario(u.getUsuario());
-                f.setSerie("PAG");
-                f.setFecha(sdf.format(date));
-                f.setFechap(JtFecha.getDate());
-                f.setDescuento(0);
-                f.setPedido("");
-                f.setFechasolicitado(sdf.format(date));
-                f.setTurno(u.getTurno());
-                f.setFechapago(sdf.format(JtFecha.getDate()));
-                f.setSubtotal(0);
-                f.setTotal(total);
-                f.setIdcliente(arrnpagos.get(0).getArrcargos().get(0).getCliente());
-                f.setNombre(arrnpagos.get(0).getArrcargos().get(0).getNombre());
-                f.setRfc(arrnpagos.get(0).getArrcargos().get(0).getRfc());
-                f.setCp(arrnpagos.get(0).getArrcargos().get(0).getCp());
-                f.setRegimen(arrnpagos.get(0).getArrcargos().get(0).getRegimen());
-                f.setTotalcajas(0);
-                f.setTiposerie("PAGO");
-                f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                f.setMetodopago("PPD");
-                f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
-                f.setUsocfdi("CP01");
-                f.setCondicion("Contado");
-                f.setAgente(arrnpagos.get(0).getArrcargos().get(0).getAgente());
-                f.setPlazo(arrnpagos.get(0).getArrcargos().get(0).getPlazo());
-                f.setMarca(arrnpagos.get(0).getArrcargos().get(0).getRef());
-                f.setLugarexpedicion(fn.getLugar_exp());
-                //concepto
-                f.setCuentaabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getId_concepto() + "");
-                f.setDesccuenta(arrcuentas.get(JcCuenta.getSelectedIndex()).getNombre());
-                String folios = "";
-                String facturas = "";
-                //Mandar un string con los folios fiscales
+            f.setExportacion("01");
+            f.setTiporelacion("");
+            f.setEmpresa("1");
+            f.setClaveusuario(u.getUsuario());
+            f.setSerie("PAG");
+            f.setFecha(sdf.format(date));
+            f.setFechap(JtFecha.getDate());
+            f.setDescuento(0);
+            f.setPedido("");
+            f.setFechasolicitado(sdf.format(date));
+            f.setTurno(u.getTurno());
+            f.setFechapago(sdf.format(JtFecha.getDate()));
+            f.setSubtotal(0);
+            f.setTotal(total);
+            f.setIdcliente(arrnpagos.get(0).getArrcargos().get(0).getCliente());
+            f.setNombre(arrnpagos.get(0).getArrcargos().get(0).getNombre());
+            f.setRfc(arrnpagos.get(0).getArrcargos().get(0).getRfc());
+            f.setCp(arrnpagos.get(0).getArrcargos().get(0).getCp());
+            f.setRegimen(arrnpagos.get(0).getArrcargos().get(0).getRegimen());
+            f.setTotalcajas(0);
+            f.setTiposerie("PAGO");
+            f.setFormapago("");
+            f.setMetodopago("PPD");
+            f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
+            f.setUsocfdi("CP01");
+            f.setCondicion("Contado");
+            f.setAgente(arrnpagos.get(0).getArrcargos().get(0).getAgente());
+            f.setPlazo(arrnpagos.get(0).getArrcargos().get(0).getPlazo());
+            f.setMarca(arrnpagos.get(0).getArrcargos().get(0).getRef());
+            f.setLugarexpedicion(fn.getLugar_exp());
+            //concepto
+            f.setCuentaabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getId_concepto() + "");
+            f.setDesccuenta(arrcuentas.get(JcCuenta.getSelectedIndex()).getNombre());
+            String folios = "";
+            String facturas = "";
+            //Mandar un string con los folios fiscales
+
+            ArrayList<Dfactura> arrdet = new ArrayList<>();
+            String metodo = "";
+            boolean flagmetodo = false;
+            boolean ispue = false;
+            //Detallado del pago por nformas de pago
+            for (int x = 0; x < arrnpagos.size(); x++) {
                 ArrayList<Detpagos> arrdetpago = new ArrayList<>();
-                ArrayList<Dfactura> arrdet = new ArrayList<>();
-                ArrayList<Detpagos> arrdetpago17 = new ArrayList<>();
-                String metodo = "";
-                boolean flagmetodo = false;
-                boolean ispue = false;
-                //Detallado del pago
-                for (int i = 0; i < arrcargoseleccion.size(); i++) {
+                Tipo_pagos tp = new Tipo_pagos();
+                System.out.println("a " + arrnpagos.get(x).getArrcargos().size());
+                for (int i = 0; i < arrnpagos.get(x).getArrcargos().size(); i++) {
                     Detpagos d = new Detpagos();
                     d.setIddocumento(f.getFolio());
                     d.setCantidad(1);
@@ -988,99 +868,109 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setUmedida("ACT");
                     d.setPrecio(0);
                     d.setMoneda(f.getMoneda());
-                    d.setMonto(total);
+                    d.setMonto(arrnpagos.get(x).getArrcargos().get(i).getDescuento());
                     d.setRfcctaemisora("AB");
                     d.setCtaemisora("12");
                     d.setRfcctareceptora("BC");
                     d.setCtareceptora("34");
-                    d.setUuid(arrcargoseleccion.get(i).getFoliofiscal());
-                    d.setFolio(arrcargoseleccion.get(i).getReferencia());
-                    d.setFormadedpago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                    d.setMetodopago(arrcargoseleccion.get(i).getMetodopago());
-                    d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
-                    d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
+                    d.setUuid(arrnpagos.get(x).getArrcargos().get(i).getFoliofiscal());
+                    d.setFolio(arrnpagos.get(x).getArrcargos().get(i).getReferencia());
+                    d.setFormadedpago(arrnpagos.get(x).getArrcargos().get(i).getFormapago());
+                    d.setMetodopago(arrnpagos.get(x).getArrcargos().get(i).getMetodopago());
+                    d.setParcialidad(arrnpagos.get(x).getArrcargos().get(i).getParcialidad());
+                    d.setIdcargo(arrnpagos.get(x).getArrcargos().get(i).getId_cargo());
                     if (i == 0) {
-                        metodo = arrcargoseleccion.get(i).getMetodopago();
-                        flagmetodo = metodo.equals(arrcargoseleccion.get(i).getMetodopago());
-                        ispue = arrcargoseleccion.get(i).getMetodopago().equals("PUE");
+                        metodo = arrnpagos.get(x).getArrcargos().get(i).getMetodopago();
+                        flagmetodo = metodo.equals(
+                                arrnpagos.get(x).getArrcargos().get(i).getMetodopago());
+                        ispue = arrnpagos.get(x).getArrcargos().get(i).getMetodopago().equals("PUE");
                     } else {
-                        flagmetodo = metodo.equals(arrcargoseleccion.get(i).getMetodopago());
-                        ispue = arrcargoseleccion.get(i).getMetodopago().equals("PUE");
+                        flagmetodo = metodo.equals(
+                                arrnpagos.get(x).getArrcargos().get(i).getMetodopago());
+                        ispue = arrnpagos.get(x).getArrcargos().
+                                get(i).getMetodopago().equals("PUE");
                         if (flagmetodo == false) {
-//                            i = arrcargoseleccion.size();
                             break;
                         }
                     }
                     double sa;
                     double pa;
                     double sal;
-                    sa = (f.getMoneda().equals("MXN")) ? arrcargoseleccion.get(i).getSaldomx() : arrcargoseleccion.get(i).getSaldo();
-                    d.setSaldo(sa - arrcargoseleccion.get(i).getDescuento());
-                    pa = arrcargoseleccion.get(i).getDescuento();
+                    sa = (f.getMoneda().equals("MXN"))
+                            ? arrnpagos.get(x).getArrcargos().get(i).getSaldomx()
+                            : arrnpagos.get(x).getArrcargos().get(i).getSaldo();
+                    d.setSaldo(sa - arrnpagos.get(x).getArrcargos().get(i).getDescuento());
+                    pa = arrnpagos.get(x).getArrcargos().get(i).getDescuento();
                     sal = sa - pa;
                     d.setImportesaldoant(getcant16(sa));
                     d.setImportepagado(getcant16(pa));
                     d.setImpsaldoinsoluto(getcant16(sal));
                     arrdetpago.add(d);
                 }
+                tp = arrnpagos.get(x);
+                tp.setArrdetpago(arrdetpago);
+                arrnpagos.set(x, tp);
+                //arrdetpago.clear();
+            }
+            f.setArrnpagos(arrnpagos);
 //                Solo 1 renglon para el cuerpo de la factura
-                Dfactura df = new Dfactura();
-                df.setPrecio(0);
-                df.setImpuesto("01");
-                df.setImporta(0);
-                df.setDescripcion("Pago");
-                df.setUmedida("ACT");
-                df.setCodigo("84111506");
-                df.setCantidad(0);
-                arrdet.add(df);
-                f.setArr(arrdet);
-                f.setArrpagos(arrdetpago);
-                //f.setArrpagos17(arrdetpago17);
-                f.setRefncredito(facturas);
-                f.setObservaciones(JtObs.getText().toUpperCase());
-                f.setFoliofiscalorig(folios);
-                if (!flagmetodo) {
-                    JOptionPane.showMessageDialog(null, "Error!,- No puedes seleccionar una factura PUE y PPD en un mismo pago");
-                } else {
-                    int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
+            Dfactura df = new Dfactura();
+            df.setPrecio(0);
+            df.setImpuesto("01");
+            df.setImporta(0);
+            df.setDescripcion("Pago");
+            df.setUmedida("ACT");
+            df.setCodigo("84111506");
+            df.setCantidad(0);
+            arrdet.add(df);
+            f.setArr(arrdet);
+            //f.setArrpagos(arrdetpago);
+            //f.setArrpagos17(arrdetpago17);
+            f.setRefncredito(facturas);
+            f.setObservaciones(JtObs.getText().toUpperCase());
+            f.setFoliofiscalorig(folios);
+            if (!flagmetodo) {
+                JOptionPane.showMessageDialog(null, "Error!,- No puedes seleccionar una factura PUE y PPD en un mismo pago");
+            } else {
+                int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
 //                    Verifica si usar el metodo pue y usar operaciones de Solo hacer abono y no complemento
-                    if (ispue) {
-                        if (verifica != 0) {
-                            JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
-                        } else {
-                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
-                            if (id != 0) {
-                                setcomisiones(f);
-                                JOptionPane.showMessageDialog(null, "Pago realizado con exito");
-//                                System.out.println("Exito");
-                                vaciarcampos();
-                                JtCliente.requestFocus();
-                            }
-                        }
+                if (ispue) {
+                    if (verifica != 0) {
+                        JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                     } else {
-                        if (verifica != 0) {
-                            JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
-                        } else {
-//                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
-                            if (id != 0) {
+                        int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                        if (id != 0) {
+                            setcomisiones(f);
+                            JOptionPane.showMessageDialog(null, "Pago realizado con exito");
 //                                System.out.println("Exito");
-                                daoxmlpagostpu dx = new daoxmlpagostpu();
-                                f.setId(id);
-                                dx.generarfac(f, cpt, sqlempresa);
-                                timbrarXML tim = new timbrarXML();
-                                Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                                dfac.Updatesellofiscalpagotpu(cpt, s, id);
-                                setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
-                                JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
-                                setcomisiones(f);
-                                vaciarcampos();
-                                JtCliente.requestFocus();
-                            }
+                            vaciarcampos();
+                            JtCliente.requestFocus();
+                        }
+                    }
+                } else {
+                    if (verifica != 0) {
+                        JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
+                    } else {
+//                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
+                        int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                        if (id != 0) {
+//                                System.out.println("Exito");
+                            daoxmlpagostpu dx = new daoxmlpagostpu();
+                            f.setId(id);
+                            dx.generarfac(f, cpt, sqlempresa);
+                            timbrarXML tim = new timbrarXML();
+                            Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+                            dfac.Updatesellofiscalpagotpu(cpt, s, id);
+                            setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+                            JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
+                            setcomisiones(f);
+                            vaciarcampos();
+                            JtCliente.requestFocus();
                         }
                     }
                 }
             }
+
         }
         jLabel2.setVisible(true);
     }
@@ -1129,7 +1019,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             comi.setReferencia(arrcomision.get(i).getReferencia());
             comi.setSerie("A");
             comi.setDias(arrcomision.get(i).getDias());
-            comi.setFecha(f.getFecha());
+            comi.setFecha(f.getFechapago());
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
@@ -1149,18 +1039,21 @@ public class pagotpu2 extends javax.swing.JPanel {
      */
     private String referencias() {
         String ref = "";
-        for (int i = 0; i < arrcargoseleccion.size(); i++) {
-            String arrref = arrcargoseleccion.get(i).getReferencia();
-            if (arrcargoseleccion.size() == 1) {
-                ref = "referencia='" + arrref + "'";
-            } else {
-                if (i == 0) {
-                    ref = "referencia='" + arrref + "' or ";
+        for (Tipo_pagos arrp : arrnpagos) {
+            for (int i = 0; i < arrp.getArrcargos().size(); i++) {
+                String arrref = arrp.getArrcargos().get(i).getReferencia();
+                if (arrp.getArrcargos().size() == 1) {
+                    ref = "referencia='" + arrref + "'";
                 } else {
-                    ref += "referencia='" + arrref + "'";
+                    if (i == 0) {
+                        ref = "referencia='" + arrref + "' ";
+                    } else {
+                        ref += " or referencia='" + arrref + "'";
+                    }
                 }
             }
         }
+
         return ref;
     }
 
@@ -1245,7 +1138,6 @@ public class pagotpu2 extends javax.swing.JPanel {
     private void vaciarcampos() {
         arrcargoseleccion.clear();
         arrnpagos.clear();
-        JtTCambio.setText("");
         JlDesc.setText("0");
         Jlsub.setText("0");
         JlIva.setText("0");
@@ -1254,7 +1146,6 @@ public class pagotpu2 extends javax.swing.JPanel {
         JtCliente.setText("");
         JlNombre.setText("");
         JtObs.setText(nombre);
-        JcUsd.setSelected(false);
         JtCliente.requestFocus();
         llenalistafac();
         actualizaimportes();
@@ -1284,12 +1175,12 @@ public class pagotpu2 extends javax.swing.JPanel {
                     double iva = getnewcantidades(totalcar, "iva");
                     model.setValueAt(folio, nrows, 0);
                     model.setValueAt(totalcar, nrows, 1);
-                    model.setValueAt(importe, nrows, 2);
-                    model.setValueAt(iva, nrows, 3);
+                    model.setValueAt(fd.formatdecimalv2(importe), nrows, 2);
+                    model.setValueAt(fd.formatdecimalv2(iva), nrows, 3);
                     model.setValueAt(arrpg.getFp(), nrows, 4);
                     model.setValueAt(arrpg.getTipocambio(), nrows, 5);
-                    subtotal += fd.formatdecimalv2(importe);
-                    impuestos += fd.formatdecimalv2(iva);
+                    subtotal += importe;
+                    impuestos += iva;
                     nrows++;
                 }
                 JtDetalle.setModel(model);
@@ -1324,11 +1215,13 @@ public class pagotpu2 extends javax.swing.JPanel {
         switch (tipo) {
             case "importe":
                 double aux = a / 1.16;
-                cant = BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue();
+                //cant = BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue();
+                cant = aux;
                 break;
             case "iva":
                 aux = (a / 1.16) * 0.16;
-                cant = (BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue());
+                //cant = (BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue());
+                cant = aux;
                 break;
         }
         cant = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -1340,27 +1233,13 @@ public class pagotpu2 extends javax.swing.JPanel {
         return cant;
     }
 
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCuenta;
-    private javax.swing.JComboBox<String> JcForma;
     private javax.swing.JComboBox<String> JcMetodo;
-    private javax.swing.JCheckBox JcUsd;
     private javax.swing.JComboBox<String> JcUso;
     private javax.swing.JLabel JlDesc;
     private javax.swing.JLabel JlIva;
     private javax.swing.JLabel JlNombre;
-    private javax.swing.JLabel JlTcambio;
     private javax.swing.JLabel JlTotal;
     private javax.swing.JList<String> Jlcargofac;
     private javax.swing.JLabel Jlsub;
@@ -1368,14 +1247,12 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JTable JtDetalle;
     private com.toedter.calendar.JDateChooser JtFecha;
     private javax.swing.JTextArea JtObs;
-    private javax.swing.JTextField JtTCambio;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -1389,7 +1266,6 @@ public class pagotpu2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

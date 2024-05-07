@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,d.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto,formapago
+		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,d.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto,formapagop
 from doctospagotpu d join ddoctospagotpu dd on dd.id_doctopago=d.id_doctopago
 where dd.id_doctopago=$P{id}
 order by noparcialidad]]>
@@ -25,7 +25,7 @@ order by noparcialidad]]>
 	<field name="importesdoant" class="java.lang.Double"/>
 	<field name="importepagado" class="java.lang.Double"/>
 	<field name="impsaldoinsoluto" class="java.lang.Double"/>
-	<field name="formapago" class="java.lang.String"/>
+	<field name="formapagop" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -277,7 +277,7 @@ order by noparcialidad]]>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{formapago}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{formapagop}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

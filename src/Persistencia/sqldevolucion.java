@@ -364,14 +364,14 @@ public class sqldevolucion {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select distinct p.id_pedido,dp.id_dpedido,p.pedido,p.fecha,p.id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
-                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento, dpp.cantidadrestante\n"
                     + "from pedido p\n"
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
                     + "join " + bdcob + "\n"
                     + "where p.serie='" + serie + "' and p.id_pedido=" + id;
-//            System.out.println("sin dev ped " + sql);
+            System.out.println("sin dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -390,6 +390,7 @@ public class sqldevolucion {
                 d.setDescripcion(rs.getString("descripcion"));
                 d.setDureza(rs.getString("dureza"));
                 d.setIdmaterial(rs.getInt("id_material"));
+                d.setCantrestante(rs.getDouble("cantidadrestante"));
                 d.setId_devolucion(0);
                 arr.add(d);
             }
@@ -586,6 +587,7 @@ public class sqldevolucion {
 //                int ren = arr.getRenglon();
                 double precio = arr.getPrecio();
                 double cant = arr.getCantidad();
+                double cantrdev = arr.getCantidadrestdev();
                 int idpedimento = arr.getId_pedimento();
                 sql = "insert into kardex "
                         + "values(" + k1 + "," + c1 + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
@@ -593,7 +595,7 @@ public class sqldevolucion {
 //                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantidadrestante=cantidadrestante-" + cant + " "
+                sql = "update dpedimentos set cantidadrestante=" + cantrdev
                         + "where id_pedimento=" + idpedimento + " and id_material=" + idmat + " and dureza='" + dur + "'";
 //                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);
@@ -609,6 +611,7 @@ public class sqldevolucion {
                 double precio = arr.getPrecio();
                 double cant = arr.getCantidad();
                 int dped = arr.getId_dpedimento();
+                double cantr = arr.getCantrestante();
                 int idpedimento = arr.getId_pedimento();
                 String pedido = arr.getPedido();
                 sql = "insert into kardex "
@@ -617,7 +620,7 @@ public class sqldevolucion {
 //                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " "
+                sql = "update dpedimentos set cantidadrestante=" + cantr
                         + "where id_dpedimento=" + dped;
 //                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);

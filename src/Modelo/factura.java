@@ -12,31 +12,32 @@ import java.util.Date;
  *
  * @author GATEWAY1-
  */
-public class factura implements java.io.Serializable{
+public class factura implements java.io.Serializable {
+
     private int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas,
-            cantidadxcaja , addenda,enviado, cvecliente, cveagente, parcialidad,
-            parcialidad2,foliokardex,agente,plazo, totalpares,conceptos,
-            id_pedido,id_kardex,foliopago,idcargo,idabono,year,mes;
+            cantidadxcaja, addenda, enviado, cvecliente, cveagente, parcialidad,
+            parcialidad2, foliokardex, agente, plazo, totalpares, conceptos,
+            id_pedido, id_kardex, foliopago, idcargo, idabono, year, mes;
     private String nombrecliente, ncliente, nombreagente, claveusuario, serie,
-            fecha, fechacancel, motivodex, pedido, fechasolicitado, condicion, 
-            fechaentrega, nombre, rfc, calle, nexterior, ninterior,colonia,
+            fecha, fechacancel, motivodex, pedido, fechasolicitado, condicion,
+            fechaentrega, nombre, rfc, calle, nexterior, ninterior, colonia,
             localidad, referencia, municipio, estado, pais, cp, Dnombre,
             Datencion, Dcalle, Dexterior, Dinterior, Dcolonia, Dlocalidad,
             Dreferencia, Dmunicipio, Destado, Dpais, Dcp, Observaciones,
             cadenaorig, sello, Tiposerie, Moneda, Fechaenvio, Formapago,
-            Metodopago, Lugarexpedicion,Numctapago, foliofiscalorig,
+            Metodopago, Lugarexpedicion, Numctapago, foliofiscalorig,
             seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal,
             nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion,
-            descmetodop, empresa, certificado,marca, cuentaabono,subabono,
-            desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
-            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno,
+            descmetodop, empresa, certificado, marca, cuentaabono, subabono,
+            desccuenta, refncredito, rfcctaemisora, ctaemisora, rfcctareceptor,
+            ctareceptora, bancoemisor, bancoreceptor, ordenpago, seriecpt, turno,
             fechapago, referenciafac;
-    private String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
-    private double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
-            baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
-            iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17,
-            saldo,saldomx,pago,importe;
-    private float  montopago;
+    private String codigo, descripcion, umedida, impuestodet, tipofac, exportacion;
+    private double monto, impiva16, baseiva16, totalpago16, total, subtotal, impuestos, Descuento,
+            baseimpuesto, cantidadfloat, preciodetalle, basedetalle, descuentodetalle, importedetalle,
+            iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig, impiva17, baseiva17, totalpago17,
+            saldo, saldomx, pago, importe;
+    private float montopago;
     private Cliente c;
     private ArrayList<Dfactura> arr = new ArrayList<>();
     private ArrayList<String> arruuid = new ArrayList<>();
@@ -45,6 +46,15 @@ public class factura implements java.io.Serializable{
     private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
     private ArrayList<Poliza> arrpolizas = new ArrayList<>();
     private Date fechap;
+    private ArrayList<Tipo_pagos> arrnpagos = new ArrayList<>();
+
+    public ArrayList<Tipo_pagos> getArrnpagos() {
+        return arrnpagos;
+    }
+
+    public void setArrnpagos(ArrayList<Tipo_pagos> arrnpagos) {
+        this.arrnpagos = arrnpagos;
+    }
 
     public int getMes() {
         return mes;
@@ -461,7 +471,6 @@ public class factura implements java.io.Serializable{
     public void setArrcargo(ArrayList<cargo> arrcargo) {
         this.arrcargo = arrcargo;
     }
-    
 
     public ArrayList<String> getArruuid() {
         return arruuid;
@@ -1198,6 +1207,5 @@ public class factura implements java.io.Serializable{
     public void setMontofoliofiscalorig(double montofoliofiscalorig) {
         this.montofoliofiscalorig = montofoliofiscalorig;
     }
-    
-    
+
 }

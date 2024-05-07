@@ -22,6 +22,16 @@ public class Tipo_pagos implements java.io.Serializable {
     private String mp;
     //Lista de facturas seleccionadas
     private ArrayList<cargo> arrcargos = new ArrayList<>();
+    
+    private ArrayList<Detpagos> arrdetpago = new ArrayList<>();
+
+    public ArrayList<Detpagos> getArrdetpago() {
+        return arrdetpago;
+    }
+
+    public void setArrdetpago(ArrayList<Detpagos> arrdetpago) {
+        this.arrdetpago = arrdetpago;
+    }
 
     public ArrayList<cargo> getArrcargos() {
         return arrcargos;

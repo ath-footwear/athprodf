@@ -157,13 +157,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="522" y="11" width="50" height="12" forecolor="#666666" uuid="2b3097c5-2a1c-49a9-a170-7248680395b9"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{folio}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="477" y="79" width="95" height="10" uuid="e17cad3f-487f-4249-9c20-f5219504cf2d"/>
 				<textElement textAlignment="Center">
@@ -269,6 +262,13 @@
 				</textElement>
 				<text><![CDATA[Fecha de Pago :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="522" y="11" width="50" height="12" forecolor="#666666" uuid="8c2c3bef-4fcc-4713-86f5-031dbacf9336"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_doctopago}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

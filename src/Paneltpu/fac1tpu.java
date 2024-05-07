@@ -884,7 +884,7 @@ public class fac1tpu extends javax.swing.JPanel {
         //la primer condicional es solo para el mismo año y dentro del mismo mes o inventario
         //La segunda solo si cambia de año y es diciembre con enero, ya que si no
         //los calculos estarian erroneos
-        if ((-1 >= mes && mes <= 0)
+        if (( mes == 0)
                 || (year != 0 && (ci.getMes() == 12 && f.getMes() == 1))) {
             flag = true;
         }

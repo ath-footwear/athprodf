@@ -671,9 +671,10 @@ public class sqlkardex {
             String serie = k.getSerie();
             String ref = k.getDocref();
             int concepto = k.getId_concepto();
+            double canr = k.getCantrestante();
             String operacion = "cantidadrestante";
 //            Operacion para hacer la debida operacion entre si es salida o entrada importante ya que es correcion
-            operacion += (cuenta == 1 || cuenta == 10 || cuenta == 20) ? "-" + cant : "+" + cant;
+            //operacion += (cuenta == 1 || cuenta == 10 || cuenta == 20) ? "-" + cant : "+" + cant;
             String sql = "update kardex set estatus='2' where id_kardex=" + kardex + " and renglon=" + ren;
 ////            String sql = "delete from kardex where id_kardex=" + kardex + " and renglon=" + ren;
 ////            System.out.println("del kardex " + sql);
@@ -681,7 +682,9 @@ public class sqlkardex {
             st.executeUpdate();
 //            sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " where id_dpedimento=" + dped; ver anterior
 // Se utiliza la funcion cast para insertar en la bd la operacion del stock a solo con 2 decimales, por si hubiera un mayor a 2
-            sql = "update dpedimentos set cantidadrestante=cast(" + operacion + " as decimal(20,2)) "
+//cast(" + operacion + " as decimal(20,2))
+//Calculo ya obtenido v2
+            sql = "update dpedimentos set cantidadrestante=" + canr
                     + "where id_pedimento=" + dped + " and id_material=" + mat + " and dureza='" + dureza + "'";
 //            System.out.println("del dpedimento " + sql);
             st = c.prepareStatement(sql);

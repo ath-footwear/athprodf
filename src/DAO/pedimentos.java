@@ -37,4 +37,6 @@ public interface pedimentos {
     public double getStockwithkardex(Connection cpt, int kardex);
     
     public ArrayList<Dpedimento> getMatswith_Idped(Connection cpt, int Id_pedimento);
+    
+    public double getstockactual(Connection c, Dpedimento dp);
 }

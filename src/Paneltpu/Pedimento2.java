@@ -324,27 +324,32 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     }//GEN-LAST:event_JmBorrarActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Formateodedatos fdato = new Formateodedatos();
+        try {
+            Formateodedatos fdato = new Formateodedatos();
 //        Es importante hacer esta validacion y que no se nos vaya algun caracter especial y nos truene algo que no deberia
-        boolean flag = fdato.verificaStringsSC(JtPedimento.getText());
-        boolean flag1 = fdato.verificaStringsSC(JtObservaciones.getText());
-        boolean flag2 = (JtPedimento.getText().equals("0"));
-        if (!flag) {
-            JtPedimento.requestFocus();
+            boolean flag = fdato.verificaStringsSC(JtPedimento.getText());
+            boolean flag1 = fdato.verificaStringsSC(JtObservaciones.getText());
+            boolean flag2 = (JtPedimento.getText().equals("0"));
+            if (!flag) {
+                JtPedimento.requestFocus();
+            }
+            if (!flag1) {
+                JtObservaciones.requestFocus();
+            }
+            if (flag2) {
+                JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
+                JtPedimento.requestFocus();
+                JtPedimento.setText("");
+            }
+            if (flag && flag1 && !flag2) {
+                setpedimento();
+            } else {
+                JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        if (!flag1) {
-            JtObservaciones.requestFocus();
-        }
-        if (flag2) {
-            JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
-            JtPedimento.requestFocus();
-            JtPedimento.setText("");
-        }
-        if (flag && flag1 && !flag2) {
-            setpedimento();
-        } else {
-            JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
-        }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setpedimento() {
@@ -478,17 +483,6 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             mate.addElement(arrmat1.getNombre());
         }
         JcProveedor.setModel(mate);
-    }
-
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

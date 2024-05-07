@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="572" pageHeight="752" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3902e00a-8c13-47e8-bd27-69d214d809f4">
-	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.zoom" value="1.9487171000000016"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="id" class="java.lang.Integer">
@@ -21,31 +21,39 @@ where id_pedimento=$P{id}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="16" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="225" height="14" uuid="38cd2cbb-d0e7-4f82-b48d-ed192602f5bf"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="0" y="0" width="225" height="12" uuid="38cd2cbb-d0e7-4f82-b48d-ed192602f5bf"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{matpedimento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="225" y="0" width="80" height="14" uuid="4eb9996b-97dc-4766-b06e-1ad1806929ae"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="225" y="0" width="80" height="12" uuid="4eb9996b-97dc-4766-b06e-1ad1806929ae"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="0" width="70" height="14" uuid="4f45237a-04fc-416f-936d-6c54a789b771"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="305" y="0" width="70" height="12" uuid="4f45237a-04fc-416f-936d-6c54a789b771"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="375" y="0" width="100" height="14" uuid="a5f64c5b-1495-417b-91a1-3b213567c21a"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="375" y="0" width="100" height="12" uuid="a5f64c5b-1495-417b-91a1-3b213567c21a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidadrestante}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="475" y="0" width="73" height="14" uuid="70949081-b850-455d-8624-0ca9f722bfdc"/>
+				<reportElement x="475" y="0" width="79" height="12" uuid="70949081-b850-455d-8624-0ca9f722bfdc"/>
 				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{noserie}]]></textFieldExpression>
 			</textField>

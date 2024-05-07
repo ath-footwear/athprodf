@@ -177,6 +177,7 @@ public class Cargosncrtpu_npagos extends javax.swing.JDialog {
             }
         });
 
+        JtTCambio1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtTCambio1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtTCambio1ActionPerformed(evt);
@@ -293,13 +294,7 @@ public class Cargosncrtpu_npagos extends javax.swing.JDialog {
     }//GEN-LAST:event_JlIniciarMouseClicked
 
     private void JlIniciarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlIniciarMousePressed
-        try {
-            if (checkmpago()) {
-                setearfacs();
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(Cargosncrtpu_npagos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagos();
     }//GEN-LAST:event_JlIniciarMousePressed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -349,6 +344,8 @@ public class Cargosncrtpu_npagos extends javax.swing.JDialog {
         if (!verificafloat(JtTCambio1.getText().toUpperCase())) {
             JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
             JtTCambio1.requestFocus();
+        } else {
+            setpagos();
         }
     }//GEN-LAST:event_JtTCambio1ActionPerformed
 
@@ -511,6 +508,16 @@ public class Cargosncrtpu_npagos extends javax.swing.JDialog {
         return flag;
     }
 
+    private void setpagos() {
+        try {
+            if (checkmpago()) {
+                setearfacs();
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Cargosncrtpu_npagos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Funcion para usar o seleccionar el tipo de cambio
      */
@@ -599,8 +606,9 @@ public class Cargosncrtpu_npagos extends javax.swing.JDialog {
 
     /**
      * Totaliza el importe de las facturas seleccionas
+     *
      * @param arrc
-     * @return 
+     * @return
      */
     private double totaliza_facs(ArrayList<cargo> arrc) {
         double total = 0;

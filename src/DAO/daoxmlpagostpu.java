@@ -70,6 +70,7 @@ public class daoxmlpagostpu {
             x.setArrpagos17(f.getArrpagos17());
             BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
             x.setTasaCuota(d);
+            x.setArrnpagos(f.getArrnpagos());
             generarXML40pagostpu xml = new generarXML40pagostpu();
             xml.crearComprobante(x, con, empresa);
         } catch (Exception ex) {

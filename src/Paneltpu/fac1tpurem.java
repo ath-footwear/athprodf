@@ -12,9 +12,11 @@ import DAO.daoDevolucion;
 import DAO.daocfdi;
 import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
+import DAO.daopedimentos;
 import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
+import Modelo.Dpedimento;
 import Modelo.Formadepago;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
@@ -341,8 +343,10 @@ public class fac1tpurem extends javax.swing.JPanel {
         String botones[] = {"Aceptar", ""
             + ""
             + "Cancelar"};
-        int opcion = JOptionPane.showOptionDialog(this, "¿Estas seguro que deseas realizar la cancelacion?, \nRecuerda que ya no hay retroceso en este proceso", "ATHLETIC",
-                0, 0, null, botones, this);
+        int opcion = JOptionPane.showOptionDialog(this,
+                "¿Estas seguro que deseas realizar la cancelacion?, "
+                + "\nRecuerda que ya no hay retroceso en este proceso",
+                "ATHLETIC", 0, 0, null, botones, this);
         if (opcion == JOptionPane.YES_OPTION) {
             int row = JtDetalle.getSelectedRow();
 //            boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
@@ -353,16 +357,9 @@ public class fac1tpurem extends javax.swing.JPanel {
             Formateodedatos fd = new Formateodedatos();
 //            Obtiene la direcion con la bd correcta de acuerdo al turno del usuario
             String bdcob = fd.getBDcob_REMinterna(u.getTurno());
-//            if (u.getTurno().equals("5")) {
-//                bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
-//            }
-//            if (u.getTurno().equals("6")) {
-//                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
-//            }
-//            if (u.getTurno().equals("6")) {
-//                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
-//            }
-//            bdcob = (u.getTurno().equals("5")) ? "RACobranzaTpu" : "RACobranzamaq";
+//            bdcob = (u.getTurno().equals("5"))
+//                    ? "RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia"
+//                    : "RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia";
 //            String bdcob = "RACobranzatpu.dbo.Cargo c on p.pedido=c.referencia";
 //            if (!ncr && !pag) {
             daoDevolucion d = new daoDevolucion();
@@ -378,10 +375,40 @@ public class fac1tpurem extends javax.swing.JPanel {
                 arrd = d.getpedidocancelsindev(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
                 dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
             }
+            /**
+             * precalcular registro por si hay devoluciones
+             */
+            for (int i = 0; i < arrdevpedimento.size(); i++) {
+                daopedimentos dp = new daopedimentos();
+                Dpedimento dped = new Dpedimento();
+                Ddevolucion devo = arrdevpedimento.get(i);
+                dped.setId_pedimento(arrdevpedimento.get(i).getId_pedimento());
+                dped.setId_material(arrdevpedimento.get(i).getIdmaterial());
+                dped.setDureza(arrdevpedimento.get(i).getDureza());
+                double cantr = dp.getstockactual(cpt, dped);
+                double rescant = cantr - arrdevpedimento.get(i).getCantidad();
+                devo.setCantidadrestdev(fd.formatdecimalv3(rescant));
+                arrdevpedimento.set(i, devo);
+            }
+            /**
+             * Precalcular cantidad restate por concelacion
+             */
+            for (int i = 0; i < arrd.size(); i++) {
+                daopedimentos dp = new daopedimentos();
+                Dpedimento dped = new Dpedimento();
+                Ddevolucion devo = arrd.get(i);
+                dped.setId_pedimento(arrd.get(i).getId_pedimento());
+                dped.setId_material(arrd.get(i).getIdmaterial());
+                dped.setDureza(arrd.get(i).getDureza());
+                double cantr = dp.getstockactual(cpt, dped);
+                double rescant = cantr + arrd.get(i).getCantidad();
+                devo.setCantrestante(fd.formatdecimalv3(rescant));
+                arrd.set(i, devo);
+            }
+
 //                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
 //                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
 //                } else {
-
             daoConceptos dc = new daoConceptos();
             java.util.Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -594,6 +621,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         }
         setreport(folio, moneda, ser, total, ped, tipo);
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Cancelamiento;
     private javax.swing.JMenuItem JbCancelar1;

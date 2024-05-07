@@ -98,7 +98,7 @@ public class sqlpedimentos {
             for (int i = 0; i < p.getArr().size(); i++) {
                 int mat = p.getArr().get(i).getId_material();
                 double precio = p.getArr().get(i).getPrecio();
-                double costo =p.getArr().get(i).getCosto();
+                double costo = p.getArr().get(i).getCosto();
                 double cant = p.getArr().get(i).getCantidad();
                 String matped = p.getArr().get(i).getMatped();
                 double importe = p.getArr().get(i).getImporte();
@@ -122,7 +122,7 @@ public class sqlpedimentos {
             try {
                 cpt.rollback();
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null,"Error en pedimento "+ ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -341,11 +341,12 @@ public class sqlpedimentos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select cantidadrestante\n"
+            String sql = "select sum(cantidadrestante) as cantidadrestante\n"
                     + "from dpedimentos dp\n"
                     + "join kardex k on dp.id_pedimento=k.id_pedimento and "
                     + "dp.id_material=k.id_material and dp.dureza=k.dureza\n"
-                    + "where id_kardex=?";
+                    + "where id_kardex=? and k.estatus='1'";
+//            System.out.println(sql+ " "+kardex);
             st = cpt.prepareStatement(sql);
             st.setInt(1, kardex);
             rs = st.executeQuery();
@@ -382,5 +383,30 @@ public class sqlpedimentos {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public double getstockactual(Connection c, Dpedimento dp) {
+        double stock = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select cantidadrestante\n"
+                    + "from DPedimentos\n"
+                    + "where id_pedimento=? and id_material=? and dureza=? ";
+//            System.out.println(sql);
+            st = c.prepareStatement(sql);
+            st.setInt(1, dp.getId_pedimento());
+            st.setInt(2, dp.getId_material());
+            st.setString(3, dp.getDureza());
+            rs = st.executeQuery();
+            while (rs.next()) {
+                stock = rs.getDouble("cantidadrestante");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return stock;
     }
 }

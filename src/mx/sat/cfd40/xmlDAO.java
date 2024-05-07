@@ -1,6 +1,7 @@
 package mx.sat.cfd40;
 
 import Modelo.Detpagos;
+import Modelo.Tipo_pagos;
 import Modelo.cargo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -72,6 +73,15 @@ public class xmlDAO {
     private String PEDIDO;
     private String fechapago;
     private Date fechap;
+    private ArrayList<Tipo_pagos> arrnpagos = new ArrayList<>();
+
+    public ArrayList<Tipo_pagos> getArrnpagos() {
+        return arrnpagos;
+    }
+
+    public void setArrnpagos(ArrayList<Tipo_pagos> arrnpagos) {
+        this.arrnpagos = arrnpagos;
+    }
 
     public Date getFechap() {
         return fechap;

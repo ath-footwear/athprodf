@@ -61,7 +61,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         cobranza = c.getCobranzatpu();
         litecfdi = c.getLitecfdi();
         liteusuario = c.getLiteusuario();
-        this.u=u;
+        this.u = u;
     }
 
     /**
@@ -333,20 +333,21 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
 //        Realiza la validacion de el total de las lineas del sistema con lo capturado, ademas muestra las diferencias
-        if (arr.size() != arrinv.size()) {
-            JOptionPane.showMessageDialog(null, "No se puede realizar inventario debido a diferencia en captura "
-                    + "de inventario y stock de sistema\nTienes " + diferencias + " diferencias y numero de "
-                    + "materiales con pedimentos " + arr.size() + "/" + arrinv.size(), "Error en inventarios", JOptionPane.ERROR_MESSAGE);
+        boolean flag=checkcants();
+        if (arr.size() != arrinv.size() || !flag) {
+            JOptionPane.showMessageDialog(null, "Error en el numero de "
+                    + "productos con pedimentos " + arr.size() + "/" + arrinv.size(),
+                    "Error en inventarios", JOptionPane.ERROR_MESSAGE);
         } else {
             String botones[] = {"Aceptar", ""
                 + ""
                 + "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this, "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.", "TPU",
-                    0, 0, null, botones, this);
+            int opcion = JOptionPane.showOptionDialog(this,
+                    "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.",
+                    "TPU", 0, 0, null, botones, this);
             if (opcion == JOptionPane.YES_OPTION) {
                 generarcierre();
             }
-
         }
     }//GEN-LAST:event_jLabel3MousePressed
 
@@ -388,7 +389,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         try {
             Formateodedatos fd = new Formateodedatos();
             Map parametros = new HashMap();
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(fd.getReporte_inv(u.getTurno())+".jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(fd.getReporte_inv(u.getTurno()) + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -410,7 +411,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         try {
 //            Se selecciona el tipo de conexion
             Connection con = (reporte.equals("Invsiscap")) ? liteusuario : cpt;
-            String campo= (u.getTurno().equals("7"))?",noserie":"";
+            String campo = (u.getTurno().equals("7")) ? ",noserie" : "";
             Map parametros = new HashMap();
             Formateodedatos fd = new Formateodedatos();
             parametros.put("imagen", fd.getimagenreporte(u));
@@ -437,7 +438,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
             Formateodedatos fd = new Formateodedatos();
             JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
 //        Realiza respaldo de la bd    
-            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(),u.getTurno());
+            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(), u.getTurno());
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
@@ -486,6 +487,23 @@ public class Inventarios extends javax.swing.JInternalFrame {
                 }
             }
         }
+    }
+
+    private boolean checkcants() {
+        boolean flag = true;
+        for (int i = 0; i < arrinv.size(); i++) {
+            double c = arrinv.get(i).getCantidad();
+            double c1 = arrinv.get(i).getCantidadpedimento();
+            if (c1 != c) {
+                JOptionPane.showMessageDialog(null,
+                        "No se puede realizar inventario debido a diferencia de"
+                        + "stock, pedimento vs inventario fisico",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

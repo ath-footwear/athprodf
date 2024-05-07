@@ -989,7 +989,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             comi.setReferencia(arrcomision.get(i).getReferencia());
             comi.setSerie("E");
             comi.setDias(arrcomision.get(i).getDias());
-            comi.setFecha(f.getFecha());
+            comi.setFecha(f.getFechapago());
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);

@@ -8,6 +8,8 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -318,42 +320,62 @@ public class Kardexprod extends javax.swing.JDialog {
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             ver.setTitle("Kardex Producto");
             ver.setVisible(true);
+            regresarventana(ver);
         } catch (JRException ex) {
             Logger.getLogger(Kardexprod.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void vaciarcampos() {
-        JtNombre.setText("");
-        JtNombre.requestFocus();
+    /**
+     * Vuelve visible la interfaz
+     */
+    private void verrep() {
+        this.setVisible(true);
     }
 
     /**
-     * Formatear para que no tome en cuenta los espacios
+     * Usamos Windows listener para que cuando cierre el reporte regrese de
+     * nuevo a la ventana del reporte
      *
-     * @param mat
-     * @return
+     * @param ver
      */
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
-    }
+    private void regresarventana(JasperViewer ver) {
+        ver.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
 
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                verrep();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     /**

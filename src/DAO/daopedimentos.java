@@ -170,4 +170,18 @@ public class daopedimentos implements pedimentos {
         return s.getMatswith_idped(cpt, Id_pedimento);
     }
 
+    /**
+     * Obtiene el stock actual del pedimento de acuerdo a el id del pedimento,
+     * el material y dureza
+     *
+     * @param c
+     * @param dp
+     * @return
+     */
+    @Override
+    public double getstockactual(Connection c, Dpedimento dp) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getstockactual(c, dp);
+    }
+
 }
