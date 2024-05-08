@@ -467,4 +467,17 @@ public class daofactura_tpu implements Facturas_tpu {
         sqlfactura_tpu s = new sqlfactura_tpu();
         return s.updateclientedoc_TPU(con, c, id_documento);
     }
+
+    /**
+     * Obtiene cargos especiales solo para la relacion de factura
+     * @param c
+     * @param r
+     * @param bd
+     * @return 
+     */
+    @Override
+    public ArrayList<cargo> getfactstoFACReltpu_E(Connection c, String r, String bd) {
+        sqlfactura_tpu f = new sqlfactura_tpu();
+        return f.getfoliotoFACReltpu_E(c, r, bd);
+    }
 }

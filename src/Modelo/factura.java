@@ -31,7 +31,7 @@ public class factura implements java.io.Serializable {
             descmetodop, empresa, certificado, marca, cuentaabono, subabono,
             desccuenta, refncredito, rfcctaemisora, ctaemisora, rfcctareceptor,
             ctareceptora, bancoemisor, bancoreceptor, ordenpago, seriecpt, turno,
-            fechapago, referenciafac;
+            fechapago, referenciafac, status2;
     private String codigo, descripcion, umedida, impuestodet, tipofac, exportacion;
     private double monto, impiva16, baseiva16, totalpago16, total, subtotal, impuestos, Descuento,
             baseimpuesto, cantidadfloat, preciodetalle, basedetalle, descuentodetalle, importedetalle,
@@ -47,6 +47,14 @@ public class factura implements java.io.Serializable {
     private ArrayList<Poliza> arrpolizas = new ArrayList<>();
     private Date fechap;
     private ArrayList<Tipo_pagos> arrnpagos = new ArrayList<>();
+
+    public String getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(String status2) {
+        this.status2 = status2;
+    }
 
     public ArrayList<Tipo_pagos> getArrnpagos() {
         return arrnpagos;

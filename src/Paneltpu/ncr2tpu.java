@@ -689,7 +689,7 @@ public class ncr2tpu extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daofactura_tpu df = new daofactura_tpu();
-        Formateodedatos fd= new Formateodedatos();
+        Formateodedatos fd = new Formateodedatos();
 //        Obtiene los cargos pendientes y utiliza el nombre de la bd formateada
         arrcargo = df.getfactsoncrtpu(cpt, r, fd.getbd_tocargo(u.getTurno()));// cpt a usar
 //        Revisa que haya cargos de facturas pendientes si no manda mensaje
@@ -719,20 +719,23 @@ public class ncr2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        boolean band = true;
-        boolean band1 = checkunidad();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String col2 = JtDetalle.getValueAt(i, 1).toString();
-            if (col2.equals("")) {
-                band = false;
+        try {
+            boolean band = true;
+            boolean band1 = checkunidad();
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String col2 = JtDetalle.getValueAt(i, 1).toString();
+                if (col2.equals("")) {
+                    band = false;
+                }
             }
+            if (band && band1) {
+                setfactura();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto esta vacia o erronea, verificalo");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error " + e.getMessage());
         }
-        if (band && band1) {
-            setfactura();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto esta vacia o erronea, verificalo");
-        }
-
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
@@ -1038,10 +1041,10 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                            Hace el calculo interno del saldo restante y no hacerlo directo en la consulta
 //                            Todo de acuerdo a si la ncr es en dolares o no
                             if (JcUsd.isSelected()) {
-                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldo()-desc);
+                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldo() - desc);
 //                                System.out.println("usd");
                             } else {
-                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldomx()-desc);
+                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldomx() - desc);
 //                                System.out.println("mxn");
                             }
                             car.setDescuento(desc);// importe a descontar de cargos
@@ -1210,7 +1213,7 @@ public class ncr2tpu extends javax.swing.JPanel {
             String n = "1";
             String logo = "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
-            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
+            String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1294,10 +1297,10 @@ public class ncr2tpu extends javax.swing.JPanel {
                 total = subtotal + impuestos;
 //                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
-                JlIva.setText(formatdecimal(impuestos)+"");
-                Jlsub.setText(formatdecimal(subtotal)+"");
-                JlDesc.setText(formatdecimal(descuentos)+"");
-                JlTotal.setText(formatdecimal(total)+"");
+                JlIva.setText(formatdecimal(impuestos) + "");
+                Jlsub.setText(formatdecimal(subtotal) + "");
+                JlDesc.setText(formatdecimal(descuentos) + "");
+                JlTotal.setText(formatdecimal(total) + "");
             } else {
                 JtCliente.requestFocus();// regresa al campo inicial del cliente
             }

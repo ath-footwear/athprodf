@@ -1255,7 +1255,10 @@ public class fac2tpu extends javax.swing.JPanel {
             Formateodedatos fd = new Formateodedatos();
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura_tpu df = new daofactura_tpu();
+            ArrayList<cargo> arrcargoE = new ArrayList<>();
             arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            arrcargoE = df.getfactstoFACReltpu_E(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            sumalistas(arrcargoE);
             f.arrcargo = arrcargo;
             f.setVisible(true);
             arrcargoseleccion = f.arrcargoseleccion;
@@ -1631,6 +1634,11 @@ public class fac2tpu extends javax.swing.JPanel {
         }
     }
 
+    private void sumalistas(ArrayList<cargo> arra) {
+        for(cargo arre:arra){
+            arrcargo.add(arre);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcAgente;
     private javax.swing.JComboBox<String> JcCliente;

@@ -298,7 +298,7 @@ public class sqlfactura_tpu {
             String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,"
                     + "formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,"
                     + "cadenaoriginal,descmetodopago,c.id_cliente,tipodoc, "
-                    + "month(fecha) as mes, year(fecha) as year\n"
+                    + "month(fecha) as mes, year(fecha) as year, isnull(status2,'') as status2 \n"
                     + "from documento d\n"
                     + "join " + bd + ".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' "
@@ -328,6 +328,7 @@ public class sqlfactura_tpu {
                 f.setTipofac(rs.getString("tipodoc"));
                 f.setYear(rs.getInt("year"));
                 f.setMes(rs.getInt("mes"));
+                f.setStatus2(rs.getString("status2"));
                 arr.add(f);
             }
             rs.close();
@@ -1007,7 +1008,7 @@ public class sqlfactura_tpu {
                 int idcargo = f.getArrcargo().get(i).getId_cargo();
                 sql = "update cargo set " + tiposaldo + "=" + descuento + " where id_cargo=" + idcargo;
 //                sql = "update cargo set " + tiposaldo + "=" + tiposaldo + "-" + descuento + " where id_cargo=" + idcargo;
-                System.out.println("Actualizar cargos" + sql);
+//                System.out.println("Actualizar cargos" + sql);
                 st = cobranza.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -1025,7 +1026,7 @@ public class sqlfactura_tpu {
                         + "fecha,fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values (" + idcargo + "," + agente + "," + concepto + "," + cliente + ",'" + m + "','" + resp + "','"
                         + fecha + "','" + fecha + "'," + turno + ",0," + descuento + "," + descuento + ",0,0,'" + obs + "','" + usuario + "','1')";
-                System.out.println("Nuevo Abono " + sql);
+//                System.out.println("Nuevo Abono " + sql);
                 st = cobranza.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -1050,6 +1051,7 @@ public class sqlfactura_tpu {
             } catch (SQLException ex1) {
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
             }
+            JOptionPane.showMessageDialog(null, "Error Nueva ncr!, "+ex.getMessage());
         }
         return resp;
     }
@@ -1578,7 +1580,7 @@ public class sqlfactura_tpu {
             String sql = "select d.folio,c.referencia,convert(date,d.fecha) as fecha,d.nombre, saldo, d.total, isnull(d.foliofiscal,'') as foliofiscal\n"
                     + " from documento d\n"
                     + "join " + bd + ".dbo.Cargo c on c.referencia=d.folio\n"
-                    + "where c.id_cliente=" + nombre + " and d.serie='FAC' and d.estatus='1' and isnull(d.foliofiscal,'')!=''\n"
+                    + "where c.id_cliente=" + nombre + " and d.serie='FAC' and d.estatus='1' and tipodoc='N' and isnull(d.foliofiscal,'')!=''\n"
                     + "order by d.fecha desc";
             st = con.prepareStatement(sql);
 //            System.out.println("cargos fac " + sql);
@@ -1604,6 +1606,42 @@ public class sqlfactura_tpu {
         return arr;
     }
 
+        public ArrayList<cargo> getfoliotoFACReltpu_E(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select d.folio,c.referencia,convert(date,d.fecha) as fecha,"
+                    + "d.nombre, saldo, d.total, isnull(d.foliofiscal,'') as foliofiscal\n"
+                    + " from documento d\n"
+                    + "join " + bd + ".dbo.cargoespecial c on c.referenciadoc=d.folio\n"
+                    + "where c.id_cliente=" + nombre + " and d.serie='FAC' and d.estatus='1' "
+                    + "and tipodoc='E' and isnull(d.foliofiscal,'')!=''\n"
+                    + "order by d.fecha desc";
+            st = con.prepareStatement(sql);
+//            System.out.println("cargos fac " + sql);
+            rs = st.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                cargo c = new cargo();
+                c.setReferencia(rs.getString("referencia"));
+                c.setFecha(rs.getString("fecha"));
+                c.setSaldo(rs.getDouble("saldo"));
+                c.setNombre(rs.getString("nombre"));
+                c.setFoliofiscal(rs.getString("foliofiscal"));
+                c.setImporte(rs.getDouble("total"));
+                c.setRenglon(i);
+                arr.add(c);
+                i++;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
     public void setpoliza(Connection cob, ArrayList<Poliza> arr) {
         try {
             PreparedStatement st = null;

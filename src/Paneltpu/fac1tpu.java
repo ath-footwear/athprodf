@@ -15,6 +15,7 @@ import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura_tpu;
 import DAO.daokardexrcpt;
+import DAO.daopedimentos;
 import DAO.daoxmltpu;
 import Modelo.Addenda;
 import Modelo.Cliente;
@@ -25,6 +26,7 @@ import Modelo.Ddevolucion;
 import Modelo.Destinoscoppel;
 import Modelo.Devolucion;
 import Modelo.Dfactura;
+import Modelo.Dpedimento;
 import Modelo.Empresas;
 import Modelo.Formadepago;
 import Modelo.Formateo_Nempresas;
@@ -443,8 +445,9 @@ public class fac1tpu extends javax.swing.JPanel {
                 String botones[] = {"Aceptar", ""
                     + ""
                     + "Cancelar"};
-                int opcion = JOptionPane.showOptionDialog(this, "¿Deseas realizar una devolucion sobre la factura seleccionada?", "ATHLETIC",
-                        0, 0, null, botones, this);
+                int opcion = JOptionPane.showOptionDialog(this,
+                        "¿Deseas realizar una devolucion sobre la factura seleccionada?",
+                        "ATHLETIC", 0, 0, null, botones, this);
                 if (opcion == JOptionPane.YES_OPTION) {
                     String resp = "";
                     int row = JtDetalle.getSelectedRow();
@@ -531,7 +534,9 @@ public class fac1tpu extends javax.swing.JPanel {
                 0, 0, null, botones, this);
         if (opcion == JOptionPane.YES_OPTION) {
             int row = JtDetalle.getSelectedRow();
-            if (check_diaspasados(arrfactura.get(row))) {
+            String s2=arrfactura.get(row).getStatus2();
+            boolean acep=s2.equals("1");
+            if (check_diaspasados(arrfactura.get(row)) || acep) {
                 if (arrfactura.get(row).getTipofac().equals("N")) {
                     ejecutacancelacionnormal();
                 } else {
@@ -539,7 +544,8 @@ public class fac1tpu extends javax.swing.JPanel {
                 }
             } else {
                 JOptionPane.showMessageDialog(null,
-                        "No puedes cancelar una factura fuera del mes, llama a sistemas",
+                        "No puedes cancelar una factura fuera del mes o no esta"
+                                + " aprobada para cancelacion, llama a sistemas",
                         "Error al cancelar", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -799,6 +805,37 @@ public class fac1tpu extends javax.swing.JPanel {
                 arrd = d.getpedidocancelsindevfac(cpt, arrfactura.get(row).getId(), "A", bdcob);
                 dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
             }
+
+            /**
+             * precalcular registro por si hay devoluciones
+             */
+            for (int i = 0; i < arrdevpedimento.size(); i++) {
+                daopedimentos dp = new daopedimentos();
+                Dpedimento dped = new Dpedimento();
+                Ddevolucion devo = arrdevpedimento.get(i);
+                dped.setId_pedimento(arrdevpedimento.get(i).getId_pedimento());
+                dped.setId_material(arrdevpedimento.get(i).getIdmaterial());
+                dped.setDureza(arrdevpedimento.get(i).getDureza());
+                double cantr = dp.getstockactual(cpt, dped);
+                double rescant = cantr - arrdevpedimento.get(i).getCantidad();
+                devo.setCantidadrestdev(fort.formatdecimalv3(rescant));
+                arrdevpedimento.set(i, devo);
+            }
+            /**
+             * Precalcular cantidad restate por concelacion
+             */
+            for (int i = 0; i < arrd.size(); i++) {
+                daopedimentos dp = new daopedimentos();
+                Dpedimento dped = new Dpedimento();
+                Ddevolucion devo = arrd.get(i);
+                dped.setId_pedimento(arrd.get(i).getId_pedimento());
+                dped.setId_material(arrd.get(i).getIdmaterial());
+                dped.setDureza(arrd.get(i).getDureza());
+                double cantr = dp.getstockactual(cpt, dped);
+                double rescant = cantr + arrd.get(i).getCantidad();
+                devo.setCantrestante(fort.formatdecimalv3(rescant));
+                arrd.set(i, devo);
+            }
 //                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
 //                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
 //                } else {
@@ -884,7 +921,7 @@ public class fac1tpu extends javax.swing.JPanel {
         //la primer condicional es solo para el mismo año y dentro del mismo mes o inventario
         //La segunda solo si cambia de año y es diciembre con enero, ya que si no
         //los calculos estarian erroneos
-        if (( mes == 0)
+        if ((mes == 0)
                 || (year != 0 && (ci.getMes() == 12 && f.getMes() == 1))) {
             flag = true;
         }

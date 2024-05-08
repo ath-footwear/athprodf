@@ -11,6 +11,7 @@ import DAO.daokardexrcpt;
 import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
+import Modelo.Formateodedatos;
 import Modelo.Motivosdev;
 import Modelo.Usuarios;
 import java.sql.Connection;
@@ -18,8 +19,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -101,7 +100,7 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
         });
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel8.setText("Cancelacion de Facturas");
+        jLabel8.setText("Devolucion de factura");
 
         jLabel9.setFont(new java.awt.Font("Arial", 2, 14)); // NOI18N
         jLabel9.setText("#");
@@ -238,6 +237,7 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
             java.util.Date date = new Date();
             daoDevolucion dd = new daoDevolucion();
             daokardexrcpt dk = new daokardexrcpt();
+            Formateodedatos fd = new Formateodedatos();
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             dev.setId_concepto(arrc.get(0).getId_concepto());
@@ -259,12 +259,14 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
                 if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
                     Ddevolucion d = arrd.get(i);
                     d.setRenglon(renglon);
-                    double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString())));
-                    double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
+                    double cant = fd.formatdecimalv3(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString()));
+                    double precio = fd.formatdecimalv3(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
                     double importe = Double.parseDouble(formateador.format(cant * precio));
-                    d.setImporte(importe);
+                    double cantr=d.getCantrestante()+cant;
+                    d.setImporte(fd.formatdecimalv3(importe));
                     d.setCantidad(cant);
                     d.setPrecio(precio);
+                    d.setCantidadrestdev(fd.formatdecimalv3(cantr));
                     arrdn.add(d);
                 }
                 renglon++;
@@ -272,6 +274,8 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
             dev.setArr(arrdn);
             if (dd.newdev(cpt, dev, cob)) {
                 JOptionPane.showMessageDialog(null, "Completo");
+                arrdn.clear();
+                arrd.clear();
                 dispose();
             }
         }
@@ -337,37 +341,6 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
         }
         JtDetalle.setModel(model);
 
-    }
-
-    private void vaciarcampos() {
-    }
-
-    /**
-     * Formatear para que no tome en cuenta los espacios
-     *
-     * @param mat
-     * @return
-     */
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
-    }
-
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
     }
 
     /**
