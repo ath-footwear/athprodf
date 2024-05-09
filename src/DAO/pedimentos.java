@@ -20,7 +20,7 @@ public interface pedimentos {
 
     public boolean nuevopedimento(Connection cpt, Connection rcpt, pedimento ped);
 
-    public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped);
+    public boolean borrarped(Connection cpt, int id);
     
     public boolean newmatpedimento(Connection cpt, Dpedimento ped);
     

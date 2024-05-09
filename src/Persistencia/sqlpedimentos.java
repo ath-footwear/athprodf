@@ -47,6 +47,7 @@ public class sqlpedimentos {
                 p.setTotal(rs.getDouble("total"));
                 p.setTcantidad(rs.getDouble("totalcant"));
                 p.setNprov(rs.getString("nombre"));
+                p.setEstatus(rs.getString("estatus"));
                 arr.add(p);
             }
         } catch (SQLException ex) {
@@ -122,7 +123,7 @@ public class sqlpedimentos {
             try {
                 cpt.rollback();
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null,"Error en pedimento "+ ex);
+                JOptionPane.showMessageDialog(null, "Error en pedimento " + ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -408,5 +409,26 @@ public class sqlpedimentos {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return stock;
+    }
+
+    public boolean delete_pedimento(Connection c, int idped) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String sql="update pedimentos set estatus='0' where id_pedimento=?";
+            st=c.prepareStatement(sql);
+            st.setInt(1, idped);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
     }
 }

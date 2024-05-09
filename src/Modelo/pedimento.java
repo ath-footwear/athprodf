@@ -14,10 +14,19 @@ import java.util.ArrayList;
 public class pedimento implements java.io.Serializable{
     
     private int id_pedimento,id_kardex, id_proveedor, id_almacen, id_cliente;
-    private String referencia, fecha, fechapedimento, observaciones,serie,usuario,tipomov,nprov;
+    private String referencia, fecha, fechapedimento, observaciones,serie,usuario,
+            tipomov,nprov,estatus;
     private double subtotal, tcantidad,total,impuestos;
     private ArrayList<Dpedimento> arr = new ArrayList<>();
     private Dpedimento dp;
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 
     public Dpedimento getDp() {
         return dp;

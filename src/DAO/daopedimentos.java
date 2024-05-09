@@ -49,13 +49,13 @@ public class daopedimentos implements pedimentos {
      * Borra un pedimento de acuerdo al pedimento previamente seleccionado
      *
      * @param cpt
-     * @param rcpt
-     * @param ped
+     * @param id
      * @return
      */
     @Override
-    public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean borrarped(Connection cpt, int id) {
+        sqlpedimentos rs = new sqlpedimentos();
+        return rs.delete_pedimento(cpt, id);
     }
 
     /**

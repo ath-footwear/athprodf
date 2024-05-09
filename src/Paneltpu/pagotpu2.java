@@ -1005,7 +1005,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
         ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza,
-                fechasinT(f.getFecha()), referencias(), u.getTurno());
+                fechasinT(f.getFechapago()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
 //          del indice con el nuevo valor del objeto
