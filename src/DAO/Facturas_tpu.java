@@ -70,6 +70,8 @@ public interface Facturas_tpu {
 
     public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd);
     
+    public ArrayList<cargo> getfactstoFACReltpu_Ant(Connection c, String r, String bd);
+    
     public ArrayList<cargo> getfactstoFACReltpu_E(Connection c, String r, String bd);
 
     public ArrayList<Poliza> getasientoscontable(Connection concob);

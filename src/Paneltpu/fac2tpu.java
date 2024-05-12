@@ -104,6 +104,8 @@ public class fac2tpu extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JcPublico.setVisible(false);
         setdolar();
+        pop.add(JmRelacionn);
+        pop.add(JmRelacionant);
 // carga en combos los catalogos del sat
     }
 
@@ -126,6 +128,9 @@ public class fac2tpu extends javax.swing.JPanel {
     private void initComponents() {
 
         grupo = new javax.swing.ButtonGroup();
+        pop = new javax.swing.JPopupMenu();
+        JmRelacionn = new javax.swing.JMenuItem();
+        JmRelacionant = new javax.swing.JMenuItem();
         JtDescuento = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         JtCliente = new javax.swing.JTextField();
@@ -180,6 +185,30 @@ public class fac2tpu extends javax.swing.JPanel {
         JcNcargo = new javax.swing.JCheckBox();
         JtNcargo = new javax.swing.JTextField();
         JlNcargo = new javax.swing.JLabel();
+
+        pop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                popMousePressed(evt);
+            }
+        });
+
+        JmRelacionn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmRelacionn.setText("Relacion normal");
+        JmRelacionn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRelacionnActionPerformed(evt);
+            }
+        });
+        pop.add(JmRelacionn);
+
+        JmRelacionant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495ANT.fw.png"))); // NOI18N
+        JmRelacionant.setText("Relacion con anticipo");
+        JmRelacionant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRelacionantActionPerformed(evt);
+            }
+        });
+        pop.add(JmRelacionant);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1248,30 +1277,7 @@ public class fac2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
-        int row = JcCliente.getSelectedIndex();
-        if (k1.isEmpty()) {
-
-        } else {
-            Formateodedatos fd = new Formateodedatos();
-            FactsReltpu f = new FactsReltpu(null, true);
-            daofactura_tpu df = new daofactura_tpu();
-            ArrayList<cargo> arrcargoE = new ArrayList<>();
-            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
-            arrcargoE = df.getfactstoFACReltpu_E(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
-            sumalistas(arrcargoE);
-            f.arrcargo = arrcargo;
-            f.setVisible(true);
-            arrcargoseleccion = f.arrcargoseleccion;
-            if (!arrcargoseleccion.isEmpty()) {
-//            DefaultListModel<String> model = new DefaultListModel<>();
-//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
-//            }
-//            JlRel.setModel(model);
-                llenalista();
-                relacion = "07";
-            }
-        }
+        pop.show(evt.getComponent(), evt.getX(), evt.getY());
     }//GEN-LAST:event_jLabel13MousePressed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -1345,6 +1351,18 @@ public class fac2tpu extends javax.swing.JPanel {
     private void JcClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcClienteItemStateChanged
         setAgentes();
     }//GEN-LAST:event_JcClienteItemStateChanged
+
+    private void JmRelacionnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRelacionnActionPerformed
+        relacionnormal();
+    }//GEN-LAST:event_JmRelacionnActionPerformed
+
+    private void popMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_popMousePressed
+
+    }//GEN-LAST:event_popMousePressed
+
+    private void JmRelacionantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRelacionantActionPerformed
+        relacionant();
+    }//GEN-LAST:event_JmRelacionantActionPerformed
 
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -1635,8 +1653,60 @@ public class fac2tpu extends javax.swing.JPanel {
     }
 
     private void sumalistas(ArrayList<cargo> arra) {
-        for(cargo arre:arra){
+        for (cargo arre : arra) {
             arrcargo.add(arre);
+        }
+    }
+
+    /**
+     * Despliega las facturas con cargos disponibles
+     */
+    private void relacionnormal() {
+        int row = JcCliente.getSelectedIndex();
+        if (k1.isEmpty()) {
+
+        } else {
+            Formateodedatos fd = new Formateodedatos();
+            FactsReltpu f = new FactsReltpu(null, true);
+            daofactura_tpu df = new daofactura_tpu();
+            ArrayList<cargo> arrcargoE = new ArrayList<>();
+            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            arrcargoE = df.getfactstoFACReltpu_E(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            sumalistas(arrcargoE);
+            f.arrcargo = arrcargo;
+            f.setVisible(true);
+            arrcargoseleccion = f.arrcargoseleccion;
+            if (!arrcargoseleccion.isEmpty()) {
+//            DefaultListModel<String> model = new DefaultListModel<>();
+//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
+//            }
+//            JlRel.setModel(model);
+                llenalista();
+                relacion = "07";
+            }
+        }
+    }
+
+    /**
+     * Despliega las facturas de anticipo pagadas, solo especiales ya que no
+     * dependen de algun pedido o pedimento
+     */
+    private void relacionant() {
+        int row = JcCliente.getSelectedIndex();
+        if (!k1.isEmpty()) {
+            Formateodedatos fd = new Formateodedatos();
+            FactsReltpu f = new FactsReltpu(null, true);
+            daofactura_tpu df = new daofactura_tpu();
+            ArrayList<cargo> arrcargoE = new ArrayList<>();
+            arrcargoE = df.getfactstoFACReltpu_Ant(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            f.arrcargo = arrcargoE;
+            f.setVisible(true);
+            arrcargoseleccion = f.arrcargoseleccion;
+            if (!arrcargoseleccion.isEmpty()) {
+                llenalista();
+                relacion = "07";
+            }
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1660,6 +1730,8 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JLabel JlUso;
     private javax.swing.JLabel Jlfp;
     private javax.swing.JLabel Jlsub;
+    private javax.swing.JMenuItem JmRelacionant;
+    private javax.swing.JMenuItem JmRelacionn;
     private javax.swing.JScrollPane JsRel;
     private javax.swing.JScrollPane JsRel1;
     public javax.swing.JTextField JtCliente;
@@ -1695,5 +1767,6 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }

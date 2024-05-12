@@ -1051,7 +1051,7 @@ public class sqlfactura_tpu {
             } catch (SQLException ex1) {
                 Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
             }
-            JOptionPane.showMessageDialog(null, "Error Nueva ncr!, "+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error Nueva ncr!, " + ex.getMessage());
         }
         return resp;
     }
@@ -1606,7 +1606,7 @@ public class sqlfactura_tpu {
         return arr;
     }
 
-        public ArrayList<cargo> getfoliotoFACReltpu_E(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+    public ArrayList<cargo> getfoliotoFACReltpu_E(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
         ArrayList<cargo> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -1641,7 +1641,45 @@ public class sqlfactura_tpu {
         }
         return arr;
     }
-    
+
+    public ArrayList<cargo> getfoliotoFACReltpu_Ant(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select d.folio,c.referencia,convert(date,d.fecha) as fecha,"
+                    + "d.nombre, saldo, d.total, isnull(d.foliofiscal,'') as foliofiscal\n"
+                    + "from documento d\n"
+                    + "join Ddocumento dd on d.id_documento=dd.id_documento\n"
+                    + "join "+bd+".dbo.Cargoespecial c on c.referenciadoc=d.folio\n"
+                    + "where c.id_cliente="+nombre+" and d.serie='FAC' and d.estatus='1' and tipodoc='E' "
+                    + "and isnull(d.foliofiscal,'')!=''\n and d.metodopago='PUE'"
+                    + " and dd.unidad='ACT' and (saldo=0 or saldomx=0)\n"
+                    + "order by d.fecha desc";
+            st = con.prepareStatement(sql);
+            System.out.println("cargos fac " + sql);
+            rs = st.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                cargo c = new cargo();
+                c.setReferencia(rs.getString("referencia"));
+                c.setFecha(rs.getString("fecha"));
+                c.setSaldo(rs.getDouble("saldo"));
+                c.setNombre(rs.getString("nombre"));
+                c.setFoliofiscal(rs.getString("foliofiscal"));
+                c.setImporte(rs.getDouble("total"));
+                c.setRenglon(i);
+                arr.add(c);
+                i++;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
     public void setpoliza(Connection cob, ArrayList<Poliza> arr) {
         try {
             PreparedStatement st = null;
