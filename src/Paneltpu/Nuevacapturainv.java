@@ -236,6 +236,8 @@ public class Nuevacapturainv extends javax.swing.JDialog {
                 inv.setDureza(arrdet.get(i).getDp().getDureza());
                 inv.setNombre(arrdet.get(i).getDp().getMatped());
                 inv.setCantidad(Double.parseDouble(ren));
+                inv.setCosto(arrdet.get(i).getDp().getCosto());
+                inv.setPrecio(arrdet.get(i).getDp().getPrecio());
             } else {
                 band = false;
                 i = arrdet.size();

@@ -62,8 +62,12 @@ public class sqlinventarios {
                 String d = arr1.getDureza();
                 String n = arr1.getNombre();
                 double cant = arr1.getCantidad();
-                String sql = "insert into inventariado(id_pedimento,id_dpedimento,id_material,dureza,nombremat,cantidadrestante)"
-                        + "values (" + ped + "," + dped + "," + m + ",'" + d + "','" + n + "'," + cant + ")";
+                double precio=arr1.getPrecio();
+                double costo=arr1.getCosto();
+                String sql = "insert into inventariado(id_pedimento,id_dpedimento,"
+                        + "id_material,dureza,nombremat,cantidadrestante, precio,costo)"
+                        + "values (" + ped + "," + dped + "," + m + ",'" + d + "','" 
+                        + n + "'," + cant + ","+precio+","+costo+")";
 //                System.out.println(" " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
@@ -97,6 +101,8 @@ public class sqlinventarios {
                 i.setDureza(rs.getString("dureza"));
                 i.setNombre(rs.getString("nombremat"));
                 i.setCantidad(rs.getDouble("cantidadrestante"));
+                i.setPrecio(rs.getDouble("precio"));
+                i.setCosto(rs.getDouble("costo"));
                 arr.add(i);
             }
 
@@ -140,6 +146,7 @@ public class sqlinventarios {
                 String nombre = arr1.getNombre();
                 String dureza = arr1.getDureza();
                 double cant = arr1.getCantidad();
+                String movs = arr1.getExec_movs();
 //                inserta registros en la bd de sqlserver para mantener un historial
                 sql = "insert into inventariado(id_pedimento,id_dpedimento,id_material,dureza,nombremat,cantidadrestante,mes,years) "
                         + "values(" + ped + "," + dped + "," + mat + ",'" + dureza + "','" + nombre + "'," + cant + "," + mes + "," + year + ")";
@@ -147,10 +154,44 @@ public class sqlinventarios {
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
 //                Actualiza el stock de inventarios por renglon de pedimento
-                sql = "update dpedimentos set cantinv=" + cant + " where id_dpedimento=" + dped;
+                sql = "update dpedimentos set cantinv=" + cant + ", cantidadrestante=" + cant + ""
+                        + " where id_dpedimento=" + dped;
 //                System.out.println("actializa inv x reg " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
+                if (movs.equals("1")) {
+                    double dif = arr1.getDiferencias();
+                    int concepto = arr1.getInOut_C();
+                    String fecha = arr1.getFecha();
+                    int ren = arr1.getRenglon();
+                    String user = arr1.getUsuario();
+                    int alm = arr1.getAlmacen();
+                    int fkardex = arr1.getFolio();
+                    double precio=arr1.getPrecio();
+                    double costo= arr1.getCosto();
+                    sql = "insert into kardex "
+                            + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    st = c.prepareStatement(sql);
+                    st.setInt(1, fkardex);
+                    st.setInt(2, concepto);
+                    st.setInt(3, 0);
+                    st.setInt(4, mat);
+                    st.setInt(5, 0);
+                    st.setInt(6, alm);
+                    st.setInt(7, ped);
+                    st.setString(8, user);
+                    st.setString(9, fecha);
+                    st.setDouble(10, costo);
+                    st.setDouble(11, precio);
+                    st.setDouble(12, dif);
+                    st.setInt(13, ren);
+                    st.setString(14, "B");
+                    st.setString(15, "1");
+                    st.setString(16, "1");
+                    st.setString(17, dureza);
+                    st.setString(18, "AJUSTE INV. "+mes+" "+year);
+                    st.executeUpdate();
+                }
             }
             if (mes == 12) {
                 nuevomes = 1;
@@ -196,9 +237,9 @@ public class sqlinventarios {
             String yres = f.formateayearrespaldo(String.valueOf(year));
             //Se trae el nombre integro de la bd con respecto al turno y
             //El nombre que tendra el archivo
-            String bd=f.getbdto_respinv_orig(turno,"A");
-            sql = "BACKUP DATABASE ["+bd+"]\n"
-                    + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res"+bd+"" + mres + "" + yres + ".bak'\n"
+            String bd = f.getbdto_respinv_orig(turno, "A");
+            sql = "BACKUP DATABASE [" + bd + "]\n"
+                    + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res" + bd + "" + mres + "" + yres + ".bak'\n"
                     + "WITH CHECKSUM;";
 //            System.out.println("respaldo " + sql);
             st = c.prepareStatement(sql);
@@ -237,18 +278,18 @@ public class sqlinventarios {
         }
         return arr;
     }
-    
-    public void updatecantin_inv(Connection c, Inventario inv){
+
+    public void updatecantin_inv(Connection c, Inventario inv) {
         try {
             PreparedStatement st;
             c.setAutoCommit(false);
-            double cant=inv.getCantidadpedimento();
-            double dif=inv.getDiferencias();
-            int ped=inv.getId_dpedimento();
-            String ref= inv.getReferencia();
-            String sql="update inventariado set cantidadsistema="+cant+",diferencia="+dif+", referencia='"+ref+"' where id_dpedimento="+ped;
+            double cant = inv.getCantidadpedimento();
+            double dif = inv.getDiferencias();
+            int ped = inv.getId_dpedimento();
+            String ref = inv.getReferencia();
+            String sql = "update inventariado set cantidadsistema=" + cant + ",diferencia=" + dif + ", referencia='" + ref + "' where id_dpedimento=" + ped;
 ////            System.out.println(sql);
-            st=c.prepareStatement(sql);
+            st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
         } catch (SQLException ex) {

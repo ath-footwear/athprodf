@@ -5,8 +5,10 @@
  */
 package Tpu;
 
+import DAO.daoConceptos;
 import DAO.daoControlinventarios;
 import DAO.daoInventarios;
+import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Controlinventario;
@@ -19,7 +21,9 @@ import Paneltpu.VerInventarios;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -333,8 +337,8 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
 //        Realiza la validacion de el total de las lineas del sistema con lo capturado, ademas muestra las diferencias
-        boolean flag=checkcants();
-        if (arr.size() != arrinv.size() || !flag) {
+        //boolean flag=checkcants();
+        if (arr.size() != arrinv.size()) {
             JOptionPane.showMessageDialog(null, "Error en el numero de "
                     + "productos con pedimentos " + arr.size() + "/" + arrinv.size(),
                     "Error en inventarios", JOptionPane.ERROR_MESSAGE);
@@ -434,11 +438,12 @@ public class Inventarios extends javax.swing.JInternalFrame {
 //        Reliza la insercion de los registros en la tabla del inventariado,
 //        borra los registros de las tablas de sqlite, ademas de que actualiza 
 //        los registros de control de inventario
+        get_infoajustes();
+        JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
+//        Realiza respaldo de la bd    
+        di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(), u.getTurno());
         if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
             Formateodedatos fd = new Formateodedatos();
-            JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
-//        Realiza respaldo de la bd    
-            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(), u.getTurno());
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
@@ -496,8 +501,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
             double c1 = arrinv.get(i).getCantidadpedimento();
             if (c1 != c) {
                 JOptionPane.showMessageDialog(null,
-                        "No se puede realizar inventario debido a diferencia de"
-                        + "stock, pedimento vs inventario fisico",
+                        "Tienes diferencias de sistema ",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 flag = false;
                 break;
@@ -506,6 +510,42 @@ public class Inventarios extends javax.swing.JInternalFrame {
         return flag;
     }
 
+    /**
+     * Obtiene los datos del kardex, formatea campos necesarios para realizar
+     * los ajustes del pedimentos y nuevos registros del kardex
+     */
+    private void get_infoajustes() {
+        daoConceptos dc = new daoConceptos();
+        daokardexrcpt dk = new daokardexrcpt();
+        int folio = dk.maxkardexsincuenta(cpt);
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        int aux = 1;
+        for (int x = 0; x < arrinv.size(); x++) {
+            Inventario i = arrinv.get(x);
+        //Primero verifica que el valor sea distinto de cero para ahorrar codigo    
+            if (i.getDiferencias() == 0) {
+                i.setExec_movs("0");
+            } else {
+        //Posterior se valida si las diferencias son mayor o menor a cero        
+                if (i.getDiferencias() < 0) {
+                    double dif = i.getDiferencias() * -1;
+                    i.setInOut_C(dc.getConceptos(cpt, 60, 25).getId_concepto());
+                    i.setDiferencias(dif);
+                } else {
+                    i.setInOut_C(dc.getConceptos(cpt, 1, 25).getId_concepto());
+                }
+                i.setExec_movs("1");
+                i.setFolio(folio);
+                i.setRenglon(aux);
+                i.setFecha(sdf.format(date));
+                i.setUsuario(u.getUsuario());
+                i.setAlmacen(1);
+                aux++;
+            }
+            arrinv.set(x, i);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlFecha;
     private javax.swing.JLabel JlRespalldo;

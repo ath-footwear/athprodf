@@ -166,7 +166,8 @@ public class sqlpedimentos {
             String noserie = (turno.equals("7")) ? ",noserie" : "";
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,matpedimento,cantidadrestante,unidad,dp.precio as precio,"
+            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,"
+                    + "matpedimento,cantidadrestante,unidad,dp.precio as precio,dp.costo, "
                     + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped" + noserie
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
@@ -184,6 +185,8 @@ public class sqlpedimentos {
                 dp.setId_dpedimento(rs.getInt("id_dpedimento"));
                 dp.setCantrestante(rs.getDouble("cantidadrestante"));
                 dp.setUnidad(rs.getString("unidad"));
+                dp.setPrecio(rs.getDouble("precio"));
+                dp.setCosto(rs.getDouble("costo"));
                 dp.setPrecio(rs.getDouble("precio"));
                 dp.setCodigosat(rs.getString("codigosat"));
                 dp.setDureza(rs.getString("dureza"));
