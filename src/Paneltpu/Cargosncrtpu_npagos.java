@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Cargosncrtpu_npagos extends javax.swing.JDialog {
 
-    ArrayList<cargo> arrcargo = new ArrayList<>();
+    public ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
     public ArrayList<Formadepago> arrfp = new ArrayList<>();//cargos seleccionados
     ArrayList<Tipo_pagos> arrtpagos = new ArrayList<>();
