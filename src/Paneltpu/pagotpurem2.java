@@ -784,9 +784,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
                     vaciarcampos();
                     JtCliente.requestFocus();
                 }
-                
             }
-            
         }
     }
     

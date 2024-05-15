@@ -1006,10 +1006,10 @@ public class fac2tpu extends javax.swing.JPanel {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
                         String sodigosat = JtDetalle.getValueAt(i, 1).toString();
-                        double precio = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
-                        double tpares = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
+                        double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
+                        double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = fd.formatdecimalv2((tpares * precio) * desc);
+                        double descuento = (tpares * precio) * desc;
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
@@ -1038,17 +1038,17 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(fd.formatdecimalv2(precio));
-                        df.setBase(fd.formatdecimalv2(precio * tpares));
+                        df.setPrecio(fd.formatdecimalv3(precio));
+                        df.setBase(fd.formatdecimalv3(precio * tpares));
                         df.setImpuesto("002");
                         df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                        String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
+                        String as = String.valueOf(fd.formatdecimalv3((tpares * precio) - descuento) * iva);
                         double dimpu = ((tpares * precio) - descuento) * iva;
-                        df.setImporta(fd.formatdecimalv2(dimpu));
+                        df.setImporta(fd.formatdecimalv3(dimpu));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
 //                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
-                        String as1 = String.valueOf(fd.formatdecimalv2(descuento));
+                        String as1 = String.valueOf(fd.formatdecimalv3(descuento));
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
 
@@ -1128,14 +1128,14 @@ public class fac2tpu extends javax.swing.JPanel {
                         // Una ves generado el xml se manda al sat y obtener los sellos
                         s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscaltpu(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         if (traslado.equals("0")) {
                             JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
                             //verifica y hace funcion de cargo a remision con n cantidad
                             iscargo(f);
-                            vaciarcampos();
                             JtCliente.requestFocus();
                         }
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
+                        vaciarcampos();
                     }
 //                    if (traslado.equals("1")) {
 //                        int nfolio = dfac.getmaxtraslado(cpt) + 1;
@@ -1256,7 +1256,7 @@ public class fac2tpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac2tpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1475,20 +1475,20 @@ public class fac2tpu extends javax.swing.JPanel {
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
                 model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
                 model.setValueAt(tpares, i, 2);
-                model.setValueAt(fd.formatdecimalv2(precio), i, 3);
-                model.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                model.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                model.setValueAt(fd.formatdecimalv2((tpares * precio) - descuento), i, 6);
+                model.setValueAt(fd.formatdecimalv3(precio), i, 3);
+                model.setValueAt(fd.formatdecimalv3(descuento), i, 4);
+                model.setValueAt(fd.formatdecimalv3(((tpares * precio) - descuento) * iva), i, 5);
+                model.setValueAt(fd.formatdecimalv3((tpares * precio) - descuento), i, 6);
                 model.setValueAt("", i, 7);
                 model.setValueAt(k2.get(i).getDp().getUnidad(), i, 8);
                 model.setValueAt(k2.get(i).getReferencia(), i, 9);
                 //suma de totales
-                descuentos += fd.formatdecimalv2(descuento);
+                descuentos += fd.formatdecimalv3(descuento);
 //                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                subtotal += fd.formatdecimalv2(tpares * precio);
+                subtotal += fd.formatdecimalv3(tpares * precio);
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
                 double imp = ((tpares * precio) - descuento) * iva;
-                impuestos += fd.formatdecimalv2(imp);
+                impuestos += fd.formatdecimalv3(imp);
 
             }
         }
@@ -1500,13 +1500,13 @@ public class fac2tpu extends javax.swing.JPanel {
     private void despliegaimportes(Formateodedatos fd) {
         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
         descuentos = subtotal * desc;
-        impuestos = fd.formatdecimalv2(impuestos);
+        impuestos = fd.formatdecimalv3(impuestos);
         //impuestos = (subtotal - descuentos) * iva;
         total = impuestos + subtotal - descuentos;
         JlIva.setText(impuestos + "");
-        Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
-        JlDesc.setText(fd.formatdecimalv2(descuentos) + "");
-        JlTotal.setText(fd.formatdecimalv2(total) + "");
+        Jlsub.setText(fd.formatdecimalv3(subtotal) + "");
+        JlDesc.setText(fd.formatdecimalv3(descuentos) + "");
+        JlTotal.setText(fd.formatdecimalv3(total) + "");
     }
 
     private void actualizaimportes() {
@@ -1537,21 +1537,19 @@ public class fac2tpu extends javax.swing.JPanel {
                             double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
                             double descuento = (tpares * precio) * desc;
                             JtDetalle.setValueAt(precio, i, 3);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                            JtDetalle.setValueAt(fd.formatdecimalv2((tpares * precio)), i, 6);
+                            JtDetalle.setValueAt(fd.formatdecimalv3(descuento), i, 4);
+                            JtDetalle.setValueAt(fd.formatdecimalv3(((tpares * precio) - descuento) * iva), i, 5);
+                            JtDetalle.setValueAt(fd.formatdecimalv3((tpares * precio)), i, 6);
                             //suma de totales
-                            descuentos += fd.formatdecimalv2(descuento);
+                            descuentos += fd.formatdecimalv3(descuento);
 //                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                            subtotal += fd.formatdecimalv2(tpares * precio);
+                            subtotal += fd.formatdecimalv3(tpares * precio);
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
                             double imp = ((tpares * precio) - descuento) * iva;
-                            impuestos += fd.formatdecimalv2(imp);
+                            impuestos += fd.formatdecimalv3(imp);
                         }
-
                     }
                 }
-
             }
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales

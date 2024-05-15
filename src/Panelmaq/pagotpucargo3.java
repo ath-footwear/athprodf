@@ -30,6 +30,7 @@ import Modelo.factura;
 import Paneltpu.Buscacliente_Pago;
 import Paneltpu.Cargosncrtpu_npagos;
 import Server.Serverprod;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -435,13 +437,13 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
@@ -506,7 +508,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jScrollPane4.setViewportView(jPanel6);
@@ -515,15 +517,11 @@ public class pagotpucargo3 extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane4)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane4)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -565,16 +563,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
         if (!fd.verficafechanula(JtFecha)) {
-            try {
+            
                 setfactura();
-            } catch (Exception e) {
-                //Es necesario implementar estas alertas y un log para cada que truene 
-                //al solicitar la bd
-                JOptionPane.showMessageDialog(null,
-                        "Error desconocido al generar factura, llama a sistemas "
-                        + e.getMessage() + "\n" + e.getLocalizedMessage());
-                Logger.getLogger(pagotpucargo3.class.getName()).log(Level.SEVERE, null, e);
-            }
+        
         } else {
             JOptionPane.showMessageDialog(null, "La fecha de pago no puede ir vacia");
         }
@@ -852,9 +843,9 @@ public class pagotpucargo3 extends javax.swing.JPanel {
                             timbrarXML tim = new timbrarXML();
                             Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                             dfac.Updatesellofiscalpagotpu_E(cpt, s, id);
-                            setreport(f.getFolio(), f.getRegimen());
                             JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                             setcomisiones(f);
+                            //setreport(f.getFolio(), f.getRegimen());
                             vaciarcampos();
                             JtCliente.requestFocus();
                         }
@@ -877,11 +868,12 @@ public class pagotpucargo3 extends javax.swing.JPanel {
      */
     private void setreport(int folio, String regimen) {
         try {
+            Formateo_Nempresas fn = new Formateo_Nempresas();
             String conformidad = " ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
-            String n = "1";
             String logo = "AF.png";
+            String n = fn.getEmpresa(u.getTurno(), "");
             Empresas e = d.getempresarfc(sqlempresa, n);
             String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
@@ -914,7 +906,8 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
             exporter.exportReport();
-        } catch (JRException ex) {
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ""+ex+"\n"+ex.getMessage()+"\n"+ex.getLocalizedMessage());
             Logger.getLogger(pagotpucargo3.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

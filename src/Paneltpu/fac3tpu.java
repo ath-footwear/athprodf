@@ -794,7 +794,7 @@ public class fac3tpu extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura_tpu dfac = new daofactura_tpu();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
-                Formateo_Nempresas fn= new Formateo_Nempresas();
+                Formateo_Nempresas fn = new Formateo_Nempresas();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
                 if (JcPublico.isSelected()) {//Setear impuestos
                     f.setIva(0);
@@ -996,12 +996,13 @@ public class fac3tpu extends javax.swing.JPanel {
 //                    Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), "", sqlempresa, "2");
 //                      Actualiza los sellos e informacion del sat de acuerdo a la factura
                         dfac.Updatesellofiscal(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
+
                         if (traslado.equals("0")) {
                             JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
-                            vaciarcampos();
                             JtCliente.requestFocus();
                         }
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
+                        vaciarcampos();
                     }
 //                    if (traslado.equals("1")) {
 //                        int nfolio = dfac.getmaxtraslado(cpt) + 1;
@@ -1192,7 +1193,7 @@ public class fac3tpu extends javax.swing.JPanel {
     private void JlCliente1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlCliente1MousePressed
 
         String folios = "referencia ='0'";
-        
+
         seleccionfolio(folios);
         setAgentes();
 
@@ -1272,7 +1273,7 @@ public class fac3tpu extends javax.swing.JPanel {
     private void seleccionfolio(String folios) {
 //        cpt de tpu
         daopedimentos dk1 = new daopedimentos();
-        k2 = dk1.getpedimentoaadv(cpttpu, folios,u.getTurno());
+        k2 = dk1.getpedimentoaadv(cpttpu, folios, u.getTurno());
 //        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
 //        k = dk.getkardexfacMulti(rcpt, empresacob, folios);

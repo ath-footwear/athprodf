@@ -211,11 +211,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
-        try {
-            this.setMaximum(false);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(FacturacionTpu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     
     }//GEN-LAST:event_formInternalFrameClosed
     public final void generaciontab() {//generar tabs
         c1 = new fac1tpu();

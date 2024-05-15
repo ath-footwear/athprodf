@@ -959,8 +959,8 @@ public class facEtpu extends javax.swing.JPanel {
                         // Una ves generado el xml se manda al sat y obtener los sellos
                         s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscaltpu(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         vaciarcampos();
                     }
                 }

@@ -961,9 +961,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                             timbrarXML tim = new timbrarXML();
                             Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                             dfac.Updatesellofiscalpagotpu(cpt, s, id);
-                            setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                             JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                             setcomisiones(f);
+                            setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                             vaciarcampos();
                             JtCliente.requestFocus();
                         }

@@ -357,6 +357,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             JOptionPane.showMessageDialog(null, "Antes debes de seleccionar materiales al pedimento");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Formateodedatos fd = new Formateodedatos();
             java.util.Date date = new Date();
             pedimento p = new pedimento();
             String fpedimento = sdf.format(Fecha.getDate());
@@ -379,11 +380,11 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
                 canttotal += cant;
                 dp.setId_material(arrmatseleccion.get(i).getId_material());
                 dp.setDureza(arrmatseleccion.get(i).getDureza());
-                dp.setCantidad(BigDecimal.valueOf(cant).setScale(2).doubleValue());
-                dp.setPrecio(BigDecimal.valueOf(precio).setScale(2).doubleValue());
-                dp.setImporte(BigDecimal.valueOf(importe).setScale(2).doubleValue());
-                dp.setCantrestante(BigDecimal.valueOf(cant).setScale(2).doubleValue());
-                dp.setCosto(BigDecimal.valueOf(costo).setScale(2).doubleValue());
+                dp.setCantidad(fd.formatdecimalv3(cant));
+                dp.setPrecio(fd.formatdecimalv3(precio));
+                dp.setImporte(fd.formatdecimalv3(importe));
+                dp.setCantrestante(fd.formatdecimalv3((cant)));
+                dp.setCosto(fd.formatdecimalv3(costo));
                 dp.setId_almacen(almacen);
                 dp.setMatped(matped);
                 dp.setImpuesto(0);
@@ -391,8 +392,8 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             }
             p.setObservaciones(JtObservaciones.getText().toUpperCase());
             p.setArr(arr);
-            p.setTotal(total);
-            p.setSubtotal(total);
+            p.setTotal(fd.formatdecimalv3(total));
+            p.setSubtotal(fd.formatdecimalv3(total));
             p.setTcantidad(canttotal);
             p.setImpuestos(0);
             p.setReferencia(JtPedimento.getText().toUpperCase());
