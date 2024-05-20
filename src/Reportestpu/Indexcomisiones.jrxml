@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9f519e6-c309-4f03-9288-d58f51e86b6e">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="13"/>
+	<property name="ireport.zoom" value="2.253944402704733"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -84,17 +84,17 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus!='0']]>
 				<text><![CDATA[Ref]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="246" y="0" width="39" height="33" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
+				<reportElement x="224" y="0" width="39" height="33" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha pago]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="285" y="20" width="20" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
+				<reportElement x="263" y="20" width="20" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Dias]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="342" y="7" width="52" height="26" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<reportElement x="320" y="7" width="52" height="26" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Importe USD]]></text>
 			</staticText>
@@ -109,27 +109,27 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus!='0']]>
 				<text><![CDATA[S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="47" y="20" width="160" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<reportElement x="47" y="20" width="138" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="20" width="52" height="13" uuid="793a9ab3-a27a-4fe8-baf6-02e46c118e5a"/>
+				<reportElement x="372" y="20" width="52" height="13" uuid="793a9ab3-a27a-4fe8-baf6-02e46c118e5a"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Mx]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="446" y="20" width="31" height="13" uuid="b03f9673-5888-4511-8953-a052534f3b1b"/>
+				<reportElement x="424" y="20" width="53" height="13" uuid="b03f9673-5888-4511-8953-a052534f3b1b"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Tipoc]]></text>
+				<text><![CDATA[Tipo C]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="207" y="20" width="39" height="13" uuid="29abeaea-8308-4b93-9b42-dcb5d766142c"/>
+				<reportElement x="185" y="20" width="39" height="13" uuid="29abeaea-8308-4b93-9b42-dcb5d766142c"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="20" width="10" height="13" uuid="31b4a66b-b18d-4f1c-b509-5b7ef7af4dd2"/>
+				<reportElement x="283" y="20" width="10" height="13" uuid="31b4a66b-b18d-4f1c-b509-5b7ef7af4dd2"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[%]]></text>
 			</staticText>
@@ -139,7 +139,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and com.estatus!='0']]>
 				<text><![CDATA[Pg]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="315" y="7" width="27" height="26" uuid="91110e62-315a-4dc5-9b57-734b9aed9f25"/>
+				<reportElement x="293" y="7" width="27" height="26" uuid="91110e62-315a-4dc5-9b57-734b9aed9f25"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ref Pag]]></text>
 			</staticText>

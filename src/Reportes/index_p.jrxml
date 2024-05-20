@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a088cfe-daee-43d8-8318-6a18ef1bc796">
-	<property name="ireport.zoom" value="1.9487171000000065"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="folio" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -46,7 +46,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from doctospago where folio =$P{folio}]]>
+		<![CDATA[select *, case when estatus = 0 then 'CANCELADO' else '' end as Es from doctospago where folio =$P{folio}]]>
 	</queryString>
 	<field name="Id" class="java.lang.Integer"/>
 	<field name="ClaveUsuario" class="java.lang.String"/>
@@ -136,6 +136,7 @@
 	<field name="BancoEmisor" class="java.lang.String"/>
 	<field name="BancoReceptor" class="java.lang.String"/>
 	<field name="OrdenPago" class="java.lang.String"/>
+	<field name="Es" class="java.lang.String"/>
 	<variable name="tproductos" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -373,6 +374,17 @@
 	<pageHeader>
 		<band height="3" splitType="Stretch"/>
 	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<textField>
+				<reportElement x="172" y="2" width="240" height="18" forecolor="#FF0000" uuid="1af6e8bb-cb47-4a73-af77-6bdf2f082b32"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Es}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
 	<detail>
 		<band height="14" splitType="Stretch">
 			<subreport>

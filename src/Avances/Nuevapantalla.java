@@ -85,7 +85,8 @@ public class Nuevapantalla extends javax.swing.JDialog {
                 {"Inspeccion", " "},
                 {"Montado", " "},
                 {"Montado2", " "},
-                {"PT", ""}
+                {"Montado3", " "},
+                {"PT", " "}
             },
             new String [] {
                 "Departamento", "Seleccion"
@@ -168,8 +169,8 @@ public class Nuevapantalla extends javax.swing.JDialog {
                 .addGap(40, 40, 40)
                 .addComponent(jLabel7)
                 .addGap(61, 61, 61)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -236,7 +237,8 @@ public class Nuevapantalla extends javax.swing.JDialog {
         p.setInspeccion((JtDetalle.getValueAt(6, 1).toString().equals("*")) ? "1" : "0");
         p.setMontado((JtDetalle.getValueAt(7, 1).toString().equals("*")) ? "1" : "0");
         p.setMontado2((JtDetalle.getValueAt(8, 1).toString().equals("*")) ? "2" : "0");
-        p.setPt((JtDetalle.getValueAt(9, 1).toString().equals("*")) ? "1" : "0");
+        p.setMontado3((JtDetalle.getValueAt(9, 1).toString().equals("*")) ? "3" : "0");
+        p.setPt((JtDetalle.getValueAt(10, 1).toString().equals("*")) ? "1" : "0");
         daoAvances a = new daoAvances();
         p.setPantalla(a.getmaxpantalla(c));
         if(a.nuevaspantallas(c, p)){

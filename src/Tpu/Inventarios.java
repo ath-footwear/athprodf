@@ -5,21 +5,29 @@
  */
 package Tpu;
 
+import DAO.daoAbonos;
+import DAO.daoCargos;
+import DAO.daoConceptos;
 import DAO.daoControlinventarios;
 import DAO.daoInventarios;
+import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Controlinventario;
 import Modelo.Formateodedatos;
 import Modelo.Inventario;
 import Modelo.Usuarios;
+import Modelo.abono;
+import Modelo.cargo;
 import Modelo.pedimento;
 import Paneltpu.Nuevacapturainv;
 import Paneltpu.VerInventarios;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -40,7 +48,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Inventarios extends javax.swing.JInternalFrame {
 
-    Connection cpt, rcpt, cobranza;
+    Connection cpt, rcpt, cobranza, cobB;
     Connection litecfdi, liteusuario;
     ArrayList<Inventario> arrinv = new ArrayList<>();
     ArrayList<pedimento> arr = new ArrayList<>();
@@ -59,9 +67,10 @@ public class Inventarios extends javax.swing.JInternalFrame {
         cpt = c.getCpttpu();
         rcpt = c.getRcpttpu();
         cobranza = c.getCobranzatpu();
+        cobB = c.getCobranzatpuB();
         litecfdi = c.getLitecfdi();
         liteusuario = c.getLiteusuario();
-        this.u=u;
+        this.u = u;
     }
 
     /**
@@ -333,20 +342,21 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
 //        Realiza la validacion de el total de las lineas del sistema con lo capturado, ademas muestra las diferencias
+        //boolean flag=checkcants();
         if (arr.size() != arrinv.size()) {
-            JOptionPane.showMessageDialog(null, "No se puede realizar inventario debido a diferencia en captura "
-                    + "de inventario y stock de sistema\nTienes " + diferencias + " diferencias y numero de "
-                    + "materiales con pedimentos " + arr.size() + "/" + arrinv.size(), "Error en inventarios", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error en el numero de "
+                    + "productos con pedimentos " + arr.size() + "/" + arrinv.size(),
+                    "Error en inventarios", JOptionPane.ERROR_MESSAGE);
         } else {
             String botones[] = {"Aceptar", ""
                 + ""
                 + "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this, "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.", "TPU",
-                    0, 0, null, botones, this);
+            int opcion = JOptionPane.showOptionDialog(this,
+                    "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.",
+                    "TPU", 0, 0, null, botones, this);
             if (opcion == JOptionPane.YES_OPTION) {
                 generarcierre();
             }
-
         }
     }//GEN-LAST:event_jLabel3MousePressed
 
@@ -388,7 +398,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         try {
             Formateodedatos fd = new Formateodedatos();
             Map parametros = new HashMap();
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(fd.getReporte_inv(u.getTurno())+".jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(fd.getReporte_inv(u.getTurno()) + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -410,7 +420,11 @@ public class Inventarios extends javax.swing.JInternalFrame {
         try {
 //            Se selecciona el tipo de conexion
             Connection con = (reporte.equals("Invsiscap")) ? liteusuario : cpt;
+            String campo = (u.getTurno().equals("7")) ? ",noserie" : "";
             Map parametros = new HashMap();
+            Formateodedatos fd = new Formateodedatos();
+            parametros.put("imagen", fd.getimagenreporte(u));
+            parametros.put("campo", campo);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + reporte + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -429,18 +443,20 @@ public class Inventarios extends javax.swing.JInternalFrame {
 //        Reliza la insercion de los registros en la tabla del inventariado,
 //        borra los registros de las tablas de sqlite, ademas de que actualiza 
 //        los registros de control de inventario
-        if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
-            Formateodedatos fd = new Formateodedatos();
-            JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
+        get_infoajustes();
+        JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
 //        Realiza respaldo de la bd    
-            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(),u.getTurno());
+        cierrefiscal();
+        di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(), u.getTurno());
+        di.ejecutarespcierre_cob(cobranza, inv.getMes(), inv.getYears(), u.getTurno());
+        if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
+//      cierrefiscal();
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
         } else {
             JOptionPane.showMessageDialog(null, "Ocurrio algun error al generar el cierre de mes.");
         }
-
     }
 
     /**
@@ -484,6 +500,81 @@ public class Inventarios extends javax.swing.JInternalFrame {
         }
     }
 
+    private boolean checkcants() {
+        boolean flag = true;
+        for (int i = 0; i < arrinv.size(); i++) {
+            double c = arrinv.get(i).getCantidad();
+            double c1 = arrinv.get(i).getCantidadpedimento();
+            if (c1 != c) {
+                JOptionPane.showMessageDialog(null,
+                        "Tienes diferencias de sistema ",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * Obtiene los datos del kardex, formatea campos necesarios para realizar
+     * los ajustes del pedimentos y nuevos registros del kardex
+     */
+    private void get_infoajustes() {
+        daoConceptos dc = new daoConceptos();
+        daokardexrcpt dk = new daokardexrcpt();
+        int folio = dk.maxkardexsincuenta(cpt);
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        int aux = 1;
+        for (int x = 0; x < arrinv.size(); x++) {
+            Inventario i = arrinv.get(x);
+            //Primero verifica que el valor sea distinto de cero para ahorrar codigo    
+            if (i.getDiferencias() == 0) {
+                i.setExec_movs("0");
+            } else {
+                //Posterior se valida si las diferencias son mayor o menor a cero        
+                if (i.getDiferencias() < 0) {
+                    double dif = i.getDiferencias() * -1;
+                    i.setInOut_C(dc.getConceptos(cpt, 60, 25).getId_concepto());
+                    i.setDiferencias(dif);
+                } else {
+                    i.setInOut_C(dc.getConceptos(cpt, 1, 24).getId_concepto());
+                }
+                i.setExec_movs("1");
+                i.setFolio(folio);
+                i.setRenglon(aux);
+                i.setFecha(sdf.format(date));
+                i.setUsuario(u.getUsuario());
+                i.setAlmacen(1);
+                aux++;
+            }
+            arrinv.set(x, i);
+        }
+    }
+
+    /**
+     * Respalda los registros de cargos y abonos para posterior consulta pero
+     * que esten intactos de acuerdo al cierre, aplica para fiscal tanto como
+     * remisiones, Esta pendientes los registros especiales
+     */
+    private void cierrefiscal() {
+        daoCargos dc = new daoCargos();
+        daoAbonos da = new daoAbonos();
+        inv.setSerie("A");
+        inv.setTipo("N");
+        //Parte fiscal
+        ArrayList<cargo> arrc = dc.getcargos_toinventario(cobranza, inv);
+        ArrayList<abono> arra = da.getabonos_toinventario(cobranza, inv);
+        dc.Exec_respaldoregs(cobranza, arrc);
+        da.Exec_respaldoregs_abono(cobranza, arra);
+        //Parte interna
+        inv.setSerie("B");
+        arrc = dc.getcargos_toinventario(cobB, inv);
+        arra = da.getabonos_toinventario(cobB, inv);
+        dc.Exec_respaldoregs(cobranza, arrc);
+        da.Exec_respaldoregs_abono(cobranza, arra);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlFecha;
     private javax.swing.JLabel JlRespalldo;

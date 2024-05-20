@@ -280,6 +280,8 @@ public class sqlavances {
                 p.setPreacabado(rs.getString("preacabado"));
                 p.setMontado(rs.getString("montado"));
                 p.setMontado2(rs.getString("montado2"));
+                p.setMontado3(rs.getString("montado3"));
+                p.setMontado4(rs.getString("montado4"));
                 p.setPt(rs.getString("pt"));
                 arr.add(p);
             }
@@ -323,8 +325,9 @@ public class sqlavances {
             String m = p.getMontado();
             String pt = p.getPt();
             String m2 = p.getMontado2();
+            String m3 = p.getMontado3();
             String sql = "insert into pantallas "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             st = c.prepareStatement(sql);
             st.setInt(1, pant);
             st.setString(2, n);
@@ -338,6 +341,11 @@ public class sqlavances {
             st.setString(10, m);
             st.setString(11, pt);
             st.setString(12, m2);
+            st.setString(13, "0");
+            st.setString(14, "0");
+            st.setString(15, "0");
+            st.setString(16, m3);
+            
             st.executeUpdate();
             c.commit();
             return true;

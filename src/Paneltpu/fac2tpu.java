@@ -104,6 +104,8 @@ public class fac2tpu extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JcPublico.setVisible(false);
         setdolar();
+        pop.add(JmRelacionn);
+        pop.add(JmRelacionant);
 // carga en combos los catalogos del sat
     }
 
@@ -126,6 +128,9 @@ public class fac2tpu extends javax.swing.JPanel {
     private void initComponents() {
 
         grupo = new javax.swing.ButtonGroup();
+        pop = new javax.swing.JPopupMenu();
+        JmRelacionn = new javax.swing.JMenuItem();
+        JmRelacionant = new javax.swing.JMenuItem();
         JtDescuento = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         JtCliente = new javax.swing.JTextField();
@@ -180,6 +185,30 @@ public class fac2tpu extends javax.swing.JPanel {
         JcNcargo = new javax.swing.JCheckBox();
         JtNcargo = new javax.swing.JTextField();
         JlNcargo = new javax.swing.JLabel();
+
+        pop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                popMousePressed(evt);
+            }
+        });
+
+        JmRelacionn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmRelacionn.setText("Relacion normal");
+        JmRelacionn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRelacionnActionPerformed(evt);
+            }
+        });
+        pop.add(JmRelacionn);
+
+        JmRelacionant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495ANT.fw.png"))); // NOI18N
+        JmRelacionant.setText("Relacion con anticipo");
+        JmRelacionant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRelacionantActionPerformed(evt);
+            }
+        });
+        pop.add(JmRelacionant);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -977,10 +1006,12 @@ public class fac2tpu extends javax.swing.JPanel {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
                         String sodigosat = JtDetalle.getValueAt(i, 1).toString();
-                        double precio = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
-                        double tpares = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
+                        double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
+                        double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = fd.formatdecimalv2((tpares * precio) * desc);
+                        double descuento = (tpares * precio) * desc;
+                        double auxbase=precio * tpares;                        
+                        double dimpu = ((auxbase) - descuento) * iva;
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
@@ -999,44 +1030,34 @@ public class fac2tpu extends javax.swing.JPanel {
                         }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
-                        //Formatea cantidad y no en la consulta
                         df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante() - tpares));
                         df.setCantidadfloat(tpares);
-//                        df.setCodigo(k2.get(i).getDp().getCodigosat());
                         df.setCodigo(sodigosat);
                         df.setUmedida(k2.get(i).getDp().getUnidad());
                         df.setDureza(k2.get(i).getDp().getDureza());
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(fd.formatdecimalv2(precio));
-                        df.setBase(fd.formatdecimalv2(precio * tpares));
+                        df.setPrecio(fd.formatdecimalv3(precio));
+                        df.setBase(fd.formatdecimalv3(auxbase));
                         df.setImpuesto("002");
                         df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                        String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
-                        double dimpu = ((tpares * precio) - descuento) * iva;
-                        df.setImporta(fd.formatdecimalv2(dimpu));
-//                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
-//                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
-                        String as1 = String.valueOf(fd.formatdecimalv2(descuento));
+                        df.setImporta(fd.formatdecimalv3(dimpu));
+                        String as1 = String.valueOf(fd.formatdecimalv3(descuento));
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
-
                         arrf.add(df);
                         totalpares += tpares;
-//                        subtotal += df.getBase();
-//                        impuestos += Double.parseDouble(as);
-//                        descuentos += Double.parseDouble(as1);
                     }
                 }
 //                total = subtotal - descuentos + impuestos;
                 f.setTotalpares(totalpares);
                 f.setArr(arrf);
-                f.setImpuestos(fd.formatdecimalv2(impuestos));
-                f.setDescuento(fd.formatdecimalv2(descuentos));
-                f.setSubtotal(fd.formatdecimalv2(subtotal));
-                f.setTotal(fd.formatdecimalv2(total));
+                f.setImpuestos(fd.formatdecimalv3(impuestos));
+                f.setDescuento(fd.formatdecimalv3(descuentos));
+                f.setSubtotal(fd.formatdecimalv3(subtotal));
+                f.setTotal(fd.formatdecimalv3(total));
                 //id del documento recien añadido
 
                 ArrayList<Poliza> arrpoliza = dfac.getasientoscontable(ACobranza);
@@ -1099,14 +1120,14 @@ public class fac2tpu extends javax.swing.JPanel {
                         // Una ves generado el xml se manda al sat y obtener los sellos
                         s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscaltpu(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         if (traslado.equals("0")) {
                             JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
                             //verifica y hace funcion de cargo a remision con n cantidad
                             iscargo(f);
-                            vaciarcampos();
                             JtCliente.requestFocus();
                         }
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
+                        vaciarcampos();
                     }
 //                    if (traslado.equals("1")) {
 //                        int nfolio = dfac.getmaxtraslado(cpt) + 1;
@@ -1227,7 +1248,7 @@ public class fac2tpu extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\" + ser + "_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac2tpu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1248,27 +1269,7 @@ public class fac2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
-        int row = JcCliente.getSelectedIndex();
-        if (k1.isEmpty()) {
-
-        } else {
-            Formateodedatos fd = new Formateodedatos();
-            FactsReltpu f = new FactsReltpu(null, true);
-            daofactura_tpu df = new daofactura_tpu();
-            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
-            f.arrcargo = arrcargo;
-            f.setVisible(true);
-            arrcargoseleccion = f.arrcargoseleccion;
-            if (!arrcargoseleccion.isEmpty()) {
-//            DefaultListModel<String> model = new DefaultListModel<>();
-//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
-//            }
-//            JlRel.setModel(model);
-                llenalista();
-                relacion = "07";
-            }
-        }
+        pop.show(evt.getComponent(), evt.getX(), evt.getY());
     }//GEN-LAST:event_jLabel13MousePressed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -1301,8 +1302,9 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         if (k1.get(row).getReferencia().equals("1")) {
             JOptionPane.showMessageDialog(null,
-                    "Estas usando el pedimento nacional, recuerdo que saldra "
-                    + "sin la leyenda del pedimento");
+                    "Estas usando el pedimento nacional, recuerda que saldrá "
+                    + "sin la leyenda del pedimento", "",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
         seleccionfolio(folios);
     }//GEN-LAST:event_JlCliente1MousePressed
@@ -1341,6 +1343,18 @@ public class fac2tpu extends javax.swing.JPanel {
     private void JcClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcClienteItemStateChanged
         setAgentes();
     }//GEN-LAST:event_JcClienteItemStateChanged
+
+    private void JmRelacionnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRelacionnActionPerformed
+        relacionnormal();
+    }//GEN-LAST:event_JmRelacionnActionPerformed
+
+    private void popMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_popMousePressed
+
+    }//GEN-LAST:event_popMousePressed
+
+    private void JmRelacionantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRelacionantActionPerformed
+        relacionant();
+    }//GEN-LAST:event_JmRelacionantActionPerformed
 
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -1453,20 +1467,18 @@ public class fac2tpu extends javax.swing.JPanel {
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
                 model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
                 model.setValueAt(tpares, i, 2);
-                model.setValueAt(fd.formatdecimalv2(precio), i, 3);
-                model.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                model.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                model.setValueAt(fd.formatdecimalv2((tpares * precio) - descuento), i, 6);
+                model.setValueAt(fd.formatdecimalv3(precio), i, 3);
+                model.setValueAt(fd.formatdecimalv3(descuento), i, 4);
+                model.setValueAt(fd.formatdecimalv3(((tpares * precio) - descuento) * iva), i, 5);
+                model.setValueAt(fd.formatdecimalv3((tpares * precio) - descuento), i, 6);
                 model.setValueAt("", i, 7);
                 model.setValueAt(k2.get(i).getDp().getUnidad(), i, 8);
                 model.setValueAt(k2.get(i).getReferencia(), i, 9);
                 //suma de totales
-                descuentos += fd.formatdecimalv2(descuento);
-//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                subtotal += fd.formatdecimalv2(tpares * precio);
-//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
+                descuentos += descuento;
+                subtotal += tpares * precio;
                 double imp = ((tpares * precio) - descuento) * iva;
-                impuestos += fd.formatdecimalv2(imp);
+                impuestos += imp;
 
             }
         }
@@ -1478,13 +1490,13 @@ public class fac2tpu extends javax.swing.JPanel {
     private void despliegaimportes(Formateodedatos fd) {
         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
         descuentos = subtotal * desc;
-        impuestos = fd.formatdecimalv2(impuestos);
+        impuestos = fd.formatdecimalv3(impuestos);
         //impuestos = (subtotal - descuentos) * iva;
         total = impuestos + subtotal - descuentos;
         JlIva.setText(impuestos + "");
-        Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
-        JlDesc.setText(fd.formatdecimalv2(descuentos) + "");
-        JlTotal.setText(fd.formatdecimalv2(total) + "");
+        Jlsub.setText(fd.formatdecimalv3(subtotal) + "");
+        JlDesc.setText(fd.formatdecimalv3(descuentos) + "");
+        JlTotal.setText(fd.formatdecimalv3(total) + "");
     }
 
     private void actualizaimportes() {
@@ -1515,21 +1527,20 @@ public class fac2tpu extends javax.swing.JPanel {
                             double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
                             double descuento = (tpares * precio) * desc;
                             JtDetalle.setValueAt(precio, i, 3);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                            JtDetalle.setValueAt(fd.formatdecimalv2((tpares * precio)), i, 6);
+                            JtDetalle.setValueAt(fd.formatdecimalv3(descuento), i, 4);
+                            JtDetalle.setValueAt(fd.formatdecimalv3(((tpares * precio) - descuento) * iva), i, 5);
+                            JtDetalle.setValueAt(fd.formatdecimalv3((tpares * precio)), i, 6);
                             //suma de totales
-                            descuentos += fd.formatdecimalv2(descuento);
-//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                            subtotal += fd.formatdecimalv2(tpares * precio);
-//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
+                            descuentos += fd.formatdecimalv3(descuento);
+                            double aux=tpares * precio;
                             double imp = ((tpares * precio) - descuento) * iva;
-                            impuestos += fd.formatdecimalv2(imp);
+//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
+                            subtotal += fd.formatdecimalv3(aux);
+//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
+                            impuestos += fd.formatdecimalv3(imp);
                         }
-
                     }
                 }
-
             }
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales
@@ -1630,6 +1641,63 @@ public class fac2tpu extends javax.swing.JPanel {
         }
     }
 
+    private void sumalistas(ArrayList<cargo> arra) {
+        for (cargo arre : arra) {
+            arrcargo.add(arre);
+        }
+    }
+
+    /**
+     * Despliega las facturas con cargos disponibles
+     */
+    private void relacionnormal() {
+        int row = JcCliente.getSelectedIndex();
+        if (k1.isEmpty()) {
+
+        } else {
+            Formateodedatos fd = new Formateodedatos();
+            FactsReltpu f = new FactsReltpu(null, true);
+            daofactura_tpu df = new daofactura_tpu();
+            ArrayList<cargo> arrcargoE = new ArrayList<>();
+            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            arrcargoE = df.getfactstoFACReltpu_E(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            sumalistas(arrcargoE);
+            f.arrcargo = arrcargo;
+            f.setVisible(true);
+            arrcargoseleccion = f.arrcargoseleccion;
+            if (!arrcargoseleccion.isEmpty()) {
+//            DefaultListModel<String> model = new DefaultListModel<>();
+//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
+//            }
+//            JlRel.setModel(model);
+                llenalista();
+                relacion = "07";
+            }
+        }
+    }
+
+    /**
+     * Despliega las facturas de anticipo pagadas, solo especiales ya que no
+     * dependen de algun pedido o pedimento
+     */
+    private void relacionant() {
+        int row = JcCliente.getSelectedIndex();
+        if (!k1.isEmpty()) {
+            Formateodedatos fd = new Formateodedatos();
+            FactsReltpu f = new FactsReltpu(null, true);
+            daofactura_tpu df = new daofactura_tpu();
+            ArrayList<cargo> arrcargoE = new ArrayList<>();
+            arrcargoE = df.getfactstoFACReltpu_Ant(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+            f.arrcargo = arrcargoE;
+            f.setVisible(true);
+            arrcargoseleccion = f.arrcargoseleccion;
+            if (!arrcargoseleccion.isEmpty()) {
+                llenalista();
+                relacion = "07";
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcAgente;
     private javax.swing.JComboBox<String> JcCliente;
@@ -1651,6 +1719,8 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JLabel JlUso;
     private javax.swing.JLabel Jlfp;
     private javax.swing.JLabel Jlsub;
+    private javax.swing.JMenuItem JmRelacionant;
+    private javax.swing.JMenuItem JmRelacionn;
     private javax.swing.JScrollPane JsRel;
     private javax.swing.JScrollPane JsRel1;
     public javax.swing.JTextField JtCliente;
@@ -1686,5 +1756,6 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }

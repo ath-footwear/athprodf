@@ -100,8 +100,8 @@
                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="187" max="-2" attributes="0"/>
-                  <EmptySpace pref="44" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="204" max="-2" attributes="0"/>
+                  <EmptySpace pref="27" max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -156,7 +156,7 @@
             <Component class="javax.swing.JTable" name="JtDetalle">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="2" rowCount="10">
+                  <Table columnCount="2" rowCount="11">
                     <Column editable="true" title="Departamento" type="java.lang.Object">
                       <Data value="Corte"/>
                       <Data value="Precorte"/>
@@ -167,6 +167,7 @@
                       <Data value="Inspeccion"/>
                       <Data value="Montado"/>
                       <Data value="Montado2"/>
+                      <Data value="Montado3"/>
                       <Data value="PT"/>
                     </Column>
                     <Column editable="true" title="Seleccion" type="java.lang.Object">
@@ -179,7 +180,8 @@
                       <Data value=" "/>
                       <Data value=" "/>
                       <Data value=" "/>
-                      <Data value=""/>
+                      <Data value=" "/>
+                      <Data value=" "/>
                     </Column>
                   </Table>
                 </Property>

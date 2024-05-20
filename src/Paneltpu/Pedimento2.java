@@ -324,27 +324,32 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     }//GEN-LAST:event_JmBorrarActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Formateodedatos fdato = new Formateodedatos();
+        try {
+            Formateodedatos fdato = new Formateodedatos();
 //        Es importante hacer esta validacion y que no se nos vaya algun caracter especial y nos truene algo que no deberia
-        boolean flag = fdato.verificaStringsSC(JtPedimento.getText());
-        boolean flag1 = fdato.verificaStringsSC(JtObservaciones.getText());
-        boolean flag2 = (JtPedimento.getText().equals("0"));
-        if (!flag) {
-            JtPedimento.requestFocus();
+            boolean flag = fdato.verificaStringsSC(JtPedimento.getText());
+            boolean flag1 = fdato.verificaStringsSC(JtObservaciones.getText());
+            boolean flag2 = (JtPedimento.getText().equals("0"));
+            if (!flag) {
+                JtPedimento.requestFocus();
+            }
+            if (!flag1) {
+                JtObservaciones.requestFocus();
+            }
+            if (flag2) {
+                JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
+                JtPedimento.requestFocus();
+                JtPedimento.setText("");
+            }
+            if (flag && flag1 && !flag2) {
+                setpedimento();
+            } else {
+                JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        if (!flag1) {
-            JtObservaciones.requestFocus();
-        }
-        if (flag2) {
-            JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
-            JtPedimento.requestFocus();
-            JtPedimento.setText("");
-        }
-        if (flag && flag1 && !flag2) {
-            setpedimento();
-        } else {
-            JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
-        }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setpedimento() {
@@ -352,6 +357,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             JOptionPane.showMessageDialog(null, "Antes debes de seleccionar materiales al pedimento");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Formateodedatos fd = new Formateodedatos();
             java.util.Date date = new Date();
             pedimento p = new pedimento();
             String fpedimento = sdf.format(Fecha.getDate());
@@ -374,11 +380,11 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
                 canttotal += cant;
                 dp.setId_material(arrmatseleccion.get(i).getId_material());
                 dp.setDureza(arrmatseleccion.get(i).getDureza());
-                dp.setCantidad(BigDecimal.valueOf(cant).setScale(2).doubleValue());
-                dp.setPrecio(BigDecimal.valueOf(precio).setScale(2).doubleValue());
-                dp.setImporte(BigDecimal.valueOf(importe).setScale(2).doubleValue());
-                dp.setCantrestante(BigDecimal.valueOf(cant).setScale(2).doubleValue());
-                dp.setCosto(BigDecimal.valueOf(costo).setScale(2).doubleValue());
+                dp.setCantidad(fd.formatdecimalv3(cant));
+                dp.setPrecio(fd.formatdecimalv3(precio));
+                dp.setImporte(fd.formatdecimalv3(importe));
+                dp.setCantrestante(fd.formatdecimalv3((cant)));
+                dp.setCosto(fd.formatdecimalv3(costo));
                 dp.setId_almacen(almacen);
                 dp.setMatped(matped);
                 dp.setImpuesto(0);
@@ -386,8 +392,8 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             }
             p.setObservaciones(JtObservaciones.getText().toUpperCase());
             p.setArr(arr);
-            p.setTotal(total);
-            p.setSubtotal(total);
+            p.setTotal(fd.formatdecimalv3(total));
+            p.setSubtotal(fd.formatdecimalv3(total));
             p.setTcantidad(canttotal);
             p.setImpuestos(0);
             p.setReferencia(JtPedimento.getText().toUpperCase());
@@ -478,17 +484,6 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             mate.addElement(arrmat1.getNombre());
         }
         JcProveedor.setModel(mate);
-    }
-
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

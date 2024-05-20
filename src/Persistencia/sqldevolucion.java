@@ -230,8 +230,10 @@ public class sqldevolucion {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select distinct p.id_pedido,id_dpedido,p.pedido,p.fecha,id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
-                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento,d.id_documento\n"
+            String sql = "select distinct p.id_pedido,id_dpedido,p.pedido,p.fecha,"
+                    + "id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,"
+                    + "dpp.id_pedimento,d.id_documento,dpp.cantidadrestante\n"
                     + "from pedido p\n"
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
@@ -260,6 +262,7 @@ public class sqldevolucion {
                 d.setDureza(rs.getString("dureza"));
                 d.setIdmaterial(rs.getInt("id_material"));
                 d.setId_documento(rs.getInt("id_documento"));
+                d.setCantrestante(rs.getDouble("cantidadrestante"));
                 arr.add(d);
             }
         } catch (SQLException ex) {
@@ -364,7 +367,7 @@ public class sqldevolucion {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select distinct p.id_pedido,dp.id_dpedido,p.pedido,p.fecha,p.id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
-                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento, dpp.cantidadrestante\n"
                     + "from pedido p\n"
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
@@ -390,6 +393,7 @@ public class sqldevolucion {
                 d.setDescripcion(rs.getString("descripcion"));
                 d.setDureza(rs.getString("dureza"));
                 d.setIdmaterial(rs.getInt("id_material"));
+                d.setCantrestante(rs.getDouble("cantidadrestante"));
                 d.setId_devolucion(0);
                 arr.add(d);
             }
@@ -446,7 +450,7 @@ public class sqldevolucion {
         String sql;
         try {
             c.setAutoCommit(false);
-            cob.setAutoCommit(false);
+//            cob.setAutoCommit(false);
             PreparedStatement st;
             ResultSet rs;
             int respd = 0;
@@ -463,19 +467,22 @@ public class sqldevolucion {
             String serie = d.getSerie();
             String usuario = d.getUsuario();
             String stock = d.getStock();
-            sql = "insert into devoluciones(id_cliente,id_pedido,id_concepto,id_kardex,id_motivo,nombre,total,fecha,descripcion,serie,estatus) "
-                    + "values(" + cliente + "," + idped + "," + cuenta + "," + kardexnuevo + "," + motivo + ",'" + nombre + "',0,'" + fecha + "','" + obs + "','" + serie + "','1')";
+            sql = "insert into devoluciones(id_cliente,id_pedido,id_concepto,"
+                    + "id_kardex,id_motivo,nombre,total,fecha,descripcion,serie,estatus) "
+                    + "values(?,?,?,?,?,?,0,?,?,?,'1')";
 //            System.out.println("dev " + sql);
             st = c.prepareStatement(sql);
+            st.setInt(1, cliente);
+            st.setInt(2, idped);
+            st.setInt(3, cuenta);
+            st.setInt(4, kardexnuevo);
+            st.setInt(5, motivo);
+            st.setString(6, nombre);
+            st.setString(7, fecha);
+            st.setString(8, obs);
+            st.setString(9, serie);
             st.executeUpdate();
-//            sql = "update pedido set estatus='0' where id_pedido=" + idped;
-////            System.out.println("ped dev " + sql);
-//            st = c.prepareStatement(sql);
-//            st.executeUpdate();
-//            sql = "update cargo set saldo=0, saldomx=0,estatus='0' where id_cargo=" + cargo;
-////            System.out.println("cargo dev " + sql);
-//            st = cob.prepareStatement(sql);
-//            st.executeUpdate();
+            
             sql = "select max(id_devolucion) as id from devoluciones";
 //            System.out.println("ddevolucion " + sql);
             st = c.prepareStatement(sql);
@@ -493,35 +500,59 @@ public class sqldevolucion {
                 double imp = d.getArr().get(i).getImporte();
                 int dped = d.getArr().get(i).getId_dpedimento();
                 int idpedimento = d.getArr().get(i).getId_pedimento();
+                double cantdev= d.getArr().get(i).getCantidadrestdev();
 
-                sql = "insert into ddevoluciones(id_devolucion,id_material,dureza,renglon,precio,cantidad,importe,descripcion,estatus) "
-                        + "values(" + respd + "," + idmat + ",'" + dur + "'," + ren + "," + precio + "," + cant + "," + imp + ",'" + desc + "','1')";
+                sql = "insert into ddevoluciones(id_devolucion,id_material,dureza,"
+                        + "renglon,precio,cantidad,importe,descripcion,estatus) "
+                        + "values(?,?,?,?,?,?,?,?,'1')";
 //                System.out.println("d dev " + sql);
                 st = c.prepareStatement(sql);
+                st.setInt(1, respd);
+                st.setInt(2, idmat);
+                st.setString(3, dur);
+                st.setInt(4, ren);
+                st.setDouble(5, precio);
+                st.setDouble(6, cant);
+                st.setDouble(7, imp);
+                st.setString(8, desc);
                 st.executeUpdate();
 
                 if (stock.equals("1")) {
-                    sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " where id_dpedimento=" + dped;
+                    sql = "update dpedimentos set cantidadrestante=? where id_dpedimento=?";
 //                    System.out.println("d dev " + sql);
                     st = c.prepareStatement(sql);
+                    st.setDouble(1, cantdev);
+                    st.setInt(2, dped);
                     st.executeUpdate();
                 }
 
                 sql = "insert into kardex "
-                        + "values(" + kardexnuevo + "," + cuenta + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
-                        + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','')";
+                        + "values(?,?,?,?,0,1,?,?,?,?,?,?,?,?,'1','1',?,'')";
 //                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
+                st.setInt(1, kardexnuevo);
+                st.setInt(2, cuenta);
+                st.setInt(3, cliente);
+                st.setInt(4, idmat);
+                st.setInt(5, idpedimento);
+                st.setString(6, usuario);
+                st.setString(7, fecha);
+                st.setDouble(8, precio);
+                st.setDouble(9, precio);
+                st.setDouble(10, cant);
+                st.setInt(11,ren);
+                st.setString(12, serie);
+                st.setString(13, dur);
                 st.executeUpdate();
             }
-            cob.commit();
+//            cob.commit();
             c.commit();
             return true;
         } catch (SQLException ex) {
             try {
-                cob.commit();
+//                cob.commit();
                 c.rollback();
-                JOptionPane.showMessageDialog(null, "Error:" + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error devolucion:" + ex.getMessage());
                 Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex1);
@@ -586,6 +617,7 @@ public class sqldevolucion {
 //                int ren = arr.getRenglon();
                 double precio = arr.getPrecio();
                 double cant = arr.getCantidad();
+                double cantrdev = arr.getCantidadrestdev();
                 int idpedimento = arr.getId_pedimento();
                 sql = "insert into kardex "
                         + "values(" + k1 + "," + c1 + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
@@ -593,7 +625,7 @@ public class sqldevolucion {
 //                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantidadrestante=cantidadrestante-" + cant + " "
+                sql = "update dpedimentos set cantidadrestante=" + cantrdev
                         + "where id_pedimento=" + idpedimento + " and id_material=" + idmat + " and dureza='" + dur + "'";
 //                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);
@@ -609,6 +641,7 @@ public class sqldevolucion {
                 double precio = arr.getPrecio();
                 double cant = arr.getCantidad();
                 int dped = arr.getId_dpedimento();
+                double cantr = arr.getCantrestante();
                 int idpedimento = arr.getId_pedimento();
                 String pedido = arr.getPedido();
                 sql = "insert into kardex "
@@ -617,7 +650,7 @@ public class sqldevolucion {
 //                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " "
+                sql = "update dpedimentos set cantidadrestante=" + cantr
                         + "where id_dpedimento=" + dped;
 //                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);

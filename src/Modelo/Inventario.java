@@ -11,9 +11,82 @@ package Modelo;
  */
 public class Inventario implements java.io.Serializable {
 
-    private int id_pedimento, id_dpedimento, id_material, mes, years;
-    private String dureza, nombre, referencia;
-    private double cantidad, cantidadpedimento, diferencias;
+    private int id_pedimento, id_dpedimento, id_material, mes, years,
+            InOut_C, renglon, folio, almacen;
+    private String dureza, nombre, referencia, exec_movs, fecha, usuario;
+    private double cantidad, cantidadpedimento, diferencias, costo, precio;
+
+    public int getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(int almacen) {
+        this.almacen = almacen;
+    }
+
+    public int getFolio() {
+        return folio;
+    }
+
+    public void setFolio(int folio) {
+        this.folio = folio;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public int getRenglon() {
+        return renglon;
+    }
+
+    public void setRenglon(int renglon) {
+        this.renglon = renglon;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getInOut_C() {
+        return InOut_C;
+    }
+
+    public void setInOut_C(int InOut_C) {
+        this.InOut_C = InOut_C;
+    }
+
+    public String getExec_movs() {
+        return exec_movs;
+    }
+
+    public void setExec_movs(String exec_movs) {
+        this.exec_movs = exec_movs;
+    }
 
     public double getDiferencias() {
         return diferencias;

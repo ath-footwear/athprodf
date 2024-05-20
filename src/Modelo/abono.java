@@ -12,12 +12,88 @@ import java.sql.Timestamp;
  * @author GATEWAY1-
  */
 public class abono {
-    private String ref, referencia,ordenpago, nombre, folio,fechapago, Referenciac;
+    private String ref, referencia,ordenpago, nombre, folio,fechapago, Referenciac,
+            obs, usuario, estatus, tipo, serie;
     Timestamp fechac;
     private Object Fechap, Fechac;
-    private int cliente, cuenta, subcuenta, parcialidad, id_cargo, id_abono, id_docto;
-    private double total,totalpago, pago, saldo, anterior;
+    private int cliente, cuenta, subcuenta, parcialidad, id_cargo, id_abono,
+            id_docto, turno;
+    private double total,totalpago, pago, saldo, anterior, comision;
     private Cliente c;
+    //Inventarios
+    private int mes_inv, year_inv;
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
+
+    public double getComision() {
+        return comision;
+    }
+
+    public void setComision(double comision) {
+        this.comision = comision;
+    }
+
+    public int getTurno() {
+        return turno;
+    }
+
+    public void setTurno(int turno) {
+        this.turno = turno;
+    }
+
+    public int getMes_inv() {
+        return mes_inv;
+    }
+
+    public void setMes_inv(int mes_inv) {
+        this.mes_inv = mes_inv;
+    }
+
+    public int getYear_inv() {
+        return year_inv;
+    }
+
+    public void setYear_inv(int year_inv) {
+        this.year_inv = year_inv;
+    }
 
     public Object getFechap() {
         return Fechap;

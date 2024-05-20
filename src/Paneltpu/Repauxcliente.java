@@ -243,7 +243,7 @@ public class Repauxcliente extends javax.swing.JDialog {
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("cliente", n);
-            parametros.put("db", fd.getbdto_respinv_orig(user.getTurno()));
+            parametros.put("db", fd.getbdto_respinv_orig(user.getTurno(),serie));
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/IndexrepAuxclientes.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
@@ -257,39 +257,6 @@ public class Repauxcliente extends javax.swing.JDialog {
         } catch (JRException ex) {
             Logger.getLogger(Repauxcliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void vaciarcampos() {
-        JtNombre.setText("");
-        JtNombre.requestFocus();
-    }
-
-    /**
-     * Formatear para que no tome en cuenta los espacios
-     *
-     * @param mat
-     * @return
-     */
-    private String getmatformat(String mat) {
-        String resp = "";
-        for (int i = 0; i < mat.length(); i++) {
-            String caracter = mat.charAt(i) + "";
-            if (!caracter.equals(" ")) {
-                resp += caracter;
-            }
-        }
-        return resp;
-    }
-
-    private boolean verificafloat(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+||[0-9]+.[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
     }
 
     /**

@@ -5,9 +5,12 @@
  */
 package DAO;
 
+import Modelo.Controlinventario;
+import Modelo.abono;
 import Modelo.cargo;
 import Modelo.factura;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  *
@@ -43,6 +46,31 @@ public class daoAbonos implements Int_abonos {
     @Override
     public int insertabonostpu(Connection con, factura f, Connection cob) {
         return s.insertabonostpu(con, f, cob);
+    }
+
+    /**
+     * Obtiene todos los abosnos los abonos
+     *
+     * @param cob
+     * @param i
+     *
+     * @return
+     */
+    @Override
+    public ArrayList<abono> getabonos_toinventario(Connection cob, Controlinventario i) {
+        return s.getabonos_toinv(cob, i);
+    }
+
+    /**
+     * Inserta en la bd los registros del abono previamente obtenidos
+     *
+     * @param cob
+     * @param arr
+     * @return
+     */
+    @Override
+    public boolean Exec_respaldoregs_abono(Connection cob, ArrayList<abono> arr) {
+        return s.Exec_respaldoregs_abono(cob, arr);
     }
 
 }

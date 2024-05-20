@@ -47,6 +47,7 @@ public class sqlpedimentos {
                 p.setTotal(rs.getDouble("total"));
                 p.setTcantidad(rs.getDouble("totalcant"));
                 p.setNprov(rs.getString("nombre"));
+                p.setEstatus(rs.getString("estatus"));
                 arr.add(p);
             }
         } catch (SQLException ex) {
@@ -98,7 +99,7 @@ public class sqlpedimentos {
             for (int i = 0; i < p.getArr().size(); i++) {
                 int mat = p.getArr().get(i).getId_material();
                 double precio = p.getArr().get(i).getPrecio();
-                double costo =p.getArr().get(i).getCosto();
+                double costo = p.getArr().get(i).getCosto();
                 double cant = p.getArr().get(i).getCantidad();
                 String matped = p.getArr().get(i).getMatped();
                 double importe = p.getArr().get(i).getImporte();
@@ -122,7 +123,7 @@ public class sqlpedimentos {
             try {
                 cpt.rollback();
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null, "Error en pedimento " + ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -162,10 +163,11 @@ public class sqlpedimentos {
     public ArrayList<pedimento> getpedimentoadv(Connection cpt, String referencias, String turno) {
         ArrayList<pedimento> arr = new ArrayList<>();
         try {
-            String noserie = (turno.equals("7")) ? ",noserie" : "";
+            String noserie = (turno.equals("7") || turno.equals("6")) ? ",noserie" : "";
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,matpedimento,cantidadrestante,unidad,dp.precio as precio,"
+            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,"
+                    + "matpedimento,cantidadrestante,unidad,dp.precio as precio,dp.costo, "
                     + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped" + noserie
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
@@ -176,6 +178,7 @@ public class sqlpedimentos {
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
+                String matpedimento = rs.getString("matpedimento");
                 pedimento p = new pedimento();
                 Dpedimento dp = new Dpedimento();
                 p.setId_pedimento(rs.getInt("ped"));
@@ -184,13 +187,23 @@ public class sqlpedimentos {
                 dp.setCantrestante(rs.getDouble("cantidadrestante"));
                 dp.setUnidad(rs.getString("unidad"));
                 dp.setPrecio(rs.getDouble("precio"));
+                dp.setCosto(rs.getDouble("costo"));
+                dp.setPrecio(rs.getDouble("precio"));
                 dp.setCodigosat(rs.getString("codigosat"));
                 dp.setDureza(rs.getString("dureza"));
                 dp.setId_material(rs.getInt("mat"));
-                dp.setMatped(rs.getString("matpedimento"));
-                if (turno.equals("7")) {
-                    dp.setMatped(rs.getString("matpedimento") + " - "
-                            + rs.getString("noserie"));
+                dp.setMatped(matpedimento);
+                if (turno.equals("7") || turno.equals("6")) {
+                    String Smat = "";
+                    //Se acorta el nombre del material si es que fuera muy grande
+                    if (matpedimento.length() > 25) {
+                        for (int i = 0; i < 26; i++) {
+                            Smat += matpedimento.charAt(i) + "";
+                        }
+                    } else {
+                        Smat = matpedimento;
+                    }
+                    dp.setMatped(Smat + " - " + rs.getString("noserie"));
                 }
                 p.setFechapedimento(rs.getString("fechaped"));
                 p.setDp(dp);
@@ -341,11 +354,12 @@ public class sqlpedimentos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select cantidadrestante\n"
+            String sql = "select sum(cantidadrestante) as cantidadrestante\n"
                     + "from dpedimentos dp\n"
                     + "join kardex k on dp.id_pedimento=k.id_pedimento and "
                     + "dp.id_material=k.id_material and dp.dureza=k.dureza\n"
-                    + "where id_kardex=?";
+                    + "where id_kardex=? and k.estatus='1'";
+//            System.out.println(sql+ " "+kardex);
             st = cpt.prepareStatement(sql);
             st.setInt(1, kardex);
             rs = st.executeQuery();
@@ -382,5 +396,51 @@ public class sqlpedimentos {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public double getstockactual(Connection c, Dpedimento dp) {
+        double stock = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select cantidadrestante\n"
+                    + "from DPedimentos\n"
+                    + "where id_pedimento=? and id_material=? and dureza=? ";
+//            System.out.println(sql);
+            st = c.prepareStatement(sql);
+            st.setInt(1, dp.getId_pedimento());
+            st.setInt(2, dp.getId_material());
+            st.setString(3, dp.getDureza());
+            rs = st.executeQuery();
+            while (rs.next()) {
+                stock = rs.getDouble("cantidadrestante");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return stock;
+    }
+
+    public boolean delete_pedimento(Connection c, int idped) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update pedimentos set estatus='0' where id_pedimento=?";
+            st = c.prepareStatement(sql);
+            st.setInt(1, idped);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
     }
 }

@@ -20,6 +20,7 @@ import Modelo.Formadepago;
 import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
+import Modelo.Tipo_pagos;
 import Modelo.Usuarios;
 import Modelo.cargo;
 import Modelo.convertnum;
@@ -60,7 +61,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class pagotpurem2 extends javax.swing.JPanel {
-
+    
     public String nombre, empresa;
     public Connection sqlcfdi, sqlempresa;
 //    ACobranza es la conexion a la bd interna, no hay fiscal
@@ -75,7 +76,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
     daocfdi dcfdi = new daocfdi();
-
+    
     double descuentos;
     double impuestos;
     double subtotal;
@@ -92,6 +93,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
     public pagotpurem2() {
         initComponents();
 //        cargatabla();
+//        jPanel2.setVisible(false);
         JlTcambio.setVisible(false);
         JtTCambio.setVisible(false);
         JtCliente.requestFocus();
@@ -595,7 +597,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             JtTCambio.requestFocus();
         }
     }//GEN-LAST:event_JtTCambioActionPerformed
-
+    
     private void setdolar() {
         if (JcUsd.isSelected()) {
             JlTcambio.setVisible(true);
@@ -606,14 +608,14 @@ public class pagotpurem2 extends javax.swing.JPanel {
             JtTCambio.setVisible(false);
         }
     }
-
+    
     private void actualizaempresa() {
         arrcargoseleccion.clear();
         JtCliente.setText("");
         JtCliente.requestFocus();
         llenalistafac();
     }
-
+    
     private void cargacargos() {
         if (!arrcargo.isEmpty()) {
             Cargosncrtpu p = new Cargosncrtpu(null, true);
@@ -631,9 +633,9 @@ public class pagotpurem2 extends javax.swing.JPanel {
 //                System.out.println("aqui");
 //            }
         }
-
+        
     }
-
+    
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
         DecimalFormat formateador = new DecimalFormat("####.##");
@@ -642,7 +644,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         Jlcargofac.setModel(model);
     }
-
+    
     private void setfactura() {
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
@@ -714,9 +716,11 @@ public class pagotpurem2 extends javax.swing.JPanel {
                 String folios = "";
                 String facturas = "";
                 //Mandar un string con los folios fiscales
+                ArrayList<Tipo_pagos> arrtp = new ArrayList<>();
                 ArrayList<Detpagos> arrdetpago = new ArrayList<>();
                 ArrayList<Dfactura> arrdet = new ArrayList<>();
                 ArrayList<Detpagos> arrdetpago17 = new ArrayList<>();
+                Tipo_pagos tp = new Tipo_pagos();
                 //Detallado del pago
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     Detpagos d = new Detpagos();
@@ -737,7 +741,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
                     d.setMetodopago("PUE");
                     d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
-
+                    
                     double sa;
                     double pa;
                     double sal;
@@ -750,6 +754,9 @@ public class pagotpurem2 extends javax.swing.JPanel {
                     d.setImpsaldoinsoluto(getcant16(sal));
                     arrdetpago.add(d);
                 }
+                tp.setArrdetpago(arrdetpago);
+                arrtp.add(tp);
+                f.setArrnpagos(arrtp);
 //                Solo 1 renglon para el cuerpo de la factura
                 Dfactura df = new Dfactura();
                 df.setPrecio(0);
@@ -773,16 +780,14 @@ public class pagotpurem2 extends javax.swing.JPanel {
                     setcomisiones(f);
 //                    System.out.println("Exito");
                     setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
-                    JOptionPane.showMessageDialog(null, "Proceso terminado- ");
+                    JOptionPane.showMessageDialog(null, "Proceso terminado");
                     vaciarcampos();
                     JtCliente.requestFocus();
                 }
-
             }
-
         }
     }
-
+    
     private double formatdecimal(double cant) {
         int dato = 0;
         int punto = 0;
@@ -822,7 +827,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");
@@ -853,7 +858,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
         ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza,
-                fechasinT(f.getFecha()), referencias(), u.getTurno());
+                fechasinT(f.getFechapago()), referencias(), u.getTurno());
         for (int i = 0; i < arrcomision.size(); i++) {
 //            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
 //          del indice con el nuevo valor del objeto
@@ -867,7 +872,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             comi.setReferencia(arrcomision.get(i).getReferencia());
             comi.setSerie("B");
             comi.setDias(arrcomision.get(i).getDias());
-            comi.setFecha(f.getFecha());
+            comi.setFecha(f.getFechapago());
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
@@ -944,7 +949,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             Formateo_Nempresas fn = new Formateo_Nempresas();
             Formateodedatos fd = new Formateodedatos();
             String n = fn.getEmpresa(u.getTurno(), "");
-            String logo =fd.getimagenreporte(u);
+            String logo = fd.getimagenreporte(u);
             Empresas e = d.getempresarfc(sqlempresa, n);
 //             fin identificar empresa
             Map parametros = new HashMap();
@@ -962,7 +967,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             parametros.put("serie", "RPAG");
             parametros.put("regimencliente", regimen);
             parametros.put("confo", conformidad);
-
+            
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -992,7 +997,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         actualizaimportes();
         cargacombos();
     }
-
+    
     private void actualizaimportes() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Factura");
@@ -1030,21 +1035,21 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         JtDetalle.setModel(model);
         if (!arrcargo.isEmpty()) {
-
+            
         }
-
+        
     }
-
+    
     private double getcant16(double a) {
         double cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue();
         return cant;
     }
-
+    
     private double getcant(double a) {
         double cant = BigDecimal.valueOf(a).setScale(2, RoundingMode.HALF_UP).doubleValue();
         return cant;
     }
-
+    
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
@@ -1055,7 +1060,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1066,7 +1071,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private boolean verificaflotante(String cad) {
         boolean check = true;
         Character c;
@@ -1087,7 +1092,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
         }
         return check;
     }
-
+    
     private boolean verificadetalle() {
         boolean resp = true;
         for (int i = 0; i < k.size(); i++) {

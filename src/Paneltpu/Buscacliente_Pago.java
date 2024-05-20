@@ -89,6 +89,16 @@ public class Buscacliente_Pago extends javax.swing.JDialog {
         });
 
         JlClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JlClientes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JlClientesKeyPressed(evt);
+            }
+        });
+        JlClientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                JlClientesValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(JlClientes);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -148,25 +158,24 @@ public class Buscacliente_Pago extends javax.swing.JDialog {
     }//GEN-LAST:event_JlIniciarMouseClicked
 
     private void JlIniciarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlIniciarMousePressed
-        int row = JlClientes.getSelectedIndex();
-        System.out.println("row " + row);
-        if (row < 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Debes de seleccionar algun cliente para su uso, intentalo "
-                            + "de nuevo o cancela la operacion",
-                     "Error seleccion", JOptionPane.ERROR_MESSAGE);
-            JlClientes.setSelectedIndex(0);
-        } else {
-            cli = arrc.get(row).getCvecliente();
-            dispose();
-        }
-
+        selectcliente();
     }//GEN-LAST:event_JlIniciarMousePressed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         cli = 0;
         this.dispose();
     }//GEN-LAST:event_jLabel2MousePressed
+
+    private void JlClientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlClientesKeyPressed
+        //Solo se acciona si presiona la tecla enter
+        if (evt.getKeyCode() == 10) {
+            selectcliente();
+        }
+    }//GEN-LAST:event_JlClientesKeyPressed
+
+    private void JlClientesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JlClientesValueChanged
+
+    }//GEN-LAST:event_JlClientesValueChanged
 
     /**
      * Regresa el cliente seleccionado
@@ -186,6 +195,27 @@ public class Buscacliente_Pago extends javax.swing.JDialog {
             model.addElement(arr2.getCvecliente() + " - " + arr2.getNombre());
         }
         JlClientes.setModel(model);
+        if (!arrc.isEmpty()) {
+            JlClientes.setSelectedIndex(0);
+        }
+    }
+
+    /**
+     * Selecciona el cliente y almacena en una variable
+     */
+    private void selectcliente() {
+        int row = JlClientes.getSelectedIndex();
+//        System.out.println("row " + row);
+        if (row < 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Debes de seleccionar algun cliente para su uso, intentalo "
+                    + "de nuevo o cancela la operacion",
+                    "Error seleccion", JOptionPane.ERROR_MESSAGE);
+            JlClientes.setSelectedIndex(0);
+        } else {
+            cli = arrc.get(row).getCvecliente();
+            dispose();
+        }
     }
 
     /**

@@ -401,7 +401,7 @@ public class sqlclientes {
                     + "and (saldo!=0 or saldomx!=0) and d.Serie='fac' and d.estatus='1' "
                     + "and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' \n"
                     + "order by cli.nombre";
-            System.out.println("get clientencr " + sql);
+//            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -426,11 +426,11 @@ public class sqlclientes {
             ResultSet rs;
             String sql = "select distinct cli.id_cliente,cli.nombre\n"
                     + "from cargoespecial c\n"
-                    + "join cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "join "+bd+".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "where cli.nombre like '%"+nombre+"%' and "
                     + "c.referencia NOT Like '%NCR%' and (saldo!=0 or saldomx!=0)\n"
                     + "order by cli.nombre";
-//            System.out.println("get clientepagr " + sql);
+            System.out.println("get clientepagr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

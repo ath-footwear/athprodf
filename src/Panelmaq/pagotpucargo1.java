@@ -18,6 +18,7 @@ import Modelo.abono;
 import Modelo.convertnum;
 import Modelo.factura;
 import Paneltpu.pagotpurem1;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,9 +31,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -190,9 +194,10 @@ public class pagotpucargo1 extends javax.swing.JPanel {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         int row = JtDetalle.getSelectedRow();
-        int folio = arrfactura.get(row).getId();
         double total = arrfactura.get(row).getTotal();
-        setreport(folio, "MXN", total);
+        String foliof = arrfactura.get(row).getFoliofiscal();
+        int folio = (foliof.equals("")) ? arrfactura.get(row).getId() : arrfactura.get(row).getFolio();
+        setreport(folio, "MXN", total, foliof);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -302,7 +307,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    private void setreport(int folio, String moneda, double total) {
+    private void setreport(int folio, String moneda, double total, String foliof) {
         try {
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                     + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
@@ -332,16 +337,26 @@ public class pagotpucargo1 extends javax.swing.JPanel {
             parametros.put("serie", "RPAG");
             parametros.put("regimencliente", "");
             parametros.put("confo", conformidad);
+            parametros.put("uso", "CP01");
+            parametros.put("metodo", "PUE");
             parametros.put("bd", "_especial");
-
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu_REM.jasper"));
+            String pdf = (foliof.equals("")) ? "/Reportestpu/index_ptpu_REM"
+                    : "/ReportesMaq/index_ptpuE";
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(pdf + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             ver.setTitle("RPAG " + folio);
             ver.setVisible(true);
-        } catch (JRException ex) {
-            Logger.getLogger(pagotpurem1.class.getName()).log(Level.SEVERE, null, ex);
+            if (!foliof.equals("")) {
+                JRExporter exporter = new JRPdfExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
+                exporter.exportReport();
+            }
+        } catch (HeadlessException | JRException ex) {
+            Logger.getLogger(pagotpucargo1.class.getName()).log(Level.INFO, null, ex);
+            JOptionPane.showMessageDialog(null, ex + "\n" + ex.getMessage() + "\n" + ex.getLocalizedMessage());
         }
     }
 

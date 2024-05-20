@@ -31,6 +31,7 @@ public class FactsReltpu extends javax.swing.JDialog {
     ArrayList<Corridas> arrcorrida = new ArrayList<>();
     ArrayList<Combinacion> arrcomb = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
+    ArrayList<cargo> arrcargoE = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
 
     /**

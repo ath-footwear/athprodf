@@ -62,6 +62,7 @@ public class Pedimento1 extends javax.swing.JPanel {
         pop = new javax.swing.JPopupMenu();
         JmImprimir = new javax.swing.JMenuItem();
         JmAddmaterial = new javax.swing.JMenuItem();
+        JmBaja = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -85,6 +86,15 @@ public class Pedimento1 extends javax.swing.JPanel {
             }
         });
         pop.add(JmAddmaterial);
+
+        JmBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/tickflat_105962.png"))); // NOI18N
+        JmBaja.setText("Pedimento completo");
+        JmBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmBajaActionPerformed(evt);
+            }
+        });
+        pop.add(JmBaja);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -172,11 +182,18 @@ public class Pedimento1 extends javax.swing.JPanel {
         if (evt.getButton() == 3) {// activar con clic derecho
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
-        String p = arr.get(JtDetalle.getSelectedRow()).getReferencia();
+        int row = JtDetalle.getSelectedRow();
+        String p = arr.get(row).getReferencia();
+        String stat = arr.get(row).getEstatus();
         if (p.equals("0") || p.equals("1") || u.getTurno().equals("7") || u.getTurno().equals("6")) {
             JmAddmaterial.setVisible(true);
         } else {
             JmAddmaterial.setVisible(false);
+        }
+        if (stat.equals("1")) {
+            JmBaja.setVisible(true);
+        } else {
+            JmBaja.setVisible(false);
         }
     }//GEN-LAST:event_JtDetalleMousePressed
 
@@ -219,6 +236,24 @@ public class Pedimento1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_JmAddmaterialActionPerformed
 
+    private void JmBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBajaActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null,
+                "Estas seguro de dar como completado el pedimento?");
+        if (resp == 0) {
+            int row = JtDetalle.getSelectedRow();
+            daopedimentos s = new daopedimentos();
+            if (s.borrarped(c.getCpttpu(), arr.get(row).getId_pedimento())) {
+                JOptionPane.showMessageDialog(null,
+                        "Proceso completo");
+                settabla();
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Error al dar de baja, contacta a sistemas");
+            }
+
+        }
+    }//GEN-LAST:event_JmBajaActionPerformed
+
     private void settabla() {
         daopedimentos s = new daopedimentos();
         arr = s.getallpedimento(c.getCpttpu(), JtCliente.getText());
@@ -227,18 +262,22 @@ public class Pedimento1 extends javax.swing.JPanel {
         model.addColumn("Total");
         model.addColumn("Cantidad");
         model.addColumn("Proveedor");
+        model.addColumn("Estado");
         model.setNumRows(arr.size());
         for (int i = 0; i < arr.size(); i++) {
+            String estat=(arr.get(i).getEstatus().equals("1"))?"ACTIVO":"INACTIVO";
             model.setValueAt(arr.get(i).getReferencia(), i, 0);
             model.setValueAt(arr.get(i).getTotal(), i, 1);
             model.setValueAt(arr.get(i).getTcantidad(), i, 2);
             model.setValueAt(arr.get(i).getNprov(), i, 3);
+            model.setValueAt(estat, i, 4);
         }
         JtDetalle.setModel(model);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmAddmaterial;
+    private javax.swing.JMenuItem JmBaja;
     private javax.swing.JMenuItem JmImprimir;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;

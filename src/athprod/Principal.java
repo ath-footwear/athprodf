@@ -118,7 +118,6 @@ public final class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
-//        JrEmpresa.setSelected(true);
         this.setLocationRelativeTo(null);
         this.setExtendedState(this.MAXIMIZED_BOTH);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Recursos/programacion.png"));
@@ -143,6 +142,7 @@ public final class Principal extends javax.swing.JFrame {
         popup();
 //        Todos los menus y botones se ocultan para su despues proceso
         setinicio();
+        JrEmpresa.setSelected(true);
         grupo.add(JrEmpresa);
         grupo.add(JrEmpresa1);
 //        Conexion a la bd de Sqlite
@@ -163,6 +163,9 @@ public final class Principal extends javax.swing.JFrame {
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
+        } else {
+            //Iniciar directo con el login
+            eleccionempresa();
         }
         TimeZone.setDefault(TimeZone.getTimeZone("GMT-6"));//Para el cambio de horario
     }
@@ -1582,7 +1585,6 @@ public final class Principal extends javax.swing.JFrame {
                 }
             }
         });
-
     }
 //Obtener todas las conecciones para realizar operaciones extras(kardex, pedidos, facturas)
 
@@ -1864,36 +1866,23 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmMaterialActionPerformed
 
     private void JmPedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedimentoActionPerformed
-        try {
-            Pedimento p = new Pedimento(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpedimento();
     }//GEN-LAST:event_JmPedimentoActionPerformed
 
     private void JmClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmClienteActionPerformed
-        try {
-            ClientesTpu p = new ClientesTpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setclientes();
     }//GEN-LAST:event_JmClienteActionPerformed
 
     private void JtFacturaciontpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpuActionPerformed
         try {
-            System.out.println("cerrada " + conexion.getCobranzatpu());
+//            System.out.println("cerrada " + conexion.getCobranzatpu());
 //            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
             FacturacionTpu p = new FacturacionTpu(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
+            p.setVisible(true);
+//            p.show();
+        } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JtFacturaciontpuActionPerformed
@@ -1910,14 +1899,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmRemisionActionPerformed
 
     private void JmProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmProveedorActionPerformed
-        try {
-            Proveedorestpu p = new Proveedorestpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setproveedores();
     }//GEN-LAST:event_JmProveedorActionPerformed
 
     private void JmDurezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDurezaActionPerformed
@@ -1932,14 +1914,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmDurezaActionPerformed
 
     private void JmFamiliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFamiliaActionPerformed
-        try {
-            Familiastpu p = new Familiastpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setfamilias();
     }//GEN-LAST:event_JmFamiliaActionPerformed
 
     private void JmNotascrtpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrtpuActionPerformed
@@ -1954,83 +1929,31 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmNotascrtpuActionPerformed
 
     private void JmPagostpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpuActionPerformed
-        try {
-            Pagostpu p = new Pagostpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagos();
     }//GEN-LAST:event_JmPagostpuActionPerformed
 
     private void JmEntradasSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEntradasSActionPerformed
-        try {
-            EntradasSalidas p = new EntradasSalidas(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setEntradass();
     }//GEN-LAST:event_JmEntradasSActionPerformed
 
     private void JmDevolucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevolucionesActionPerformed
-        try {
-            Devolucionestpu p = new Devolucionestpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setdevoluciones();
     }//GEN-LAST:event_JmDevolucionesActionPerformed
 
     private void JmMaterial1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterial1ActionPerformed
-        try {
-            Materialesmaq c = new Materialesmaq(conexion, u);
-            this.JdPanel.add(c);
-//            c.JtBuscar.requestFocus();
-            c.setMaximum(true);
-            c.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setmaquinas();
     }//GEN-LAST:event_JmMaterial1ActionPerformed
 
     private void JmProveedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmProveedor1ActionPerformed
-        try {
-            Proveedorestpu c = new Proveedorestpu(conexion, u);
-            this.JdPanel.add(c);
-//            c.JtBuscar.requestFocus();
-            c.setMaximum(true);
-            c.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setproveedores();
     }//GEN-LAST:event_JmProveedor1ActionPerformed
 
     private void JmCliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCliente1ActionPerformed
-        try {
-            ClientesTpu p = new ClientesTpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setcamposinicial();
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_JmCliente1ActionPerformed
 
     private void JmFamilia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFamilia1ActionPerformed
-        try {
-            Familiastpu p = new Familiastpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setfamilias();
     }//GEN-LAST:event_JmFamilia1ActionPerformed
 
     private void JmNotascrtpu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrtpu1ActionPerformed
@@ -2053,25 +1976,11 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmRemision1ActionPerformed
 
     private void JmPedimento1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedimento1ActionPerformed
-        try {
-            Pedimento p = new Pedimento(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpedimento();
     }//GEN-LAST:event_JmPedimento1ActionPerformed
 
     private void JmEntradasS1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEntradasS1ActionPerformed
-        try {
-            EntradasSalidas p = new EntradasSalidas(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setEntradass();
     }//GEN-LAST:event_JmEntradasS1ActionPerformed
 
     private void JmDevoluciones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevoluciones1ActionPerformed
@@ -2114,10 +2023,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmTpuMenuSelected
 
     private void JmKardexprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprodActionPerformed
-        Kardexprod n = new Kardexprod(null, true);
-        n.u = conexion;
-        n.setusuario(u);
-        n.setVisible(true);
+        setrepkardex();
     }//GEN-LAST:event_JmKardexprodActionPerformed
 
     private void JmVentaserieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserieActionPerformed
@@ -2125,39 +2031,19 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmVentaserieActionPerformed
 
     private void JmPagostpu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu2ActionPerformed
-        try {
-            Pagostpurem p = new Pagostpurem(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagosrem();
     }//GEN-LAST:event_JmPagostpu2ActionPerformed
 
     private void JmPagostpu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu3ActionPerformed
-        try {
-            Pagostpurem p = new Pagostpurem(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagosrem();
     }//GEN-LAST:event_JmPagostpu3ActionPerformed
 
     private void JmEdocuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuentaActionPerformed
-        Repedocuenta n = new Repedocuenta(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setedocuenta();
     }//GEN-LAST:event_JmEdocuentaActionPerformed
 
     private void JmAuxclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxclienteActionPerformed
-        Repauxcliente n = new Repauxcliente(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setauxiliarcliente();
     }//GEN-LAST:event_JmAuxclienteActionPerformed
 
     private void JtFacturaciontpu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpu1ActionPerformed
@@ -2172,10 +2058,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JtFacturaciontpu1ActionPerformed
 
     private void JmSaldosvencidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidosActionPerformed
-        RepSaldosV n = new RepSaldosV(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setsaldosv();
     }//GEN-LAST:event_JmSaldosvencidosActionPerformed
 
     private void JmPantallahrsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPantallahrsActionPerformed
@@ -2208,15 +2091,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmPantallahrs1ActionPerformed
 
     private void JmInventariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmInventariosActionPerformed
-        try {
-            Inventarios p = new Inventarios(conexion, u);
-            p.getfecha();
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setinventarios();
     }//GEN-LAST:event_JmInventariosActionPerformed
 
     private void JmAvancesprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAvancesprodActionPerformed
@@ -2278,31 +2153,19 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmAntiguedadActionPerformed
 
     private void JmEdocuenta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuenta1ActionPerformed
-        Repedocuenta n = new Repedocuenta(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setedocuenta();
     }//GEN-LAST:event_JmEdocuenta1ActionPerformed
 
     private void JmAuxcliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxcliente1ActionPerformed
-        Repauxcliente n = new Repauxcliente(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setauxiliarcliente();
     }//GEN-LAST:event_JmAuxcliente1ActionPerformed
 
     private void JmSaldosvencidos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidos1ActionPerformed
-        RepSaldosV n = new RepSaldosV(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setsaldosv();
     }//GEN-LAST:event_JmSaldosvencidos1ActionPerformed
 
     private void JmKardexprod1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprod1ActionPerformed
-        Kardexprod n = new Kardexprod(null, true);
-        n.u = conexion;
-        n.setusuario(u);
-        n.setVisible(true);
+        setrepkardex();
     }//GEN-LAST:event_JmKardexprod1ActionPerformed
 
     private void JmVentaserie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie1ActionPerformed
@@ -2319,71 +2182,31 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmVentaserie2ActionPerformed
 
     private void JmMaterial2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterial2ActionPerformed
-        try {
-            Materialesmaq c = new Materialesmaq(conexion, u);
-            this.JdPanel.add(c);
-//            c.JtBuscar.requestFocus();
-            c.setMaximum(true);
-            c.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setmaquinas();
     }//GEN-LAST:event_JmMaterial2ActionPerformed
 
     private void JmProveedor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmProveedor2ActionPerformed
-        try {
-            Proveedorestpu c = new Proveedorestpu(conexion, u);
-            this.JdPanel.add(c);
-//            c.JtBuscar.requestFocus();
-            c.setMaximum(true);
-            c.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setproveedores();
     }//GEN-LAST:event_JmProveedor2ActionPerformed
 
     private void JmCliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCliente2ActionPerformed
-        try {
-            ClientesTpu p = new ClientesTpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setcamposinicial();
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setclientes();
     }//GEN-LAST:event_JmCliente2ActionPerformed
 
     private void JmFamilia2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFamilia2ActionPerformed
-        try {
-            Familiastpu p = new Familiastpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setfamilias();
     }//GEN-LAST:event_JmFamilia2ActionPerformed
 
     private void JmEdocuenta2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuenta2ActionPerformed
-        Repedocuenta n = new Repedocuenta(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setedocuenta();
     }//GEN-LAST:event_JmEdocuenta2ActionPerformed
 
     private void JmAuxcliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxcliente2ActionPerformed
-        Repauxcliente n = new Repauxcliente(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setauxiliarcliente();
     }//GEN-LAST:event_JmAuxcliente2ActionPerformed
 
     private void JmSaldosvencidos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidos2ActionPerformed
-        RepSaldosV n = new RepSaldosV(null, true);
-        n.u = conexion;
-        n.setconexiones(u);
-        n.setVisible(true);
+        setsaldosv();
     }//GEN-LAST:event_JmSaldosvencidos2ActionPerformed
 
     private void JmVentaserie3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie3ActionPerformed
@@ -2393,10 +2216,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmVentaserie3ActionPerformed
 
     private void JmKardexprod2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprod2ActionPerformed
-        Kardexprod n = new Kardexprod(null, true);
-        n.u = conexion;
-        n.setusuario(u);
-        n.setVisible(true);
+        setrepkardex();
     }//GEN-LAST:event_JmKardexprod2ActionPerformed
 
     private void JmVentaserie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie4ActionPerformed
@@ -2415,25 +2235,11 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmNotascrtpu2ActionPerformed
 
     private void JmPagostpu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu4ActionPerformed
-        try {
-            Pagostpu p = new Pagostpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagos();
     }//GEN-LAST:event_JmPagostpu4ActionPerformed
 
     private void JmPagostpu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu5ActionPerformed
-        try {
-            Pagostpurem p = new Pagostpurem(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpagosrem();
     }//GEN-LAST:event_JmPagostpu5ActionPerformed
 
     private void JmRemision2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRemision2ActionPerformed
@@ -2448,36 +2254,15 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmRemision2ActionPerformed
 
     private void JmPedimento2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedimento2ActionPerformed
-        try {
-            Pedimento p = new Pedimento(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setpedimento();
     }//GEN-LAST:event_JmPedimento2ActionPerformed
 
     private void JmEntradasS2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEntradasS2ActionPerformed
-        try {
-            EntradasSalidas p = new EntradasSalidas(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setEntradass();
     }//GEN-LAST:event_JmEntradasS2ActionPerformed
 
     private void JmDevoluciones2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevoluciones2ActionPerformed
-        try {
-            Devolucionestpu p = new Devolucionestpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setdevoluciones();
     }//GEN-LAST:event_JmDevoluciones2ActionPerformed
 
     private void JmMaq2MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_JmMaq2MenuSelected
@@ -2520,25 +2305,11 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JtFacturaciontpu3ActionPerformed
 
     private void JmAgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAgenteActionPerformed
-        try {
-            Agentestpu p = new Agentestpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setagentes();
     }//GEN-LAST:event_JmAgenteActionPerformed
 
     private void JmAgente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAgente1ActionPerformed
-        try {
-            Agentestpu p = new Agentestpu(conexion, u);
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setagentes();
     }//GEN-LAST:event_JmAgente1ActionPerformed
 
     private void JmCargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCargosActionPerformed
@@ -2571,15 +2342,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmCargosEspecialesActionPerformed
 
     private void JmInventarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmInventarios1ActionPerformed
-        try {
-            Inventarios p = new Inventarios(conexion, u);
-            p.getfecha();
-            this.JdPanel.add(p);
-            p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setinventarios();
     }//GEN-LAST:event_JmInventarios1ActionPerformed
 
     private void JmVentaxprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaxprodActionPerformed
@@ -2625,7 +2388,7 @@ public final class Principal extends javax.swing.JFrame {
         setrepfacts();
     }//GEN-LAST:event_JmVentaserie5ActionPerformed
 
-        /**
+    /**
      * Despliega interfaz para reporte de facturas
      */
     private void setrepfacts() {
@@ -2634,7 +2397,7 @@ public final class Principal extends javax.swing.JFrame {
         n.setconexiones(u);
         n.setVisible(true);
     }
-    
+
     /**
      * Despliega interfaz para reporte de ventas
      */
@@ -2674,6 +2437,20 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     /**
+     * Despliega menu de remisiones/pedidos
+     */
+    private void setpagosrem() {
+        try {
+            Pagostpurem p = new Pagostpurem(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
      * Muestra la interfaz del reporte de comisiones
      */
     private void setrepcomision() {
@@ -2685,7 +2462,7 @@ public final class Principal extends javax.swing.JFrame {
     /**
      * Muestra la interfaz de los pagos especiales
      */
-    private void Pagoespecial() {
+    private void setpagos() {
         try {
             Pagostpu p = new Pagostpu(conexion, u);
             this.JdPanel.add(p);
@@ -2696,6 +2473,24 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Despliega el menu solo de las maquinas
+     */
+    private void setmaquinas() {
+        try {
+            Materialesmaq c = new Materialesmaq(conexion, u);
+            this.JdPanel.add(c);
+//            c.JtBuscar.requestFocus();
+            c.setMaximum(true);
+            c.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     *
+     */
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -2705,12 +2500,165 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Despliega el menu de proveedores
+     */
+    private void setproveedores() {
+        try {
+            Proveedorestpu p = new Proveedorestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Despliega el menu de clientes
+     */
+    private void setclientes() {
+        try {
+            ClientesTpu p = new ClientesTpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setcamposinicial();
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Despliega el menu de familias/marcas
+     */
+    private void setfamilias() {
+        try {
+            Familiastpu p = new Familiastpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * DEspliega el menu de agentes
+     */
+    private void setagentes() {
+        try {
+            Agentestpu p = new Agentestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Despliega menu de reporte de kardex
+     */
+    private void setrepkardex() {
+        Kardexprod n = new Kardexprod(null, true);
+        n.u = conexion;
+        n.setusuario(u);
+        n.setVisible(true);
+    }
+
+    /**
+     * Despliega menu de reporte de estado de cuenta
+     */
+    private void setedocuenta() {
+        Repedocuenta n = new Repedocuenta(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }
+
+    /**
+     * Despliega menu de reporte auxiliar d eclientes
+     */
+    private void setauxiliarcliente() {
+        Repauxcliente n = new Repauxcliente(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }
+
+    /**
+     * Reporte saldo vencidos
+     */
+    private void setsaldosv() {
+        RepSaldosV n = new RepSaldosV(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }
+
+    /**
+     * Interfaz de cierre de inventarios
+     */
+    private void setinventarios() {
+        try {
+            Inventarios p = new Inventarios(conexion, u);
+            p.getfecha();
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Despliega menu de pedimentos
+     */
+    private void setpedimento() {
+        try {
+            Pedimento p = new Pedimento(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Menu de entrdas y salidas
+     */
+    private void setEntradass() {
+        try {
+            EntradasSalidas p = new EntradasSalidas(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Menu de devoluciones
+     */
+    private void setdevoluciones() {
+        try {
+            Devolucionestpu p = new Devolucionestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void verificausuariolite() {
         jp.setVisible(true);
         jp.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
             }
 
             @Override
@@ -2720,17 +2668,14 @@ public final class Principal extends javax.swing.JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
             }
         });
         JOptionPane.showMessageDialog(null, jp, "Iniciar Sesion ", JOptionPane.QUESTION_MESSAGE);
@@ -2794,6 +2739,12 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Veririfica que tipo de menu tendra el usuario de acuerdo al tipo de
+     * usuario y turno
+     *
+     * @return
+     */
     private boolean checkempresa() {
         boolean band = true;
         if (u.getTipo_usuario().equals("1") || prod.equals("0")) {
@@ -2869,7 +2820,8 @@ public final class Principal extends javax.swing.JFrame {
                     JmSesion.setEnabled(false);
                     JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
                 } else {
-                    JOptionPane.showMessageDialog(null, "No puedes usar esta empresa, intentalo de nuevo");
+                    JOptionPane.showMessageDialog(null,
+                            "No puedes usar esta empresa, intentalo de nuevo");
                     jp.setText("");
                 }
             }
@@ -2893,7 +2845,6 @@ public final class Principal extends javax.swing.JFrame {
 
     private void actualizaempresa() {
         boolean band = checkempresa();
-
         if (!u.getUsuario().equals("")) {
             logint = 1;
             if (u.getTurno().equals("5")) {
@@ -2954,9 +2905,6 @@ public final class Principal extends javax.swing.JFrame {
                 }
             }
         }
-
-        //conexiones de prueba
-//        setconexiones("FATIMACPT","FATIMARCPT","ACobranzaFH");
     }
 
     /**
@@ -3003,7 +2951,6 @@ public final class Principal extends javax.swing.JFrame {
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
     /**
@@ -3028,7 +2975,8 @@ public final class Principal extends javax.swing.JFrame {
             tpucobB = s.getconexionB("RACobranzaTpu");
             conexion.setCobranzatpuB(tpucobB);
         } catch (SQLException | ClassNotFoundException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage() + " No se puede conectar a la base de datos interna!");
+            JOptionPane.showMessageDialog(null,
+                    ex.getMessage() + " No se puede conectar a la base de datos interna!");
         }
     }
 
@@ -3050,7 +2998,8 @@ public final class Principal extends javax.swing.JFrame {
 //            conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage() + " No se puede conectar a la base de datos interna!");
+            JOptionPane.showMessageDialog(null,
+                    ex.getMessage() + " No se puede conectar a la base de datos interna!");
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -3070,7 +3019,8 @@ public final class Principal extends javax.swing.JFrame {
 //            conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage() + " No se puede conectar a la base de datos interna!");
+            JOptionPane.showMessageDialog(null,
+                    ex.getMessage() + " No se puede conectar a la base de datos interna!");
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -3090,6 +3040,7 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresa("FATIMACPT");
                 conexion.setEmpresacob("ACobranzaFH");
                 conexion.setEmpresarcpt("FATIMARCPT");
+                
 //                conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
 //                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
                 tpu = s.getconexionTPU("Tpucpt");
@@ -3105,7 +3056,6 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setCpttpu(tpu);
                 conexion.setCobranzatpu(tpucob);
                 conexion.setCobranzatpuB(tpucobB);
-//                
 //MAQUINARIA
                 conexion.setCpttpu(maq);
                 conexion.setCobranzatpu(maqcob);
@@ -3120,13 +3070,11 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setLiteusuario(liteusuario);
                 conexion.setLitecfdi(litecfdi);
                 conexion.setLiteempresa(liteempresa);
-
             } catch (ClassNotFoundException | IOException | SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
     /**
@@ -3169,7 +3117,6 @@ public final class Principal extends javax.swing.JFrame {
                 hravance.cerrarcon();
             }
         }
-
     }
 
     /**
@@ -3190,10 +3137,6 @@ public final class Principal extends javax.swing.JFrame {
                 concobup.close();
                 liteusuario.close();
                 if (u.getTurno().equals("5") || u.getTipo_usuario().equals("1")) {
-//                    conexion.getCpttpu().close();
-////                    conexion.getRcpttpu().close();
-//                    conexion.getCobranzatpu().close();
-//                    conexion.getCobranzatpuB().close();
                     tpu.close();
                     tpucob.close();
                     tpucobB.close();
@@ -3203,9 +3146,6 @@ public final class Principal extends javax.swing.JFrame {
                     maq.close();
                     maqcob.close();
                     maqcobB.close();
-//                    conexion.getCptmaq().close();
-//                    conexion.getCobranzamaq().close();
-//                    conexion.getCobranzamaqB().close();
                 }
             } else {
                 conexion.getCpt().close();
@@ -3217,13 +3157,6 @@ public final class Principal extends javax.swing.JFrame {
                 tpu.close();
                 tpucob.close();
                 tpucobB.close();
-//                conexion.getCpttpu().close();
-////                conexion.getRcpttpu().close();
-//                conexion.getCobranzatpu().close();
-//                conexion.getCobranzatpuB().close();
-//                conexion.getCptmaq().close();
-//                conexion.getCobranzamaq().close();
-//                conexion.getCobranzamaqB().close();
                 liteusuario.close();
             }
 

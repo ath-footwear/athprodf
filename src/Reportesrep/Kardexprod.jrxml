@@ -14,9 +14,9 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select k.id_material,dureza,m.descripcion
-from kardex k
-join materiales m on k.id_material=m.id_material
-where convert(date,k.fecha) between $P{f1} and $P{f2} and k.estatus!='0'
+from materiales m
+left join kardex k on k.id_material=m.id_material
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.estatus!='0' or dureza is not null
 group by k.id_material,dureza,m.descripcion]]>
 	</queryString>
 	<field name="id_material" class="java.lang.Integer"/>

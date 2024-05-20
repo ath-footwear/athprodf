@@ -12,6 +12,9 @@
 	<parameter name="fechah" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="bd" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select distinct c.id_cliente,cli.nombre
 from cargo c 
@@ -27,7 +30,7 @@ where (fechavencimiento<=$P{f2} or fecha<=$P{f2})  and (saldo!=0 and saldomx!=0)
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField>
 				<reportElement x="28" y="0" width="33" height="12" uuid="d7c531c3-41d5-43ce-b840-0ebaeb84ecff"/>
 				<textElement>

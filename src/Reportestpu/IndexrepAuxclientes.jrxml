@@ -22,7 +22,7 @@
 		<![CDATA[select c.id_cliente,cli.nombre
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
-where  c.estatus='1' and convert(date, c.fecha) between $P{f1} and $P{f2} and c.id_cliente like '%$P!{cliente}%'
+where  c.estatus='1' and convert(date, c.fecha) between $P{f1} and $P{f2} and cli.nombre like '%$P!{cliente}%'
 group by c.id_cliente,cli.nombre
 order by cli.nombre]]>
 	</queryString>

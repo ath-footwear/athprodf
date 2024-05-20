@@ -69,6 +69,10 @@ public interface Facturas_tpu {
     public boolean Updatesellofiscalpagotpu_E(Connection cpt, Sellofiscal s, int id);
 
     public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd);
+    
+    public ArrayList<cargo> getfactstoFACReltpu_Ant(Connection c, String r, String bd);
+    
+    public ArrayList<cargo> getfactstoFACReltpu_E(Connection c, String r, String bd);
 
     public ArrayList<Poliza> getasientoscontable(Connection concob);
 

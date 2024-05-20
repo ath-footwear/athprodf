@@ -124,4 +124,18 @@ public class daoInventarios implements Inventarios {
         s.updatecantin_inv(c, inv);
     }
 
+    /**
+     * Lo mismo que el inventarios solo que ahora solo es el de cobranza
+     * @param c
+     * @param mes
+     * @param year
+     * @param turno
+     * @return 
+     */
+    @Override
+    public boolean ejecutarespcierre_cob(Connection c, int mes, int year, String turno) {
+        sqlinventarios s = new sqlinventarios();
+        return s.ejecutarespcierre_cob(c, mes, year, turno);
+    }
+
 }

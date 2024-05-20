@@ -8,11 +8,16 @@ package testclass;
 import Modelo.Formateodedatos;
 import Modelo.cargo;
 import Modelo.convertirNumeros;
+import Panelmaq.pagotpucargo3;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,10 +35,29 @@ public class Testformatos {
 //        t.fechasinT("2024-01-15T13:12:05");
 //        convertirNumeros n = new convertirNumeros();
 //        System.out.println(n.Convertir("8800000", true, "MXN"));
+t.forzrlog();
         
 
     }
 
+    private void forzrlog(){
+        try{
+        int a = Integer.parseInt("g");
+        }catch(Exception e){
+            try {
+                System.out.println(System.getProperty("java.home"));
+                Logger Log = Logger.getLogger(Testformatos.class.getName());
+                Log.log(Level.INFO, "Error");
+                FileHandler filexml= new FileHandler("Logging.xml");
+                Log.addHandler(filexml);
+            } catch (IOException ex) {
+                Logger.getLogger(Testformatos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(Testformatos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     private String formatfecha(String fe) {
         String nfecha = "";
         for (int i = 0; i < fe.length() - 4; i++) {

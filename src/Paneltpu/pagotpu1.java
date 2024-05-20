@@ -528,7 +528,6 @@ public class pagotpu1 extends javax.swing.JPanel {
         model.addColumn("Pago");
         model.addColumn("Cliente");
         model.addColumn("Total pago");
-        model.addColumn("forma de pago");
         model.addColumn("Metodo de pago");
         model.addColumn("Estado");
         model.addColumn("Estado sat");
@@ -537,17 +536,16 @@ public class pagotpu1 extends javax.swing.JPanel {
         int tamaño = arrfactura.size();
         model.setRowCount(tamaño);
         for (int i = 0; i < arrfactura.size(); i++) {
-            String a = (arrfactura.get(i).getEstatus() == 1) ? "Activo" : "Inactivo";
+            String a = (arrfactura.get(i).getEstatus() == 1) ? "Activo" : "CANCELADO";
             String a1 = (arrfactura.get(i).getFoliofiscal().equals("")) ? "No timbrado" : "Timbrado";
             model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
             model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
             model.setValueAt(arrfactura.get(i).getTotal(), i, 2);
-            model.setValueAt(arrfactura.get(i).getFormapago(), i, 3);
-            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 4);
-            model.setValueAt(a, i, 5);
-            model.setValueAt(a1, i, 6);
-            model.setValueAt(arrfactura.get(i).getFecha(), i, 7);
-            model.setValueAt(arrfactura.get(i).getFechapago(), i, 8);
+            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 3);
+            model.setValueAt(a, i, 4);
+            model.setValueAt(a1, i, 5);
+            model.setValueAt(arrfactura.get(i).getFecha(), i, 6);
+            model.setValueAt(arrfactura.get(i).getFechapago(), i, 7);
         }
         JtDetalle.setModel(model);
     }

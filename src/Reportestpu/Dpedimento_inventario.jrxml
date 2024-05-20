@@ -6,36 +6,39 @@
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="campo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * from Dpedimentos
+		<![CDATA[select matpedimento,isnull(noserie,'') as noserie
+from Dpedimentos d
+join materiales m on m.id_material=d.id_material
 where id_pedimento=$P{id}]]>
 	</queryString>
-	<field name="id_dpedimento" class="java.lang.Integer"/>
-	<field name="id_material" class="java.lang.Integer"/>
-	<field name="id_pedimento" class="java.lang.Integer"/>
-	<field name="cantidad" class="java.lang.Double"/>
-	<field name="precio" class="java.lang.Double"/>
-	<field name="costo" class="java.lang.Double"/>
-	<field name="importe" class="java.lang.Double"/>
-	<field name="cantidadrestante" class="java.lang.Double"/>
-	<field name="estatus" class="java.lang.String"/>
 	<field name="matpedimento" class="java.lang.String"/>
-	<field name="dureza" class="java.lang.String"/>
+	<field name="noserie" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="151" height="14" uuid="38cd2cbb-d0e7-4f82-b48d-ed192602f5bf"/>
+				<reportElement x="0" y="0" width="309" height="14" uuid="38cd2cbb-d0e7-4f82-b48d-ed192602f5bf"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{matpedimento}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="14" width="251" height="1" uuid="c6766773-4c38-4278-b063-b461b472b929"/>
+				<reportElement x="0" y="14" width="486" height="1" uuid="c6766773-4c38-4278-b063-b461b472b929"/>
 			</line>
+			<textField>
+				<reportElement x="386" y="0" width="100" height="14" uuid="c97edc2f-b8f6-4f03-8613-26466df41607"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noserie}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

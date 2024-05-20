@@ -93,6 +93,14 @@ public class daofactura_tpu implements Facturas_tpu {
         return f.actualizasellostpu(cpt, s, id);
     }
 
+    /**
+     * obtiene los registros de los cargos para relacionar
+     *
+     * @param c
+     * @param r
+     * @param bd
+     * @return
+     */
     @Override
     public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd) {
         sqlfactura_tpu f = new sqlfactura_tpu();
@@ -466,5 +474,25 @@ public class daofactura_tpu implements Facturas_tpu {
     public boolean updateclientefacv2_TPU(Connection con, Cliente c, int id_documento) {
         sqlfactura_tpu s = new sqlfactura_tpu();
         return s.updateclientedoc_TPU(con, c, id_documento);
+    }
+
+    /**
+     * Obtiene cargos especiales solo para la relacion de factura
+     *
+     * @param c
+     * @param r
+     * @param bd
+     * @return
+     */
+    @Override
+    public ArrayList<cargo> getfactstoFACReltpu_E(Connection c, String r, String bd) {
+        sqlfactura_tpu f = new sqlfactura_tpu();
+        return f.getfoliotoFACReltpu_E(c, r, bd);
+    }
+
+    @Override
+    public ArrayList<cargo> getfactstoFACReltpu_Ant(Connection c, String r, String bd) {
+        sqlfactura_tpu f = new sqlfactura_tpu();
+        return f.getfoliotoFACReltpu_Ant(c, r, bd);
     }
 }

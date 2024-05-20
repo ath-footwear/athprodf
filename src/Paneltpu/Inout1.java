@@ -9,6 +9,7 @@ import DAO.daoConceptos;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.ConceptosES;
+import Modelo.Dpedimento;
 import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
@@ -260,7 +261,8 @@ public class Inout1 extends javax.swing.JPanel {
             double stock = dp.getStockwithkardex(cpt, k.get(row).getId_kardex());
             //Verifica que la cantidad de la entrada no se mayor al stock del pedimento
             //ademas de que sea si o si una entrada, que no afecte las salidas
-            if (k.get(row).getCantidad() >= stock && Be.isSelected()) {
+//            System.out.println(stock+" "+k.get(row).getCantidad());
+            if (k.get(row).getCantidad() > stock && Be.isSelected()) {
                 JOptionPane.showMessageDialog(null,
                         "NO SE PUEDE CANCELAR ENTRADA YA QUE EXCEDE EL STOCK DEL PEDIMENTO",
                         "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -331,17 +333,30 @@ public class Inout1 extends javax.swing.JPanel {
         daokardexrcpt dk = new daokardexrcpt();
         daoConceptos d = new daoConceptos();
         java.util.Date date = new Date();
+        Formateodedatos fd= new Formateodedatos();
 //        Se obtiene un nuevo folio
         int folio = dk.maxkardexsincuenta(cpt);
 //        Se obtiene el id del concepto de cancelacion
         ConceptosES e = d.getConceptos(cpt, 20, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         KardexCmp kar = k.get(row);
+        Dpedimento dp = new Dpedimento();
+        daopedimentos dpp= new daopedimentos();
+        dp.setId_pedimento(kar.getId_pedimento());
+        dp.setId_material(kar.getId_material());
+        dp.setDureza(kar.getDureza());
         kar.setId_concepto(e.getId_concepto());
         kar.setFolio(folio);
         kar.setFechadoc(sdf.format(date));
         kar.setFechamov(sdf.format(date));
         kar.setNombreusuario(u.getUsuario());
+        //Se obtiene el stock actual del material
+        double stockactual=dpp.getstockactual(cpt, dp);
+        double cant=kar.getCantidad();
+        double stock=(cuenta == 1 || cuenta == 10 || cuenta == 20)?
+                stockactual-cant:stockactual+cant;
+        //Se almacena y formatea el campo
+        kar.setCantrestante(fd.formatdecimalv3(stock));
         if (dk.deleterow(cpt, kar)) {
             JOptionPane.showMessageDialog(null, "Proceso completo, REVISA TU REPORTE DE KARDEX");
             Buscanotas();

@@ -15,6 +15,51 @@ public class cargo {
     private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
             colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones,
             serie, fechacargo, usuario;
+    private String formapago;
+    private double tipoc;
+    //Inventario
+    private int mes_inv, year_inv;
+    private String tipo_inv;
+
+    public int getMes_inv() {
+        return mes_inv;
+    }
+
+    public void setMes_inv(int mes_inv) {
+        this.mes_inv = mes_inv;
+    }
+
+    public int getYear_inv() {
+        return year_inv;
+    }
+
+    public void setYear_inv(int year_inv) {
+        this.year_inv = year_inv;
+    }
+
+    public String getTipo_inv() {
+        return tipo_inv;
+    }
+
+    public void setTipo_inv(String tipo_inv) {
+        this.tipo_inv = tipo_inv;
+    }
+
+    public String getFormapago() {
+        return formapago;
+    }
+
+    public void setFormapago(String formapago) {
+        this.formapago = formapago;
+    }
+
+    public double getTipoc() {
+        return tipoc;
+    }
+
+    public void setTipoc(double tipoc) {
+        this.tipoc = tipoc;
+    }
 
     public String getUsuario() {
         return usuario;

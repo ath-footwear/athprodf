@@ -49,13 +49,13 @@ public class daopedimentos implements pedimentos {
      * Borra un pedimento de acuerdo al pedimento previamente seleccionado
      *
      * @param cpt
-     * @param rcpt
-     * @param ped
+     * @param id
      * @return
      */
     @Override
-    public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean borrarped(Connection cpt, int id) {
+        sqlpedimentos rs = new sqlpedimentos();
+        return rs.delete_pedimento(cpt, id);
     }
 
     /**
@@ -168,6 +168,20 @@ public class daopedimentos implements pedimentos {
     public ArrayList<Dpedimento> getMatswith_Idped(Connection cpt, int Id_pedimento) {
         sqlpedimentos s = new sqlpedimentos();
         return s.getMatswith_idped(cpt, Id_pedimento);
+    }
+
+    /**
+     * Obtiene el stock actual del pedimento de acuerdo a el id del pedimento,
+     * el material y dureza
+     *
+     * @param c
+     * @param dp
+     * @return
+     */
+    @Override
+    public double getstockactual(Connection c, Dpedimento dp) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getstockactual(c, dp);
     }
 
 }

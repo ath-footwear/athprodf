@@ -5,7 +5,12 @@
  */
 package DAO;
 
+import Modelo.Cliente;
+import Modelo.Controlinventario;
 import Modelo.Detpagos;
+import Modelo.Formateodedatos;
+import Modelo.Tipo_pagos;
+import Modelo.abono;
 import Modelo.cargo;
 import Modelo.factura;
 import Persistencia.Procesoserie;
@@ -17,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -170,59 +176,60 @@ public class sqlabonos {
             rs.close();
 
 //            resp = f.getFolio();
-            for (Detpagos arr : f.getArrpagos()) {
-
-                //Inserta en detallado de detallado pago
-                double cant = arr.getCantidad();
-                String de = arr.getDescripcion();
-                String co = arr.getCodigo();
-                String umed = arr.getUmedida();
-                double precio = arr.getPrecio();
-                String fp = arr.getFormadedpago();
-                String moneda = arr.getMoneda();
-                double mo = getcant(arr.getMonto());
-                String rfcce = arr.getRfcctaemisora();
-                String rfccr = arr.getRfcctareceptora();
-                String ctae = arr.getCtaemisora();
-                String ctar = arr.getCtareceptora();
-                String uuid = arr.getUuid();
-                String fo = arr.getFolio();
-                double sald = arr.getSaldo();
-                String mp = arr.getMetodopago();
-                int par = arr.getParcialidad();
-                double salant = getcant(arr.getImportesaldoant());
-                double salpag = getcant(arr.getImportepagado());
-                double salin = getcant(arr.getImpsaldoinsoluto());
-                int idcargo = arr.getIdcargo();
-                sql = "insert into Ddoctospagotpu_especial(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
-                        + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
-                        + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
-                        + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
-                        + uuid + "','" + idcargo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+            for (Tipo_pagos arrp : f.getArrnpagos()) {
+                for (Detpagos arr : arrp.getArrdetpago()) {
+                    //Inserta en detallado de detallado pago
+                    double cant = arr.getCantidad();
+                    String de = arr.getDescripcion();
+                    String co = arr.getCodigo();
+                    String umed = arr.getUmedida();
+                    double precio = arr.getPrecio();
+                    String fp = arr.getFormadedpago();
+                    String moneda = arr.getMoneda();
+                    double mo = getcant(arr.getMonto());
+                    String rfcce = arr.getRfcctaemisora();
+                    String rfccr = arr.getRfcctareceptora();
+                    String ctae = arr.getCtaemisora();
+                    String ctar = arr.getCtareceptora();
+                    String uuid = arr.getUuid();
+                    String fo = arr.getFolio();
+                    double sald = arr.getSaldo();
+                    String mp = arr.getMetodopago();
+                    int par = arr.getParcialidad();
+                    double salant = getcant(arr.getImportesaldoant());
+                    double salpag = getcant(arr.getImportepagado());
+                    double salin = getcant(arr.getImpsaldoinsoluto());
+                    int idcargo = arr.getIdcargo();
+                    sql = "insert into Ddoctospagotpu_especial(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
+                            + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
+                            + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
+                            + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
+                            + uuid + "','" + idcargo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
 //                System.out.println("d pagos " + sql);
-                st = con.prepareStatement(sql);
-                st.executeUpdate();
+                    st = con.prepareStatement(sql);
+                    st.executeUpdate();
                     sql = "update cargoespecial set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
 //                System.out.println("cargos " + sql);
-                st = cob.prepareStatement(sql);
-                st.executeUpdate();
+                    st = cob.prepareStatement(sql);
+                    st.executeUpdate();
 
 //                if (salant == mo) {
-                if (sald == 0) {
-                    sql = "update cargoespecial set saldo=0, saldomx=0  where id_cargo=" + idcargo;
+                    if (sald == 0) {
+                        sql = "update cargoespecial set saldo=0, saldomx=0  where id_cargo=" + idcargo;
 //                    System.out.println("cargos0 " + sql);
+                        st = cob.prepareStatement(sql);
+                        st.executeUpdate();
+                    }
+
+                    sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
+                            + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
+                            + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
+//                System.out.println("abonos  " + sql);
                     st = cob.prepareStatement(sql);
                     st.executeUpdate();
                 }
-
-                sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
-                        + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
-                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
-//                System.out.println("abonos  " + sql);
-                st = cob.prepareStatement(sql);
-                st.executeUpdate();
-
             }
+
             // Fin detallado de documento
             //Actualiza numero de folio
             sql = "update seriesfolio set ufolio=" + fol + " where serie='" + serie + "'";
@@ -248,5 +255,100 @@ public class sqlabonos {
             }
         }
         return resp;
+    }
+
+    public ArrayList<abono> getabonos_toinv(Connection cob, Controlinventario i) {
+        ArrayList<abono> arra = new ArrayList<>();
+        try {
+            String sql = "select * from abono";
+            Formateodedatos fd = new Formateodedatos();
+            PreparedStatement st;
+            ResultSet rs;
+            st = cob.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                abono a = new abono();
+                a.setId_abono(rs.getInt("id_abono"));
+                a.setId_cargo(rs.getInt("id_cargo"));
+                Cliente c = new Cliente();
+                c.setAgente(rs.getInt("id_agente"));
+                c.setId_cliente(rs.getInt("id_cliente"));
+                a.setC(c);
+                a.setCuenta(rs.getInt("id_concepto"));
+                a.setReferencia(rs.getString("referencia"));
+                a.setReferenciac(rs.getString("referenciac"));
+                a.setFechac(fd.ffecha(rs.getString("fecha")));
+                a.setFechapago(fd.ffecha(rs.getString("fechapago")));
+                a.setTurno(rs.getInt("turno"));
+                a.setParcialidad(rs.getInt("parcialidad"));
+                a.setTotal(rs.getDouble("importe"));
+                a.setPago(rs.getDouble("pago"));
+                a.setSaldo(rs.getDouble("saldo"));
+                a.setComision(rs.getDouble("comision"));
+                a.setObs(rs.getString("observaciones"));
+                a.setUsuario(rs.getString("usuario"));
+                a.setEstatus(rs.getString("estatus"));
+                a.setMes_inv(i.getMes());
+                a.setYear_inv(i.getYears());
+                a.setTipo(i.getTipo());
+                a.setSerie(i.getSerie());
+                arra.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlabonos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arra;
+    }
+
+    public boolean Exec_respaldoregs_abono(Connection cob, ArrayList<abono> arr) {
+        PreparedStatement st;
+        try {
+            cob.setAutoCommit(false);
+            String sql;
+            for (abono arr1 : arr) {
+                sql = "insert into abonorespaldo(id_abono,id_cargo,id_agente,"
+                        + "id_concepto,id_cliente,referencia, referenciac,fecha,"
+                        + "fechapago,turno,parcialidad,importe,pago,saldo,comision,"
+                        + "observaciones,usuario,estatus,mes,years,tipo,serie) "
+                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//            System.out.println("cargos " + sql);
+                st = cob.prepareStatement(sql);
+                st.setInt(1, arr1.getId_abono());
+                st.setInt(2, arr1.getId_cargo());
+                st.setInt(3, arr1.getC().getAgente());
+                st.setInt(4, arr1.getCuenta());
+                st.setInt(5, arr1.getC().getId_cliente());
+                st.setString(6, arr1.getReferencia());
+                st.setString(7, arr1.getReferenciac());
+                st.setString(8, arr1.getFechac().toString());
+                st.setString(9, arr1.getFechapago());
+                st.setInt(10, arr1.getTurno());
+                st.setInt(11, arr1.getParcialidad());
+                st.setDouble(12, arr1.getTotal());
+                st.setDouble(13, arr1.getPago());
+                st.setDouble(14, arr1.getSaldo());
+                st.setDouble(15, arr1.getComision());
+                st.setString(16, arr1.getObs());
+                st.setString(17, arr1.getUsuario());
+                st.setString(18, arr1.getEstatus());
+                st.setInt(19, arr1.getMes_inv());
+                st.setInt(20, arr1.getYear_inv());
+                st.setString(21, arr1.getTipo());
+                st.setString(22, arr1.getSerie());
+                st.executeUpdate();
+            }
+            //Fin insertar cargos
+            cob.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cob.rollback();
+                Logger.getLogger(sqlabonos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlabonos.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            JOptionPane.showMessageDialog(null, "insertar car resp -" + ex);
+            return false;
+        }
     }
 }

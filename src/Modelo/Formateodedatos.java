@@ -191,10 +191,22 @@ public class Formateodedatos {
             }
         }
         if ((dato < 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.CEILING).doubleValue();
         } else {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
+        return resp;
+    }
+
+    /**
+     * Formatea las cantidades a 2 digitos y revisa si se redondea.
+     *
+     * @param cant
+     * @return
+     */
+    public double formatdecimalv3(double cant) {
+        double resp;
+        resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         return resp;
     }
 
@@ -330,7 +342,7 @@ public class Formateodedatos {
      */
     public boolean verificaStringsSC(String cad) {
         boolean resp = false;
-        String patt = "[\\s\\w@#.,ñÑ-]*";
+        String patt = "[\\s\\w@#.,ñÑáéíóúÁÉÍÓÚ-]*";
         Pattern pat = Pattern.compile(patt);
         Matcher match = pat.matcher(cad);
         if (match.matches()) {
@@ -521,6 +533,9 @@ public class Formateodedatos {
             case "5":
                 resp = "ACobranzaTpu";
                 break;
+            case "6":
+                resp = "ACobranzamaq";
+                break;
             case "7":
                 resp = "ACobranzaMaq2";
                 break;
@@ -620,21 +635,25 @@ public class Formateodedatos {
 
     /**
      * Obtiene el nombre integro de la bd con respecto al turno, solo de CPT
+     * Tambien utilizado por si en B es necesario usar el 6.8 para consulta de
+     * datos
      *
      * @param turno
+     * @param serie
      * @return
      */
-    public String getbdto_respinv_orig(String turno) {
+    public String getbdto_respinv_orig(String turno, String serie) {
         String resp = "";
+        String svr = "[192.168.6.8\\Datos65]";
         switch (turno) {
             case "5":
-                resp = "Tpucpt";
+                resp = (serie.equals("A")) ? "Tpucpt" : svr + ".Tpucpt";
                 break;
             case "6":
-                resp = "Maqcpt";
+                resp = (serie.equals("A")) ? "Maqcpt" : svr + ".Maqcpt";
                 break;
             case "7":
-                resp = "CPTMaquinaria2";
+                resp = (serie.equals("A")) ? "CPTMaquinaria2" : svr + ".CPTMaquinaria2";
                 break;
         }
         return resp;
@@ -678,7 +697,7 @@ public class Formateodedatos {
                 break;
             case "6":
             case "7":
-                resp = m.getDescripcion() + " " + m.getNoserie();
+                resp = m.getTipo_maquina() + " " + m.getNoserie();
                 break;
         }
         return resp;

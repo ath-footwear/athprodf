@@ -104,28 +104,28 @@ where id_pedimento=$P{id}]]>
 				<text><![CDATA[Proveedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="59" width="151" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
+				<reportElement x="0" y="59" width="225" height="16" uuid="01e9d7a5-b55c-4379-ae51-2fe0d333da1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Material]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="151" y="59" width="100" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
+				<reportElement x="225" y="59" width="80" height="16" uuid="92115ef8-e171-4395-8d5d-2f899e1a27d1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="59" width="100" height="16" uuid="4738bb3d-26c9-42e7-86f6-0211b681fa5d"/>
+				<reportElement x="305" y="59" width="70" height="16" uuid="4738bb3d-26c9-42e7-86f6-0211b681fa5d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="59" width="100" height="16" uuid="abcefaa5-c088-4b9e-b350-517146a7a2eb"/>
+				<reportElement x="375" y="59" width="100" height="16" uuid="abcefaa5-c088-4b9e-b350-517146a7a2eb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
