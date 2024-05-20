@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9f519e6-c309-4f03-9288-d58f51e86b6e">
-	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.zoom" value="2.143588810000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f1" class="java.lang.String">
@@ -16,6 +16,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fechah" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bd" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -60,54 +63,59 @@ where nombre like '%$P!{cliente}%' and (fechavencimiento<=$P{f2} or fecha<=$P{f2
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="-1" y="0" width="30" height="13" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
+				<reportElement x="-1" y="0" width="19" height="13" uuid="78043fd8-52ce-4567-8a8a-617f945e3ebd"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[C]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="29" y="0" width="30" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
+				<reportElement x="18" y="0" width="19" height="13" uuid="898fc32d-2aa0-4935-8b8c-e371a37bc86a"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="59" y="0" width="100" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<reportElement x="37" y="0" width="100" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Concepto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="219" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
+				<reportElement x="197" y="0" width="45" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="431" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<reportElement x="416" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Usd]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="333" y="0" width="65" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
+				<reportElement x="287" y="0" width="65" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="159" y="0" width="60" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
+				<reportElement x="137" y="0" width="60" height="13" uuid="157d5ad1-8e82-4977-ac44-50c1f9807c58"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Referencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="276" y="0" width="57" height="13" uuid="20ca3352-09e1-414c-acab-401f27cec549"/>
+				<reportElement x="242" y="0" width="45" height="13" uuid="20ca3352-09e1-414c-acab-401f27cec549"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha V]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="501" y="0" width="65" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
+				<reportElement x="486" y="0" width="65" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Mxn]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="399" y="0" width="32" height="13" uuid="18491be0-f3cd-4fb2-9b97-75faa105411f"/>
+				<reportElement x="352" y="0" width="32" height="13" uuid="18491be0-f3cd-4fb2-9b97-75faa105411f"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Dias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="32" height="13" uuid="a71f2c83-b651-45e9-bb39-07554ceb8e46"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tipo c]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

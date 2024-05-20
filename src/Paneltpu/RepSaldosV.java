@@ -211,7 +211,7 @@ public class RepSaldosV extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombreMousePressed
 
     private void JtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombreActionPerformed
-
+        setdatareport();
     }//GEN-LAST:event_JtNombreActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -219,6 +219,10 @@ public class RepSaldosV extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        setdatareport();
+    }//GEN-LAST:event_jLabel1MousePressed
+
+    private void setdatareport() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         java.util.Date date = new Date();
         String f1 = sdf.format(Fecha.getDate());
@@ -227,18 +231,29 @@ public class RepSaldosV extends javax.swing.JDialog {
         String cliente = JtNombre.getText();
         String serie = JcSerie.getSelectedItem().toString();
         setreport(f1, f2, cliente, fechahoy, serie);
-    }//GEN-LAST:event_jLabel1MousePressed
+    }
 
+    /**
+     * Setea y despliega el reporte
+     *
+     * @param f1
+     * @param f2
+     * @param n
+     * @param fechahoy
+     * @param serie
+     */
     private void setreport(String f1, String f2, String n, String fechahoy, String serie) {
         try {
             Formateodedatos fd = new Formateodedatos();
             Connection con = fd.Getconnection_toturno_cob(user.getTurno(), u, serie);
+            String bd=fd.getbdto_respinv_orig(user.getTurno(), serie);
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("fechah", fechahoy);
             parametros.put("cliente", n);
+            parametros.put("bd", bd);
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/IndexrepSaldosV.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);

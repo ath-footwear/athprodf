@@ -199,6 +199,7 @@ public class Pantallas extends javax.swing.JInternalFrame {
         model.addColumn("Inspeccion");
         model.addColumn("Montado");
         model.addColumn("Montado2");
+        model.addColumn("Montado3");
         model.addColumn("PT");
 //        Asignar el numero de renglos de acuerdo al tamaño del array
         model.setNumRows(arr.size());
@@ -215,7 +216,8 @@ public class Pantallas extends javax.swing.JInternalFrame {
             JtEmpresa.setValueAt(formatdep(arr.get(i).getInspeccion()), i, 8);
             JtEmpresa.setValueAt(formatdep(arr.get(i).getMontado()), i, 9);
             JtEmpresa.setValueAt(formatdep(arr.get(i).getMontado2()), i, 10);
-            JtEmpresa.setValueAt(formatdep(arr.get(i).getPt()), i, 11);
+            JtEmpresa.setValueAt(formatdep(arr.get(i).getMontado3()), i, 11);
+            JtEmpresa.setValueAt(formatdep(arr.get(i).getPt()), i, 12);
         }
     }
 

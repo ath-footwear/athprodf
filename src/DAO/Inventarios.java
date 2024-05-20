@@ -34,6 +34,8 @@ public interface Inventarios {
     public boolean nuevoinventario(Connection c, Connection lite, ArrayList<Inventario> arr, int mes, int year);
 
     public boolean ejecutarespcierre(Connection c, int mes, int year, String turno);
+    
+    public boolean ejecutarespcierre_cob(Connection c, int mes, int year, String turno);
 
     public void updatecantin_inv(Connection c, Inventario inv);
 

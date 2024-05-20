@@ -563,9 +563,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
         if (!fd.verficafechanula(JtFecha)) {
-            
-                setfactura();
-        
+            setfactura();
         } else {
             JOptionPane.showMessageDialog(null, "La fecha de pago no puede ir vacia");
         }
@@ -895,7 +893,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             parametros.put("regimencliente", regimen);
             parametros.put("confo", conformidad);
 
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesmaq/index_ptpuE.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesMaq/index_ptpuE.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -907,7 +905,7 @@ public class pagotpucargo3 extends javax.swing.JPanel {
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
             exporter.exportReport();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ""+ex+"\n"+ex.getMessage()+"\n"+ex.getLocalizedMessage());
+            JOptionPane.showMessageDialog(null, "" + ex + "\n" + ex.getMessage() + "\n" + ex.getLocalizedMessage());
             Logger.getLogger(pagotpucargo3.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

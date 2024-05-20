@@ -113,8 +113,8 @@ public class daoxmltpu {
                 y.setDescripcion(desc);                                         // desc prod
                 y.setClaveProdServ(clvprov);                                    // clv sat
                 y.setClaveUn(unidad);
-                y.setBase(BigDecimal.valueOf(base).setScale(2, RoundingMode.HALF_UP));                            // importe c
-                y.setImporteImpuesto(BigDecimal.valueOf(importe).setScale(2, RoundingMode.HALF_UP));              // iva
+                y.setBase(BigDecimal.valueOf(base).setScale(2));                            // importe c
+                y.setImporteImpuesto(BigDecimal.valueOf(importe).setScale(2));              // iva
                 BigDecimal d = new BigDecimal("0." + tas + "0000");//tomando en cuenta los 6 decimales
                 y.setTasaCuota(d);
                 y.setNoIdenf(id + "");

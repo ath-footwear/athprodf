@@ -11,8 +11,25 @@ package Modelo;
  */
 public class pantalla implements java.io.Serializable{
     private int pantalla,orders;
-    private String nombre,corte,precorte,pespunte,deshebrado,ojillado,inspeccion,preacabado,montado,montado2,pt, depa;
+    private String nombre,corte,precorte,pespunte,deshebrado,ojillado,inspeccion,
+            preacabado,montado,montado2,pt, depa, montado3, montado4;
     private int h8,h9,h10,h11,h12,h13,h14,h15,h16,h17,h18;
+
+    public String getMontado4() {
+        return montado4;
+    }
+
+    public void setMontado4(String montado4) {
+        this.montado4 = montado4;
+    }
+    
+    public String getMontado3() {
+        return montado3;
+    }
+
+    public void setMontado3(String montado3) {
+        this.montado3 = montado3;
+    }
 
     public String getMontado2() {
         return montado2;

@@ -5,6 +5,8 @@
  */
 package Tpu;
 
+import DAO.daoAbonos;
+import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daoControlinventarios;
 import DAO.daoInventarios;
@@ -15,6 +17,8 @@ import Modelo.Controlinventario;
 import Modelo.Formateodedatos;
 import Modelo.Inventario;
 import Modelo.Usuarios;
+import Modelo.abono;
+import Modelo.cargo;
 import Modelo.pedimento;
 import Paneltpu.Nuevacapturainv;
 import Paneltpu.VerInventarios;
@@ -44,7 +48,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Inventarios extends javax.swing.JInternalFrame {
 
-    Connection cpt, rcpt, cobranza;
+    Connection cpt, rcpt, cobranza, cobB;
     Connection litecfdi, liteusuario;
     ArrayList<Inventario> arrinv = new ArrayList<>();
     ArrayList<pedimento> arr = new ArrayList<>();
@@ -63,6 +67,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         cpt = c.getCpttpu();
         rcpt = c.getRcpttpu();
         cobranza = c.getCobranzatpu();
+        cobB = c.getCobranzatpuB();
         litecfdi = c.getLitecfdi();
         liteusuario = c.getLiteusuario();
         this.u = u;
@@ -441,16 +446,17 @@ public class Inventarios extends javax.swing.JInternalFrame {
         get_infoajustes();
         JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
 //        Realiza respaldo de la bd    
+        cierrefiscal();
         di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(), u.getTurno());
+        di.ejecutarespcierre_cob(cobranza, inv.getMes(), inv.getYears(), u.getTurno());
         if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
-            Formateodedatos fd = new Formateodedatos();
+//      cierrefiscal();
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
         } else {
             JOptionPane.showMessageDialog(null, "Ocurrio algun error al generar el cierre de mes.");
         }
-
     }
 
     /**
@@ -523,17 +529,17 @@ public class Inventarios extends javax.swing.JInternalFrame {
         int aux = 1;
         for (int x = 0; x < arrinv.size(); x++) {
             Inventario i = arrinv.get(x);
-        //Primero verifica que el valor sea distinto de cero para ahorrar codigo    
+            //Primero verifica que el valor sea distinto de cero para ahorrar codigo    
             if (i.getDiferencias() == 0) {
                 i.setExec_movs("0");
             } else {
-        //Posterior se valida si las diferencias son mayor o menor a cero        
+                //Posterior se valida si las diferencias son mayor o menor a cero        
                 if (i.getDiferencias() < 0) {
                     double dif = i.getDiferencias() * -1;
                     i.setInOut_C(dc.getConceptos(cpt, 60, 25).getId_concepto());
                     i.setDiferencias(dif);
                 } else {
-                    i.setInOut_C(dc.getConceptos(cpt, 1, 25).getId_concepto());
+                    i.setInOut_C(dc.getConceptos(cpt, 1, 24).getId_concepto());
                 }
                 i.setExec_movs("1");
                 i.setFolio(folio);
@@ -545,6 +551,29 @@ public class Inventarios extends javax.swing.JInternalFrame {
             }
             arrinv.set(x, i);
         }
+    }
+
+    /**
+     * Respalda los registros de cargos y abonos para posterior consulta pero
+     * que esten intactos de acuerdo al cierre, aplica para fiscal tanto como
+     * remisiones, Esta pendientes los registros especiales
+     */
+    private void cierrefiscal() {
+        daoCargos dc = new daoCargos();
+        daoAbonos da = new daoAbonos();
+        inv.setSerie("A");
+        inv.setTipo("N");
+        //Parte fiscal
+        ArrayList<cargo> arrc = dc.getcargos_toinventario(cobranza, inv);
+        ArrayList<abono> arra = da.getabonos_toinventario(cobranza, inv);
+        dc.Exec_respaldoregs(cobranza, arrc);
+        da.Exec_respaldoregs_abono(cobranza, arra);
+        //Parte interna
+        inv.setSerie("B");
+        arrc = dc.getcargos_toinventario(cobB, inv);
+        arra = da.getabonos_toinventario(cobB, inv);
+        dc.Exec_respaldoregs(cobranza, arrc);
+        da.Exec_respaldoregs_abono(cobranza, arra);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlFecha;

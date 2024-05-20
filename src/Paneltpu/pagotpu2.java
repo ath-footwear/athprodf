@@ -835,7 +835,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             f.setTotalcajas(0);
             f.setTiposerie("PAGO");
             f.setFormapago("");
-            f.setMetodopago("PPD");
+            f.setMetodopago("PUE");
             f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
             f.setUsocfdi("CP01");
             f.setCondicion("Contado");

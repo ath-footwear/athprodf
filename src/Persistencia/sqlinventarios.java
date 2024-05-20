@@ -62,12 +62,12 @@ public class sqlinventarios {
                 String d = arr1.getDureza();
                 String n = arr1.getNombre();
                 double cant = arr1.getCantidad();
-                double precio=arr1.getPrecio();
-                double costo=arr1.getCosto();
+                double precio = arr1.getPrecio();
+                double costo = arr1.getCosto();
                 String sql = "insert into inventariado(id_pedimento,id_dpedimento,"
                         + "id_material,dureza,nombremat,cantidadrestante, precio,costo)"
-                        + "values (" + ped + "," + dped + "," + m + ",'" + d + "','" 
-                        + n + "'," + cant + ","+precio+","+costo+")";
+                        + "values (" + ped + "," + dped + "," + m + ",'" + d + "','"
+                        + n + "'," + cant + "," + precio + "," + costo + ")";
 //                System.out.println(" " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
@@ -167,8 +167,8 @@ public class sqlinventarios {
                     String user = arr1.getUsuario();
                     int alm = arr1.getAlmacen();
                     int fkardex = arr1.getFolio();
-                    double precio=arr1.getPrecio();
-                    double costo= arr1.getCosto();
+                    double precio = arr1.getPrecio();
+                    double costo = arr1.getCosto();
                     sql = "insert into kardex "
                             + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     st = c.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class sqlinventarios {
                     st.setString(15, "1");
                     st.setString(16, "1");
                     st.setString(17, dureza);
-                    st.setString(18, "AJUSTE INV. "+mes+" "+year);
+                    st.setString(18, "AJUSTE INV. " + mes + " " + year);
                     st.executeUpdate();
                 }
             }
@@ -238,6 +238,38 @@ public class sqlinventarios {
             //Se trae el nombre integro de la bd con respecto al turno y
             //El nombre que tendra el archivo
             String bd = f.getbdto_respinv_orig(turno, "A");
+            sql = "BACKUP DATABASE [" + bd + "]\n"
+                    + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res" + bd + "" + mres + "" + yres + ".bak'\n"
+                    + "WITH CHECKSUM;";
+//            System.out.println("respaldo " + sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlinventarios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlinventarios.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean ejecutarespcierre_cob(Connection c, int mes, int year, String turno) {
+        try {
+//            Respaldo de Bd
+            String sql;
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            Formateodedatos f = new Formateodedatos();
+//            Se formatean los datos de el mes y el año para el guardado del archivo
+            String mres = f.formateamesrespaldo(mes);
+            String yres = f.formateayearrespaldo(String.valueOf(year));
+            //Se trae el nombre integro de la bd con respecto al turno y
+            //El nombre que tendra el archivo
+            String bd = f.getbd_tocargo(turno);
             sql = "BACKUP DATABASE [" + bd + "]\n"
                     + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res" + bd + "" + mres + "" + yres + ".bak'\n"
                     + "WITH CHECKSUM;";

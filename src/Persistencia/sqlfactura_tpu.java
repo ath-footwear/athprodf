@@ -2318,14 +2318,16 @@ public class sqlfactura_tpu {
             ResultSet rs;
             String sql = "select nombre,total, convert(date,fecha) as fecha,usuario,"
                     + "convert(date,fechapago) as fpago, id_doctopago,observaciones,"
-                    + "estatus, isnull(foliofiscal,'') as foliofiscal\n"
+                    + "estatus, isnull(foliofiscal,'') as foliofiscal,folio\n"
                     + "from doctospagotpu_especial\n"
-                    + "where nombre like '%" + cliente + "%'";
+                    + "where nombre like '%" + cliente + "%'"
+                    + "order by id_doctopago desc";
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 factura f = new factura();
+                f.setFolio(rs.getInt("folio"));
                 f.setNombre(rs.getString("nombre"));
                 f.setTotal(rs.getDouble("total"));
                 f.setFecha(rs.getString("fecha"));

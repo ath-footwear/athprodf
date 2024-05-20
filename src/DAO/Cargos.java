@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Controlinventario;
 import Modelo.cargo;
 import Modelo.factura;
 import java.sql.Connection;
@@ -25,4 +26,8 @@ public interface Cargos {
     public ArrayList<cargo> getcargos_especial_CompPagos(Connection cpt, String cliente, String bdcob);
     
     public double getcargopendiente(Connection c, int id_cliente, String bd);
+    
+    public ArrayList<cargo> getcargos_toinventario(Connection cob, Controlinventario i);
+    
+    public boolean Exec_respaldoregs(Connection cob, ArrayList<cargo> arr);
 }

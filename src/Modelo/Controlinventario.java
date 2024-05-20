@@ -11,7 +11,23 @@ package Modelo;
  */
 public class Controlinventario implements java.io.Serializable{
     private int id, mes, years;
-    private String statusdev;
+    private String statusdev, tipo, serie;
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
 
     public int getId() {
         return id;

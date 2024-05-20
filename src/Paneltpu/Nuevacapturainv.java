@@ -127,25 +127,25 @@ public class Nuevacapturainv extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(406, 406, 406))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcPed, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(JcPed, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(393, 393, 393)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +210,7 @@ public class Nuevacapturainv extends javax.swing.JDialog {
 
     private void buscaregistros() {
         daopedimentos d = new daopedimentos();
-        arrdet = d.getpedimentoaadv(cpt, "referencia='" + arr.get(JcPed.getSelectedIndex()).getReferencia() + "'",u.getTurno());
+        arrdet = d.getpedimentoaadv(cpt, "referencia='" + arr.get(JcPed.getSelectedIndex()).getReferencia() + "'", u.getTurno());
         settabla();
     }
 
@@ -266,6 +266,10 @@ public class Nuevacapturainv extends javax.swing.JDialog {
             ped.addElement(arr.get(i).getReferencia());
         }
         JcPed.setModel(ped);
+        if (!arr.isEmpty()) {
+            JcPed.requestFocus();
+            JcPed.setSelectedIndex(0);
+        }
     }
 
     public void settabla() {
@@ -288,10 +292,10 @@ public class Nuevacapturainv extends javax.swing.JDialog {
 
     }
 
-    public void cargausuario(Usuarios u){
-    this.u=u;
+    public void cargausuario(Usuarios u) {
+        this.u = u;
     }
-    
+
     /**
      * Verifica el array principal para elegir solo los pedimentos disponibles,
      * por lo tanto si encuentra el id del pedimento en el array de la bdlite lo

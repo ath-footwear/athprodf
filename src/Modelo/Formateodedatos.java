@@ -533,6 +533,9 @@ public class Formateodedatos {
             case "5":
                 resp = "ACobranzaTpu";
                 break;
+            case "6":
+                resp = "ACobranzamaq";
+                break;
             case "7":
                 resp = "ACobranzaMaq2";
                 break;
@@ -694,7 +697,7 @@ public class Formateodedatos {
                 break;
             case "6":
             case "7":
-                resp = m.getTipo_maquina()+" "+m.getNoserie();
+                resp = m.getTipo_maquina() + " " + m.getNoserie();
                 break;
         }
         return resp;

@@ -142,6 +142,7 @@ public final class Principal extends javax.swing.JFrame {
         popup();
 //        Todos los menus y botones se ocultan para su despues proceso
         setinicio();
+        JrEmpresa.setSelected(true);
         grupo.add(JrEmpresa);
         grupo.add(JrEmpresa1);
 //        Conexion a la bd de Sqlite
@@ -162,6 +163,9 @@ public final class Principal extends javax.swing.JFrame {
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
+        } else {
+            //Iniciar directo con el login
+            eleccionempresa();
         }
         TimeZone.setDefault(TimeZone.getTimeZone("GMT-6"));//Para el cambio de horario
     }
@@ -1871,13 +1875,14 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JtFacturaciontpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpuActionPerformed
         try {
-            System.out.println("cerrada " + conexion.getCobranzatpu());
+//            System.out.println("cerrada " + conexion.getCobranzatpu());
 //            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
             FacturacionTpu p = new FacturacionTpu(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
-            p.show();
-        } catch (PropertyVetoException ex) {
+            p.setVisible(true);
+//            p.show();
+        } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JtFacturaciontpuActionPerformed
@@ -3035,6 +3040,7 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresa("FATIMACPT");
                 conexion.setEmpresacob("ACobranzaFH");
                 conexion.setEmpresarcpt("FATIMARCPT");
+                
 //                conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
 //                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
                 tpu = s.getconexionTPU("Tpucpt");

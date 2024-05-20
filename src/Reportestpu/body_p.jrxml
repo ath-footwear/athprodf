@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,d.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto,formapagop
+		<![CDATA[select dd.cantidad,codigosat,unidad,Descripcion,Precio,uuid,dd.foliorel,dd.moneda,dd.metodopago,noparcialidad,importesdoant,importepagado,impsaldoinsoluto,dd.formapagop
 from doctospagotpu d join ddoctospagotpu dd on dd.id_doctopago=d.id_doctopago
 where dd.id_doctopago=$P{id}
 order by noparcialidad]]>

@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Controlinventario;
 import Modelo.cargo;
 import Modelo.factura;
 import Persistencia.sqlcargos;
@@ -75,16 +76,42 @@ public class daoCargos implements Cargos {
     }
 
     /**
-     * Busca todos los cargos pendientes del cliente de acuerdo a la conexion
-     * y bd, Solo normal
+     * Busca todos los cargos pendientes del cliente de acuerdo a la conexion y
+     * bd, Solo normal
+     *
      * @param c conexion cobranza
      * @param id_cliente id del cliente
      * @param bd puede ser cargo o cargoespecial
-     * @return  suma de saldos pendientes
+     * @return suma de saldos pendientes
      */
     @Override
     public double getcargopendiente(Connection c, int id_cliente, String bd) {
         return S.get_Cargopendiente(c, id_cliente, bd);
+    }
+
+    /**
+     * Obtiene todos los cargos generados
+     *
+     * @param cob
+     * @param i
+     * @return
+     */
+    @Override
+    public ArrayList<cargo> getcargos_toinventario(Connection cob, Controlinventario i) {
+        return S.getcargos_toinv(cob, i);
+    }
+
+    /**
+     * Inserta los datos previamente obtenidos a la bd de la tabla que servira
+     * comor espaldo y consulta posterior
+     *
+     * @param cob
+     * @param arr
+     * @return
+     */
+    @Override
+    public boolean Exec_respaldoregs(Connection cob, ArrayList<cargo> arr) {
+        return S.Exec_respaldoregs(cob, arr);
     }
 
 }

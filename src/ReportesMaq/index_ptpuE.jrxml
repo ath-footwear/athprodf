@@ -46,7 +46,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from doctospagotpu_especial where id_doctopago =$P{folio} and serie='PAG']]>
+		<![CDATA[select * from doctospagotpu_especial where folio =$P{folio} and serie='PAG']]>
 	</queryString>
 	<field name="id_doctopago" class="java.lang.Integer"/>
 	<field name="id_cliente" class="java.lang.Integer"/>
